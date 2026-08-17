@@ -10,6 +10,7 @@ define('ROOT_PATH', dirname(__DIR__));
 define('BASE_URL', '/sistema_clinico');
 
 require_once ROOT_PATH . '/config/database.php';
+require_once '../helpers/auth.php';
 
 // Autoload
 spl_autoload_register(function ($clase) {

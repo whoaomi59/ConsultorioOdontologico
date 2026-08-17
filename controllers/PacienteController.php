@@ -3,7 +3,9 @@ class PacienteController {
     private $pacienteModel;
     private $historiaModel;
 
+
     public function __construct() {
+        requirePermission('pacientes');
         $this->pacienteModel = new Paciente();
         $this->historiaModel = new HistoriaClinica();
     }

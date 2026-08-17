@@ -21,46 +21,58 @@
             </div>
 
             <nav class="flex-1 p-4 space-y-1.5">
-                <a href="<?= BASE_URL ?>/paciente/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                    <i data-lucide="users" class="w-5 h-5 text-indigo-300"></i>
-                    <span>Pacientes</span>
-                </a>
 
-                <a href="<?= BASE_URL ?>/cita/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                    <i data-lucide="calendar" class="w-5 h-5 text-indigo-300"></i>
-                    <span>Citas Odontológicas</span>
-                </a>
+                <?php if (hasPermission('pacientes')): ?>
+                    <a href="<?= BASE_URL ?>/paciente/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                        <i data-lucide="users" class="w-5 h-5 text-indigo-300"></i>
+                        <span>Pacientes</span>
+                    </a>
+                <?php endif; ?>
 
-                <div class="space-y-1">
-                    <button type="button" onclick="toggleDropdown('historias-dropdown', 'historias-arrow')" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm focus:outline-none">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="folder-heart" class="w-5 h-5 text-indigo-300"></i>
-                            <span>Historias Clínicas</span>
+                <?php if (hasPermission('citas')): ?>
+                    <a href="<?= BASE_URL ?>/cita/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                        <i data-lucide="calendar" class="w-5 h-5 text-indigo-300"></i>
+                        <span>Citas Odontológicas</span>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasPermission('historias')): ?>
+                    <div class="space-y-1">
+                        <button type="button" onclick="toggleDropdown('historias-dropdown', 'historias-arrow')" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm focus:outline-none">
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="folder-heart" class="w-5 h-5 text-indigo-300"></i>
+                                <span>Historias Clínicas</span>
+                            </div>
+                            <i id="historias-arrow" data-lucide="chevron-down" class="w-4 h-4 text-indigo-300 transition-transform duration-200"></i>
+                        </button>
+
+                        <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
+                            <a href="<?= BASE_URL ?>/historias/odontologia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                                <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
+                                <span>Odontología</span>
+                            </a>
+                            <a href="<?= BASE_URL ?>/historia/ortodoncia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                                <i data-lucide="smile" class="w-5 h-5 text-indigo-400"></i>
+                                <span>Ortodoncias</span>
+                            </a>
                         </div>
-                        <i id="historias-arrow" data-lucide="chevron-down" class="w-4 h-4 text-indigo-300 transition-transform duration-200"></i>
-                    </button>
-
-                    <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
-                        <a href="<?= BASE_URL ?>/historias/odontologia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                            <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
-                            <span>Odontología</span>
-                        </a>
-                        <a href="<?= BASE_URL ?>/historia/ortodoncia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                            <i data-lucide="smile" class="w-5 h-5 text-indigo-400"></i>
-                            <span>Ortodoncias</span>
-                        </a>
                     </div>
-                </div>
+                <?php endif; ?>
 
-                <a href="<?= BASE_URL ?>/usuarios/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                    <i data-lucide="user-cog" class="w-5 h-5 text-indigo-300"></i>
-                    <span>Usuarios / Doctores</span>
-                </a>
+                <?php if (hasPermission('usuarios')): ?>
+                    <a href="<?= BASE_URL ?>/usuarios/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                        <i data-lucide="user-cog" class="w-5 h-5 text-indigo-300"></i>
+                        <span>Usuarios / Doctores</span>
+                    </a>
+                <?php endif; ?>
 
-                <a href="<?= BASE_URL ?>/reporte/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
-                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-300"></i>
-                    <span>Reportes</span>
-                </a>
+                <?php if (hasPermission('reportes')): ?>
+                    <a href="<?= BASE_URL ?>/reporte/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-300"></i>
+                        <span>Reportes</span>
+                    </a>
+                <?php endif; ?>
+
             </nav>
 
             <div class="p-4 border-t border-indigo-800/60 flex items-center justify-between">
@@ -100,6 +112,18 @@
             </header>
 
             <main class="p-8 max-w-7xl mx-auto w-full flex-grow">
+                <?php if (!empty($_SESSION['error_acceso'])): ?>
+                    <div class="mb-4 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-600"></i>
+                            <span><?= htmlspecialchars($_SESSION['error_acceso']) ?></span>
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-rose-400 hover:text-rose-600">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <?php unset($_SESSION['error_acceso']); ?>
+                <?php endif; ?>
 
                 <script>
                     // Inicializar íconos Lucide

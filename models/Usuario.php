@@ -70,5 +70,14 @@ class Usuario {
         foreach ($modulos as $modulo) {$stmtIns->execute([$usuario_id,$modulo]);
         }
     }
+
+    // =========================================================================
+    // MÉTODO FALTANTE: Actualiza la fecha/hora de último acceso al iniciar sesión
+    // =========================================================================
+    public function updateUltimoAcceso($id) {
+        $stmt = $this->db->prepare("UPDATE usuarios SET ultimo_acceso = NOW() WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
 }
 ?>

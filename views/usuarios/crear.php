@@ -6,7 +6,10 @@
             </h1>
             <p class="text-xs text-slate-500 mt-0.5">Ingresa los datos personales, captura la foto e indica permisos.</p>
         </div>
-        <a href="<?= BASE_URL ?>/usuarios/index" class="text-xs text-slate-600 hover:text-slate-800 bg-slate-100 px-3 py-2 rounded-xl transition">Volver</a>
+        <a href="<?= BASE_URL ?>/usuarios/index" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-slate-50 hover:bg-slate-100 px-4 py-2.5 rounded-xl border border-slate-200 transition"><i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Volver al listado</span>
+        </a>
+
     </div>
 
     <form action="<?= BASE_URL ?>/usuarios/guardar" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-6">

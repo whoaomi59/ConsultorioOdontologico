@@ -14,7 +14,7 @@ class UsuariosController {
 
     // LISTAR USUARIOS (Vista Principal)
     public function index() {
-        //requireRole(['admin']);
+        requirePermission('usuarios');
         $usuarios = $this->usuarioModel->getAll();
 
         require_once ROOT_PATH . '/views/layout/header.php';
@@ -24,7 +24,7 @@ class UsuariosController {
 
     // FORMULARIO: REGISTRAR
     public function crear() {
-        // requireRole(['admin']);
+        requirePermission('usuarios_crear');
         require_once ROOT_PATH . '/views/layout/header.php';
         require_once ROOT_PATH . '/views/usuarios/crear.php';
         require_once ROOT_PATH . '/views/layout/footer.php';
@@ -57,7 +57,7 @@ class UsuariosController {
 
     // VER PERFIL
     public function ver($id) {
-        //requireRole(['admin']);
+        requirePermission('usuarios_ver');
         $usuario = $this->usuarioModel->getById($id);$permisos = $this->usuarioModel->getPermisos($id);
 
         require_once ROOT_PATH . '/views/layout/header.php';
@@ -67,7 +67,7 @@ class UsuariosController {
 
     // FORMULARIO: EDITAR USUARIO
     public function editar($id) {
-        //requireRole(['admin']);
+        requirePermission('usuarios_editar');
         $usuario = $this->usuarioModel->getById($id);$permisos = $this->usuarioModel->getPermisos($id);
 
         require_once ROOT_PATH . '/views/layout/header.php';
@@ -77,7 +77,6 @@ class UsuariosController {
 
     // ACTUALIZAR USUARIO Y PERMISOS
     public function actualizar($id) {
-        // requireRole(['admin']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {$fotoNombre = $this->uploadFoto($_FILES['foto'] ?? null);
 
             $this->usuarioModel->update($id, [
@@ -97,7 +96,7 @@ class UsuariosController {
 
     // ELIMINAR USUARIO
     public function eliminar($id) {
-        //requireRole(['admin']);
+        requirePermission('usuarios_eliminar');
         $this->usuarioModel->delete($id);
         header('Location: ' . BASE_URL . '/usuarios/index');
         exit;
