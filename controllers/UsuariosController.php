@@ -16,8 +16,17 @@ class UsuariosController {
     }
 
     public function index() {
+        //para obligar la autenticacion requireRole(['admin']);
         $usuarios = $this->usuarioModel->getAll();
+
+        // 1. Cargar Cabecera (Contiene Tailwind CSS y Sidebar)
+        require_once ROOT_PATH . '/views/layout/header.php';
+
+        // 2. Cargar Vista del Módulo de Usuarios
         require_once ROOT_PATH . '/views/usuarios/index.php';
+
+        // 3. Cargar Pie de página y Scripts JS (Lucide Icons)
+        require_once ROOT_PATH . '/views/layout/footer.php';
     }
 
     public function guardar() {

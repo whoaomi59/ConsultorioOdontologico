@@ -1,5 +1,3 @@
-<?php requireRole(['admin']); ?>
-
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
         <div>

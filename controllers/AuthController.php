@@ -18,6 +18,7 @@ class AuthController {
     }
 
     public function showLogin() {
+        // Si YA inició sesión, lo enviamos al panel principal (no al login de nuevo)
         if (isset($_SESSION['usuario_id'])) {
             header('Location: ' . BASE_URL . '/historias/odontologia');
             exit;
@@ -32,23 +33,26 @@ class AuthController {
 
             $user = $this->usuarioModel->getByEmail($email);
 
-            if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['usuario_id']     = $user['id'];
-                $_SESSION['usuario_nombre'] = $user['nombre'];
-                $_SESSION['usuario_email']  = $user['email'];
-                $_SESSION['usuario_rol']    = $user['rol'];
-
-                header('Location: ' . BASE_URL . '/historias/odontologia');
-                exit;
-            } else {
-                $_SESSION['error'] = 'Credenciales incorrectas o usuario inactivo.';
-                header('Location: ' . BASE_URL . '/login');
-                exit;
+            // --- DEPURACIÓN TEMPORAL ---
+            if (!$user) {
+                die("ERROR: No se encontró ningún usuario activo con el correo: '" . htmlspecialchars($email) . "' en la base de datos.");
             }
+
+            if (!password_verify($password, $user['password'])) {
+                die("ERROR: El usuario existe, pero 'password_verify' falló. Hash en BD: " . htmlspecialchars($user['password']));
+            }
+            // ---------------------------
+
+            $_SESSION['usuario_id']     = $user['id'];
+            $_SESSION['usuario_nombre'] = $user['nombre'];
+            $_SESSION['usuario_email']  = $user['email'];
+            $_SESSION['usuario_rol']    = $user['rol'];
+
+            header('Location: ' . BASE_URL . '/historias/odontologia');
+            exit;
         }
     }
 
-    // Alias si el formulario de login envía a /login/autenticar
     public function autenticar() {
         $this->login();
     }

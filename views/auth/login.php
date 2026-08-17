@@ -25,7 +25,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?= BASE_URL ?>/login/autenticar" method="POST" class="space-y-4">
+            <form action="<?= BASE_URL ?>/auth/login" method="POST">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Correo Electrónico</label>
                     <div class="relative">
