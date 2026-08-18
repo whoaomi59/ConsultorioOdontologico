@@ -25,26 +25,32 @@ class Usuario {
 
     public function create($data) {
         $hashPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt         = $this->db->prepare("INSERT INTO usuarios (nombre, email, password, rol, foto, estado) VALUES (?, ?, ?, ?, ?, 1)");
+        $stmt         = $this->db->prepare("INSERT INTO usuarios (nombre, email, password, rol, foto, firma_base64, estado) VALUES (?, ?, ?, ?, ?, ?, 1)");
         $stmt->execute([$data['nombre'],
             $data['email'],$hashPassword,
-            $data['rol'],$data['foto'] ?? null
+            $data['rol'],$data['foto'] ?? null,
+            $data['firma_base64'] ?? null
         ]);
         return $this->db->lastInsertId();
     }
 
-    public function update($id,$data) {
-        if (!empty($data['password'])) {$hashPassword = password_hash($data['password'], PASSWORD_BCRYPT);$sql = "UPDATE usuarios SET nombre = ?, email = ?, password = ?, rol = ?, estado = ?" . ($data['foto'] ? ", foto = ?" : "") . " WHERE id = ?";
-            $params = [$data['nombre'], $data['email'],$hashPassword, $data['rol'],$data['estado']];
-        } else {
-            $sql    = "UPDATE usuarios SET nombre = ?, email = ?, rol = ?, estado = ?" . ($data['foto'] ? ", foto = ?" : "") . " WHERE id = ?";
-            $params = [$data['nombre'],$data['email'], $data['rol'],$data['estado']];
+    public function update($id, $data) {$fields = ["nombre = ?", "email = ?", "rol = ?", "estado = ?"];
+        $params = [$data['nombre'],$data['email'], $data['rol'],$data['estado']];
+
+        if (!empty($data['password'])) {$fields[] = "password = ?";
+            $params[] = password_hash($data['password'], PASSWORD_BCRYPT);
         }
 
-        if ($data['foto']) {
+        if (!empty($data['foto'])) {$fields[] = "foto = ?";
             $params[] = $data['foto'];
         }
+
+        if (isset($data['firma_base64'])) {$fields[] = "firma_base64 = ?";
+            $params[] = $data['firma_base64'];
+        }
+
         $params[] = $id;
+        $sql      = "UPDATE usuarios SET " . implode(', ', $fields) . " WHERE id = ?";
 
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($params);
@@ -55,7 +61,6 @@ class Usuario {
         return $stmt->execute([$id]);
     }
 
-    // --- GESTIÓN DE PERMISOS POR MÓDULO ---
     public function getPermisos($usuario_id) {
         $stmt = $this->db->prepare("SELECT modulo FROM usuario_permisos WHERE usuario_id = ?");
         $stmt->execute([$usuario_id]);
@@ -71,13 +76,9 @@ class Usuario {
         }
     }
 
-    // =========================================================================
-    // MÉTODO FALTANTE: Actualiza la fecha/hora de último acceso al iniciar sesión
-    // =========================================================================
     public function updateUltimoAcceso($id) {
         $stmt = $this->db->prepare("UPDATE usuarios SET ultimo_acceso = NOW() WHERE id = ?");
         return $stmt->execute([$id]);
     }
-
 }
 ?>

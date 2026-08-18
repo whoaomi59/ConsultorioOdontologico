@@ -24,10 +24,10 @@ $seccionesPermisos = [
     'Historias Clínicas' => [
         'icon' => 'folder-heart',
         'modulos' => [
-            'historias' => 'Historias Clínicas',
+            'historia' => 'Historias Clínicas',
             'historia_ver' => 'historia_ver',
-            'historia_ver' => 'historias_odontologia',
-            'historia_ver' => 'historias_ortodoncia',
+            'historia_odontologia' => 'historia_odontologia',
+            'historia_ortodoncia' => 'historia_ortodoncia',
         ]
     ]
 ];
@@ -245,9 +245,9 @@ $seccionesPermisos = [
 <script>
     lucide.createIcons();
 
-    // --- MANEJO DE CÁMARA WEB ---
     let streamVideo = null;
 
+    // 1. Activar Cámara Web
     async function startCamera() {
         try {
             const constraints = { video: { width: 400, height: 400, facingMode: "user" } };
@@ -258,10 +258,11 @@ $seccionesPermisos = [
             document.getElementById('webcam_container').classList.remove('hidden');
             document.getElementById('btn_snap').classList.remove('hidden');
         } catch (err) {
-            alert('No se pudo acceder a la cámara. Revisa los permisos de tu navegador.');
+            alert('No se pudo acceder a la cámara. Asegúrate de dar los permisos correspondientes.');
         }
     }
 
+    // 2. Tomar captura desde el video
     function takeSnapshot() {
         const video  = document.getElementById('webcam_video');
         const canvas = document.getElementById('canvas');
@@ -271,14 +272,21 @@ $seccionesPermisos = [
         const ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        // Convertir a Base64 JPEG
         const dataURL = canvas.toDataURL('image/jpeg', 0.85);
         document.getElementById('foto_base64').value = dataURL;
 
-        showPreview(dataURL, 'Captura de cámara lista');
+        // Mostrar en vista previa
+        showPreview(dataURL, 'Captura de cámara');
+
+        // Limpiar archivo subido si existía
         document.getElementById('input_file').value = '';
+
+        // Detener la cámara
         stopCamera();
     }
 
+    // 3. Detener Stream de la Cámara
     function stopCamera() {
         if (streamVideo) {
             streamVideo.getTracks().forEach(track => track.stop());
@@ -287,17 +295,19 @@ $seccionesPermisos = [
         document.getElementById('btn_snap').classList.add('hidden');
     }
 
+    // 4. Vista previa cuando selecciona un archivo tradicional
     function previewFile(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 showPreview(e.target.result, input.files[0].name);
-                document.getElementById('foto_base64').value = '';
+                document.getElementById('foto_base64').value = ''; // Limpiar Base64 de la cámara
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
 
+    // Helper para actualizar la imagen mostrada
     function showPreview(src, label) {
         const img       = document.getElementById('img_preview');
         const icon      = document.getElementById('default_icon');
@@ -305,7 +315,7 @@ $seccionesPermisos = [
 
         img.src = src;
         img.classList.remove('hidden');
-        if (icon) icon.classList.add('hidden');
+        icon.classList.add('hidden');
         textLabel.textContent = label;
     }
 

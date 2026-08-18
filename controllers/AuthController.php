@@ -20,7 +20,7 @@ class AuthController {
     public function showLogin() {
         // Si YA inició sesión, lo enviamos al panel principal (no al login de nuevo)
         if (isset($_SESSION['usuario_id'])) {
-            header('Location: ' . BASE_URL . '/historias/odontologia');
+            header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
         require_once ROOT_PATH . '/views/auth/login.php';
@@ -50,7 +50,7 @@ class AuthController {
                 // Actualizar trazabilidad de último acceso
                 $this->usuarioModel->updateUltimoAcceso($user['id']);
 
-                header('Location: ' . BASE_URL . '/historias/odontologia');
+                header('Location: ' . BASE_URL . '/dashboard');
                 exit;
             } else {
                 $_SESSION['error'] = 'Credenciales incorrectas o usuario inactivo.';

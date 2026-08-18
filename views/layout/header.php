@@ -21,6 +21,10 @@
             </div>
 
             <nav class="flex-1 p-4 space-y-1.5">
+                <a href="<?= BASE_URL ?>/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-300"></i>
+                    <span>dashboard</span>
+                </a>
 
                 <?php if (hasPermission('pacientes')): ?>
                     <a href="<?= BASE_URL ?>/paciente/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
@@ -36,7 +40,7 @@
                     </a>
                 <?php endif; ?>
 
-                <?php if (hasPermission('historias')): ?>
+                <?php if (hasPermission('historia')): ?>
                     <div class="space-y-1">
                         <button type="button" onclick="toggleDropdown('historias-dropdown', 'historias-arrow')" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm focus:outline-none">
                             <div class="flex items-center space-x-3">
@@ -45,14 +49,14 @@
                             </div>
                             <i id="historias-arrow" data-lucide="chevron-down" class="w-4 h-4 text-indigo-300 transition-transform duration-200"></i>
                         </button>
-                        <?php if (hasPermission('historias_odontologia')): ?>
+                        <?php if (hasPermission('historia_odontologia')): ?>
                             <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
                                 <a href="<?= BASE_URL ?>/historias/odontologia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                                     <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
                                     <span>Odontología</span>
                                 </a>
                             <?php endif; ?>
-                            <?php if (hasPermission('historias_ortodoncia')): ?>
+                            <?php if (hasPermission('historia_ortodoncia')): ?>
                                 <a href="<?= BASE_URL ?>/historia/ortodoncia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                                     <i data-lucide="smile" class="w-5 h-5 text-indigo-400"></i>
                                     <span>Ortodoncias</span>

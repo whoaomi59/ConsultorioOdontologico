@@ -1,3 +1,39 @@
+<?php
+// Agrupación de módulos por categorías/secciones
+$seccionesPermisos = [
+    'Usuarios' => [
+        'icon' => 'users',
+        'modulos' => [
+            'usuarios' => 'usuarios',
+            'usuarios_crear' => 'usuarios_crear',
+            'usuarios_ver' => 'usuarios_ver',
+            'usuarios_editar' => 'usuarios_editar',
+            'usuarios_eliminar' => 'usuarios_eliminar',
+        ]
+    ],
+    'Pacientes' => [
+        'icon' => 'calendar',
+        'modulos' => [
+            'pacientes' => 'pacientes',
+            'pacientes_crear' => 'pacientes_crear',
+            'pacientes_perfil' => 'pacientes_perfil',
+            'pacientes_editar' => 'pacientes_editar',
+            'pacientes_eliminar' => 'pacientes_eliminar',
+        ]
+    ],
+    'Historias Clínicas' => [
+        'icon' => 'folder-heart',
+        'modulos' => [
+            'historia' => 'Historias Clínicas',
+            'historia_ver' => 'historia_ver',
+            'historia_odontologia' => 'historia_odontologia',
+            'historia_ortodoncia' => 'historia_ortodoncia',
+        ]
+    ]
+];
+?>
+
+
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
         <div>
@@ -31,7 +67,7 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1">Rol *</label>
                 <select name="rol" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-indigo-500">
                     <option value="doctor">Doctor</option>
-                    <option value="recepcionista">Recepcionista</option>
+                    <option value="auxiliar">Auxiliar</option>
                     <option value="admin">Administrador</option>
                 </select>
             </div>
@@ -78,31 +114,72 @@
             </div>
         </div>
 
-        <div class="border-t pt-4 space-y-3">
-            <h3 class="text-xs font-bold text-slate-800">Permisos y Módulos de Acceso</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <label class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="modulos[]" value="pacientes" checked class="rounded border-slate-300 text-indigo-600">
-                    <span>Pacientes</span>
-                </label>
-                <label class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="modulos[]" value="citas" checked class="rounded border-slate-300 text-indigo-600">
-                    <span>Citas Odontológicas</span>
-                </label>
-                <label class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="modulos[]" value="historias" checked class="rounded border-slate-300 text-indigo-600">
-                    <span>Historias Clínicas</span>
-                </label>
-                <label class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="modulos[]" value="usuarios" class="rounded border-slate-300 text-indigo-600">
-                    <span>Usuarios / Doctores</span>
-                </label>
-                <label class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="modulos[]" value="reportes" class="rounded border-slate-300 text-indigo-600">
-                    <span>Reportes</span>
-                </label>
+        <div class="border-t border-slate-100 pt-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-800">Permisos y Módulos de Acceso</h3>
+                    <p class="text-[11px] text-slate-500">Navega entre pestañas para asignar accesos por categoría.</p>
+                </div>
+
+                <div class="flex gap-2 text-[11px]">
+                    <button type="button" onclick="toggleTodosPermisos(true)" class="text-indigo-600 hover:underline font-semibold">Seleccionar todos</button>
+                    <span class="text-slate-300">|</span>
+                    <button type="button" onclick="toggleTodosPermisos(false)" class="text-slate-500 hover:underline">Desmarcar todos</button>
+                </div>
             </div>
+
+            <div class="flex border-b border-slate-200 gap-1 overflow-x-auto" id="tabs-header">
+                <?php $index = 0; foreach ($seccionesPermisos as $tituloSeccion => $seccion): $index++; ?>
+                <?php
+                $modulosKeys            = array_keys($seccion['modulos']);
+                $seleccionadosEnSeccion = array_intersect($modulosKeys, $permisos ?? []);
+                $esActivo               = ($index === 1);
+                ?>
+                <button type="button"
+                onclick="switchTab(<?= $index ?>)"
+                id="tab-btn-<?= $index ?>"
+                class="tab-button flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl transition border-b-2 -mb-px whitespace-nowrap focus:outline-none <?= $esActivo ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50' ?>">
+                <i data-lucide="<?= $seccion['icon'] ?>" class="w-4 h-4"></i>
+                <span><?= $tituloSeccion ?></span>
+                <span id="badge-tab-<?= $index ?>" class="ml-1 text-[10px] px-2 py-0.5 rounded-full font-semibold <?= count($seleccionadosEnSeccion) > 0 ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-600' ?>">
+                    <?= count($seleccionadosEnSeccion) ?> / <?= count($seccion['modulos']) ?>
+                </span>
+            </button>
+            <?php endforeach; ?>
         </div>
+
+        <div class="bg-slate-50/40 border border-slate-200/80 rounded-b-2xl rounded-tr-2xl p-4 shadow-sm">
+            <?php $index    = 0; foreach ($seccionesPermisos as $tituloSeccion => $seccion): $index++; ?>
+            <?php $esActivo = ($index === 1); ?>
+
+            <div id="tab-content-<?= $index ?>" class="tab-panel <?= $esActivo ? '' : 'hidden' ?> space-y-3">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Módulos de <?= $tituloSeccion ?></span>
+                    <div class="flex gap-2 text-[10px]">
+                        <button type="button" onclick="toggleGrupo('tab-content-<?= $index ?>', true)" class="text-indigo-600 hover:underline font-semibold">Marcar grupo</button>
+                        <span class="text-slate-300">|</span>
+                        <button type="button" onclick="toggleGrupo('tab-content-<?= $index ?>', false)" class="text-slate-400 hover:underline">Desmarcar grupo</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <?php foreach ($seccion['modulos'] as $key => $label): ?>
+                        <?php $isChecked = in_array($key, $permisos ?? []); ?>
+                        <label class="flex items-center gap-2.5 p-3 bg-white hover:bg-indigo-50/40 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer transition shadow-sm">
+                            <input type="checkbox"
+                            name="modulos[]"
+                            value="<?= $key ?>"
+                            <?= $isChecked ? 'checked' : '' ?>
+                            onchange="actualizarBadgesTabs()"
+                            class="chk-permiso rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                            <span><?= $label ?></span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
 
         <div class="flex justify-end gap-3 border-t pt-4">
             <a href="<?= BASE_URL ?>/usuarios/index" class="px-5 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium">Cancelar</a>
@@ -190,4 +267,56 @@
         icon.classList.add('hidden');
         textLabel.textContent = label;
     }
+
+    // --- MANEJO DE TABS DE PERMISOS ---
+    function switchTab(tabIndex) {
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('border-indigo-600', 'text-indigo-600', 'bg-indigo-50/50');
+            btn.classList.add('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-50');
+        });
+
+        const targetPanel = document.getElementById('tab-content-' + tabIndex);
+        if (targetPanel) {
+            targetPanel.classList.remove('hidden');
+        }
+
+        const targetBtn = document.getElementById('tab-btn-' + tabIndex);
+        if (targetBtn) {
+            targetBtn.classList.remove('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-50');
+            targetBtn.classList.add('border-indigo-600', 'text-indigo-600', 'bg-indigo-50/50');
+        }
+    }
+
+    function toggleGrupo(containerId, estado) {
+        const checkboxes = document.querySelectorAll(`#${containerId} .chk-permiso`);
+        checkboxes.forEach(chk => chk.checked = estado);
+        actualizarBadgesTabs();
+    }
+
+    function toggleTodosPermisos(estado) {
+        const checkboxes = document.querySelectorAll('.chk-permiso');
+        checkboxes.forEach(chk => chk.checked = estado);
+        actualizarBadgesTabs();
+    }
+
+    function actualizarBadgesTabs() {
+        const paneles = document.querySelectorAll('.tab-panel');
+        paneles.forEach((panel) => {
+            const idNumber = panel.id.replace('tab-content-', '');
+            const total    = panel.querySelectorAll('.chk-permiso').length;
+            const marcados = panel.querySelectorAll('.chk-permiso:checked').length;
+
+            const badge = document.getElementById('badge-tab-' + idNumber);
+            if (badge && total > 0) {
+                badge.textContent = `${marcados} / ${total}`;
+                if (marcados > 0) {
+                    badge.className = 'ml-1 text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-100 text-indigo-700';
+                } else {
+                    badge.className = 'ml-1 text-[10px] px-2 py-0.5 rounded-full font-semibold bg-slate-200 text-slate-600';
+                }
+            }
+        });
+    }
 </script>
+
