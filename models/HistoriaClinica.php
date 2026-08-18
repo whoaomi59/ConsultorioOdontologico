@@ -22,20 +22,35 @@ class HistoriaClinica {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($data) {$sql = "INSERT INTO historias_clinicas (
-        paciente_id, usuario_id, motivo_consulta, diagnostico, tratamiento,
-        observaciones, odontograma, acudiente_nombre,
-        acudiente_documento, acudiente_parentesco, firma_base64, firma_doctor_base64
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public function create($data) {
+        $sql = "INSERT INTO historias_clinicas (
+            paciente_id,
+            usuario_id,
+            motivo_consulta,
+            diagnostico,
+            tratamiento,
+            observaciones,
+            odontograma,
+            acudiente_nombre,
+            acudiente_documento,
+            acudiente_parentesco,
+            firma_base64
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->db->prepare($sql);
+
         return $stmt->execute([
-            $data['paciente_id'],$data['usuario_id'],
-            $data['motivo_consulta'],$data['diagnostico'],
-            $data['tratamiento'],$data['observaciones'],
-            $data['odontograma'],$data['acudiente_nombre'],
-            $data['acudiente_documento'],$data['acudiente_parentesco'],
-            $data['firma_base64'],$data['firma_doctor_base64']
+            $data['paciente_id'],
+            $data['usuario_id'],
+            $data['motivo_consulta'],
+            $data['diagnostico'],
+            $data['tratamiento'],
+            $data['observaciones'],
+            $data['odontograma'],
+            $data['acudiente_nombre'],
+            $data['acudiente_documento'],
+            $data['acudiente_parentesco'],
+            $data['firma_base64']
         ]);
     }
 }

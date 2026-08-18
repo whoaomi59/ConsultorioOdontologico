@@ -231,7 +231,14 @@ $seccionesPermisos = [
             <?php endforeach; ?>
         </div>
     </div>
-
+    <div class="border-t pt-4 space-y-3">
+        <label class="block text-xs font-bold text-slate-800">Firma Digital del Doctor / Usuario</label>
+        <div class="relative bg-white border-2 border-dashed border-slate-300 rounded-2xl overflow-hidden shadow-2xs">
+            <canvas id="user-signature-pad" class="w-full h-36 touch-none cursor-crosshair"></canvas>
+            <button type="button" id="clear-user-signature" class="absolute top-2 right-2 text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded">Limpiar</button>
+        </div>
+        <input type="hidden" name="firma_base64" id="user_firma_base64" value="<?= htmlspecialchars($usuario['firma_base64'] ?? '') ?>">
+    </div>
     <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
         <a href="<?= BASE_URL ?>/usuarios/index" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">Cancelar</a>
         <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition">Guardar Cambios</button>
@@ -369,4 +376,35 @@ $seccionesPermisos = [
             }
         });
     }
+</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById('user-signature-pad');
+        if (canvas) {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 120;
+            const userPad = new SignaturePad(canvas, { backgroundColor: 'rgb(255, 255, 255)' });
+
+            const firmaExistente = "<?= $usuario['firma_base64'] ?? '' ?>";
+            if (firmaExistente) {
+                userPad.fromDataURL(firmaExistente);
+            }
+
+            document.getElementById('clear-user-signature').addEventListener('click', () => {
+                userPad.clear();
+                document.getElementById('user_firma_base64').value = '';
+            });
+
+            canvas.closest('form').addEventListener('submit', () => {
+                if (!userPad.isEmpty()) {
+                    document.getElementById('user_firma_base64').value = userPad.toDataURL('image/png');
+                }
+            });
+        }
+    });
 </script>

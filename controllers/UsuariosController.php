@@ -80,11 +80,13 @@ class UsuariosController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {$fotoNombre = $this->uploadFoto($_FILES['foto'] ?? null);
 
             $this->usuarioModel->update($id, [
-                'nombre'   => trim($_POST['nombre']),
-                'email'    => trim($_POST['email']),
-                'password' => trim($_POST['password']),
-                'rol'      => $_POST['rol'],
-                'estado'   => isset($_POST['estado']) ? 1 : 0,                 'foto'     =>$fotoNombre
+                'nombre'       => trim($_POST['nombre']),
+                'email'        => trim($_POST['email']),
+                'password'     => trim($_POST['password']),
+                'rol'          => $_POST['rol'],
+                'estado'       => isset($_POST['estado']) ? 1 : 0,
+                'foto'         => $fotoNombre,
+                'firma_base64' => !empty($_POST['firma_base64']) ? $_POST['firma_base64'] : null
             ]);
 
             $modulos = $_POST['modulos'] ?? [];$this->usuarioModel->syncPermisos($id,$modulos);
