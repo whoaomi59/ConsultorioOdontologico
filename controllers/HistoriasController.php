@@ -22,6 +22,7 @@ class HistoriasController {
 
     // Buscador / Lista de pacientes
     public function odontologia() {
+        requirePermission('historia');
         $busqueda = isset($_GET['q']) ? trim($_GET['q']) : '';
 
         if (!empty($busqueda)) {
@@ -37,6 +38,7 @@ class HistoriasController {
 
     // Cargar Historia Clínica, Odontograma y Convenciones del Paciente
     public function ver($id) {
+        requirePermission('historia_ver');
         $paciente = $this->pacienteModel->getById($id);
 
         if (!$paciente) {
