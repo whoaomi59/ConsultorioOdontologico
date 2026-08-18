@@ -22,6 +22,7 @@ class HistoriasController {
 
     // Buscador / Lista de pacientes
     public function odontologia() {
+        requirePermission('historia');
         $busqueda = isset($_GET['q']) ? trim($_GET['q']) : '';
 
         if (!empty($busqueda)) {
@@ -37,6 +38,7 @@ class HistoriasController {
 
     // Cargar Historia Clínica, Odontograma y Convenciones del Paciente
     public function ver($id) {
+        requirePermission('historia_ver');
         $paciente = $this->pacienteModel->getById($id);
 
         if (!$paciente) {
@@ -50,15 +52,16 @@ class HistoriasController {
         $historias = $this->historiaModel->getByPacienteId($id);
 
         require_once ROOT_PATH . '/views/layout/header.php';
-        require_once ROOT_PATH . '/views/historias/historia.php';
+        require_once ROOT_PATH . '/views/historias/ver.php';
         require_once ROOT_PATH . '/views/layout/footer.php';
     }
 
     // Guardar la consulta, el odontograma y la firma/acudiente
+    // En HistoriasController.php -> modificar la función guardar()
     public function guardar($id) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {$data = [
                 'paciente_id'          => $id,
+                'usuario_id'           => $_SESSION['usuario_id'] ?? null, // Trazabilidad del doctor
                 'motivo_consulta'      => trim($_POST['motivo_consulta'] ?? ''),
                 'diagnostico'          => trim($_POST['diagnostico'] ?? ''),
                 'tratamiento'          => trim($_POST['tratamiento'] ?? ''),
@@ -67,13 +70,12 @@ class HistoriasController {
                 'acudiente_nombre'     => !empty($_POST['acudiente_nombre']) ? trim($_POST['acudiente_nombre']) : null,
                 'acudiente_documento'  => !empty($_POST['acudiente_documento']) ? trim($_POST['acudiente_documento']) : null,
                 'acudiente_parentesco' => !empty($_POST['acudiente_parentesco']) ? trim($_POST['acudiente_parentesco']) : null,
-                'firma_base64'         => !empty($_POST['firma_base64']) ? $_POST['firma_base64'] : null
+                'firma_base64'         => !empty($_POST['firma_base64']) ?$_POST['firma_base64'] : null,
             ];
 
-            // Guarda el registro en la base de datos a través del modelo
             $this->historiaModel->create($data);
 
-            header('Location: ' . BASE_URL . '/paciente/historia/' . $id);
+            header('Location: ' . BASE_URL . '/historias/ver/' . $id);
             exit;
         }
     }

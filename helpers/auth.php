@@ -18,13 +18,36 @@ function checkAuth() {
  */
 function requireRole(array $rolesPermitidos) {
     checkAuth();
-
-    // Obtener el rol actual o null si no está definido
     $rolActual = $_SESSION['usuario_rol'] ?? null;
 
     if (!$rolActual || !in_array($rolActual, $rolesPermitidos)) {
-        http_response_code(403);
-        echo "<h1 style='text-align:center; margin-top:50px; font-family:sans-serif;'>403 - Acceso No Autorizado</h1>";
+        header('Location: ' . BASE_URL . '/login');
+        exit;
+    }
+}
+
+/**
+ * Verifica si el usuario tiene permiso para un módulo específico.
+ */
+function hasPermission(string $modulo): bool {
+    // Los administradores siempre tienen acceso total
+    if (($_SESSION['usuario_rol'] ?? '') === 'admin') {
+        return true;
+    }
+
+    $permisos = $_SESSION['usuario_permisos'] ?? [];
+    return in_array($modulo, $permisos);
+}
+
+/**
+ * Valida el permiso para acceder al módulo. Redirige al Dashboard si no tiene acceso.
+ */
+function requirePermission(string $modulo) {
+    checkAuth();
+
+    if (!hasPermission($modulo)) {
+        $_SESSION['error_acceso'] = "No tienes permisos para acceder al módulo de " . ucfirst($modulo) . ".";
+        header('Location: ' . BASE_URL . '/dashboard');
         exit;
     }
 }

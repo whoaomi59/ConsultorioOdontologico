@@ -18,8 +18,9 @@ class AuthController {
     }
 
     public function showLogin() {
+        // Si YA inició sesión, lo enviamos al panel principal (no al login de nuevo)
         if (isset($_SESSION['usuario_id'])) {
-            header('Location: ' . BASE_URL . '/historias/odontologia');
+            header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
         require_once ROOT_PATH . '/views/auth/login.php';
@@ -38,7 +39,18 @@ class AuthController {
                 $_SESSION['usuario_email']  = $user['email'];
                 $_SESSION['usuario_rol']    = $user['rol'];
 
-                header('Location: ' . BASE_URL . '/historias/odontologia');
+                // === CARGAR PERMISOS DEL USUARIO ===
+                // Si es 'admin', le otorgamos acceso total por defecto
+                if ($user['rol'] === 'admin') {
+                    $_SESSION['usuario_permisos'] = ['pacientes', 'citas', 'historias', 'usuarios', 'reportes'];
+                } else {
+                    $_SESSION['usuario_permisos'] = $this->usuarioModel->getPermisos($user['id']);
+                }
+
+                // Actualizar trazabilidad de último acceso
+                $this->usuarioModel->updateUltimoAcceso($user['id']);
+
+                header('Location: ' . BASE_URL . '/dashboard');
                 exit;
             } else {
                 $_SESSION['error'] = 'Credenciales incorrectas o usuario inactivo.';
@@ -48,7 +60,6 @@ class AuthController {
         }
     }
 
-    // Alias si el formulario de login envía a /login/autenticar
     public function autenticar() {
         $this->login();
     }

@@ -1,3 +1,4 @@
+
 <div class="space-y-6">
 
     <!-- Header y Acción Principal -->

@@ -3,7 +3,9 @@ class PacienteController {
     private $pacienteModel;
     private $historiaModel;
 
+
     public function __construct() {
+        requirePermission('pacientes');
         $this->pacienteModel = new Paciente();
         $this->historiaModel = new HistoriaClinica();
     }
@@ -16,6 +18,7 @@ class PacienteController {
     }
 
     public function crear() {
+        requirePermission('pacientes_crear');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fotoNombre = null;
 
@@ -84,6 +87,7 @@ class PacienteController {
     }
 
     public function perfil($id) {
+        requirePermission('pacientes_perfil');
         $paciente = $this->pacienteModel->getById($id);
         if (!$paciente) {
             header('Location: ' . BASE_URL . '/paciente/index');
@@ -96,6 +100,7 @@ class PacienteController {
     }
 
     public function editar($id) {
+        requirePermission('pacientes_editar');
         $paciente = $this->pacienteModel->getById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -131,6 +136,7 @@ class PacienteController {
     }
 
     public function eliminar($id) {
+        requirePermission('pacientes_eliminar');
         $this->pacienteModel->delete($id);
         header('Location: ' . BASE_URL . '/paciente/index');
         exit;
