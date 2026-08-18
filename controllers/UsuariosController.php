@@ -77,7 +77,25 @@ class UsuariosController {
 
     // ACTUALIZAR USUARIO Y PERMISOS
     public function actualizar($id) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {$fotoNombre = $this->uploadFoto($_FILES['foto'] ?? null);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Obtenemos los datos actuales del usuario para no perder la foto previa si no cambia
+            $usuarioActual = $this->usuarioModel->getById($id);
+
+            // ✅ PASAMOS TANTO $_FILES COMO $_POST['foto_base64']
+            $fotoNombre = $this->uploadFoto($_FILES['foto'] ?? null, $_POST['foto_base64'] ?? null);
+
+            // Si no subió una nueva foto ni tomó una de la cámara, conservamos la que ya tenía
+            if ($fotoNombre === null) {
+                $fotoNombre = $usuarioActual['foto'] ?? null;
+            } else {
+                // Opcional: Eliminar la foto anterior del disco para no dejar basura
+                if (!empty($usuarioActual['foto'])) {
+                    $fotoAntigua = rtrim(ROOT_PATH, '/\\') . '/public/uploads/usuarios/' . $usuarioActual['foto'];
+                    if (file_exists($fotoAntigua)) {
+                        @unlink($fotoAntigua);
+                    }
+                }
+            }
 
             $this->usuarioModel->update($id, [
                 'nombre'       => trim($_POST['nombre']),
@@ -89,7 +107,8 @@ class UsuariosController {
                 'firma_base64' => !empty($_POST['firma_base64']) ? $_POST['firma_base64'] : null
             ]);
 
-            $modulos = $_POST['modulos'] ?? [];$this->usuarioModel->syncPermisos($id,$modulos);
+            $modulos = $_POST['modulos'] ?? [];
+            $this->usuarioModel->syncPermisos($id, $modulos);
 
             header('Location: ' . BASE_URL . '/usuarios/index');
             exit;
