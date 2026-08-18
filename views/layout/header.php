@@ -49,8 +49,9 @@
                             </div>
                             <i id="historias-arrow" data-lucide="chevron-down" class="w-4 h-4 text-indigo-300 transition-transform duration-200"></i>
                         </button>
-                        <?php if (hasPermission('historia_odontologia')): ?>
-                            <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
+
+                        <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
+                            <?php if (hasPermission('historia_odontologia')): ?>
                                 <a href="<?= BASE_URL ?>/historias/odontologia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                                     <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
                                     <span>Odontología</span>
