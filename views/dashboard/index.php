@@ -131,13 +131,14 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
+        <!-- Citas Programadas para Hoy -->
         <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2">
                     <i data-lucide="clock" class="w-4 h-4 text-indigo-600"></i> Citas Programadas para Hoy
                 </h2>
-                <?php if (hasPermission('citas')): ?>
-                    <a href="<?= BASE_URL ?>/cita/index" class="text-xs font-semibold text-indigo-600 hover:underline">Ver todas</a>
+                <?php if (function_exists('hasPermission') && hasPermission('citas')): ?>
+                    <a href="<?= defined('BASE_URL') ? BASE_URL : '#' ?>/cita/index" class="text-xs font-semibold text-indigo-600 hover:underline">Ver todas</a>
                 <?php endif; ?>
             </div>
 
@@ -152,15 +153,29 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-xs">
-                        <?php if (!empty($citasHoy)): ?>
-                            <?php foreach ($citasHoy as$cita): ?>
+                        <?php if (!empty($citasHoy) && is_array($citasHoy)): ?>
+                            <?php foreach ($citasHoy as $cita): ?>
                                 <tr class="hover:bg-slate-50/60 transition">
-                                    <td class="p-3 font-semibold text-slate-800"><?= htmlspecialchars($cita['paciente_nombre'] ?? 'N/A') ?></td>
-                                    <td class="p-3 text-slate-600 font-medium"><?= htmlspecialchars($cita['hora'] ?? '10:00 AM') ?></td>
-                                    <td class="p-3 text-slate-600"><?= htmlspecialchars($cita['doctor_nombre'] ?? 'Dr. Asignado') ?></td>
+                                    <td class="p-3 font-semibold text-slate-800">
+                                        <?= htmlspecialchars($cita['paciente_nombre'] ?? $cita['paciente'] ?? 'N/A') ?>
+                                    </td>
+                                    <td class="p-3 text-slate-600 font-medium">
+                                        <?= htmlspecialchars(isset($cita['hora']) ? date('h:i A', strtotime($cita['hora'])) : '10:00 AM') ?>
+                                    </td>
+                                    <td class="p-3 text-slate-600">
+                                        <?= htmlspecialchars($cita['doctor_nombre'] ?? $cita['doctor'] ?? 'Dr. Asignado') ?>
+                                    </td>
                                     <td class="p-3">
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                                            Pendiente
+                                        <?php
+                                        $estado  = strtolower($cita['estado'] ?? 'pendiente');
+                                        $bgClass = match($estado) {
+                                            'atendida', 'completada' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                            'cancelada' => 'bg-rose-50 text-rose-700 border-rose-200',
+                                            default => 'bg-amber-50 text-amber-700 border-amber-200'
+                                        };
+                                        ?>
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border <?= $bgClass ?> capitalize">
+                                            <?= htmlspecialchars($estado) ?>
                                         </span>
                                     </td>
                                 </tr>
@@ -178,6 +193,7 @@
             </div>
         </div>
 
+        <!-- Avisos del Sistema -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
             <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
                 <i data-lucide="bell" class="w-4 h-4 text-amber-500"></i> Avisos del Sistema
@@ -195,7 +211,7 @@
                     <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
                         <i data-lucide="database" class="w-3.5 h-3.5"></i> Respaldo Automático
                     </span>
-                    <p class="text-[11px] text-emerald-700">Base de datos optimizada y sincroizada correctamente.</p>
+                    <p class="text-[11px] text-emerald-700">Base de datos optimizada y sincronizada correctamente.</p>
                 </div>
             </div>
         </div>

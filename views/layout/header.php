@@ -109,7 +109,9 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span>Sistema Activo</span>
+                        <span>
+                            <?= $_SESSION['usuario_nombre'] ?? 'Usuario' ?>
+                        </span>
                     </span>
 
                     <a href="<?= BASE_URL ?>/logout" class="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 font-medium hover:bg-rose-50 px-2.5 py-1.5 rounded-lg transition">
