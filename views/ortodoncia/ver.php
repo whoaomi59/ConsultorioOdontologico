@@ -29,7 +29,9 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
             <!--
             <p class="text-xs text-slate-500 mt-1 font-medium flex items-center gap-2">
                 <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Fady J. Guatibonza Jaimes — Reg. 30391241 — UNICOC
-            </p>-->
+            </p>--><button type="button" onclick="window.print()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+                <i data-lucide="printer" class="w-4 h-4"></i> Descargar / Imprimir PDF
+            </button>
         </div>
         <div class="text-right">
             <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
@@ -48,7 +50,7 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
             <input type="hidden" name="hoja_numero" value="<?= htmlspecialchars($documentoPaciente) ?>">
 
             <?php if ($esEdicion): ?>
-                <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs font-medium flex items-center justify-between">
+                <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs font-medium flex items-center justify-between print">
                     <span class="flex items-center gap-2">
                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                         Editando el diagnóstico principal del paciente.
@@ -90,9 +92,7 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         </div>
 
                     </div>
-                    <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
-                        <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / Guardar PDF
-                    </button>
+
                 </div>
 
                 <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/50">
@@ -1026,3 +1026,31 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 
 
             </script>
+            <style>
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    .space-y-6.bg-slate-50\/50,
+                    .space-y-6.bg-slate-50\/50 * {
+                        visibility: visible;
+                    }
+                    .space-y-6.bg-slate-50\/50 {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        background: white !important;
+                    }.print{
+                        display: none !important;
+                    }
+                    button,
+                    form#form-evolucion,
+                    a[href*="modo=editar"],
+                    .bg-white.p-5.rounded-2xl.shadow-xs.border.border-slate-200.h-fit.sticky {
+                        display: none !important;
+                    }
+                }
+            </style>

@@ -3,6 +3,9 @@ require_once ROOT_PATH . '/helpers/auth.php';
 require_once ROOT_PATH . '/models/Paciente.php';
 require_once ROOT_PATH . '/models/HistoriaOrtodoncia.php';
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class OrtodonciaController {
     private $pacienteModel;
     private $ortodonciaModel;
