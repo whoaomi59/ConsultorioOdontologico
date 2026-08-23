@@ -203,21 +203,27 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 ?>
                                 <div class="text-left pl-2">Normal</div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_sup" value="NORMAL" <?= $pls === 'NORMAL' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_sup" value="NORMAL" <?= $pls === 'NORMAL' ? 'checked' : '' ?>>
+                                </div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_inf" value="NORMAL" <?= $pli === 'NORMAL' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_inf" value="NORMAL" <?= $pli === 'NORMAL' ? 'checked' : '' ?>>
+                                </div>
 
                                 <div class="text-left pl-2">Protrusión</div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_sup" value="PROTRUSION" <?= $pls === 'PROTRUSION' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_sup" value="PROTRUSION" <?= $pls === 'PROTRUSION' ? 'checked' : '' ?>>
+                                </div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_inf" value="PROTRUSION" <?= $pli === 'PROTRUSION' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_inf" value="PROTRUSION" <?= $pli === 'PROTRUSION' ? 'checked' : '' ?>>
+                                </div>
 
                                 <div class="text-left pl-2">Retrusión</div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_sup" value="RETRUSION" <?= $pls === 'RETRUSION' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_sup" value="RETRUSION" <?= $pls === 'RETRUSION' ? 'checked' : '' ?>>
+                                </div>
                                 <div>
-                                    <input type="radio" name="posicion_labial_inf" value="RETRUSION" <?= $pli === 'RETRUSION' ? 'checked' : '' ?>></div>
+                                    <input type="radio" name="posicion_labial_inf" value="RETRUSION" <?= $pli === 'RETRUSION' ? 'checked' : '' ?>>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -314,11 +320,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $ral = $historia['ruidos_articulares_lado'] ?? ''; ?>
                                 <div class="flex gap-3 text-sm mt-1">
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="DERECHO" <?= $ral === 'DERECHO' ? 'checked' : '' ?>> Der</label>
+                                        <input type="radio" name="ruidos_articulares_lado" value="DERECHO" <?= $ral === 'DERECHO' ? 'checked' : '' ?>> Der
+                                    </label>
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="IZQUIERDO" <?= $ral === 'IZQUIERDO' ? 'checked' : '' ?>> Izq</label>
+                                        <input type="radio" name="ruidos_articulares_lado" value="IZQUIERDO" <?= $ral === 'IZQUIERDO' ? 'checked' : '' ?>> Izq
+                                    </label>
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="BILATERAL" <?= $ral === 'BILATERAL' ? 'checked' : '' ?>> Bilat</label>
+                                        <input type="radio" name="ruidos_articulares_lado" value="BILATERAL" <?= $ral === 'BILATERAL' ? 'checked' : '' ?>> Bilat
+                                    </label>
                                 </div>
                             </div>
                             <div>
@@ -326,11 +335,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $rl = $historia['ruidos_localizacion'] ?? ''; ?>
                                 <div class="flex gap-3 text-sm mt-1">
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="INICIAL" <?= $rl === 'INICIAL' ? 'checked' : '' ?>> Inicial</label>
+                                        <input type="radio" name="ruidos_localizacion" value="INICIAL" <?= $rl === 'INICIAL' ? 'checked' : '' ?>> Inicial
+                                    </label>
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="INTERMEDIO" <?= $rl === 'INTERMEDIO' ? 'checked' : '' ?>> Medio</label>
+                                        <input type="radio" name="ruidos_localizacion" value="INTERMEDIO" <?= $rl === 'INTERMEDIO' ? 'checked' : '' ?>> Medio
+                                    </label>
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="FINAL" <?= $rl === 'FINAL' ? 'checked' : '' ?>> Final</label>
+                                        <input type="radio" name="ruidos_localizacion" value="FINAL" <?= $rl === 'FINAL' ? 'checked' : '' ?>> Final
+                                    </label>
                                 </div>
                             </div>
 
@@ -351,11 +363,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $dal = $historia['dolor_articular_lado'] ?? ''; ?>
                                 <div class="flex gap-3 text-sm mt-1">
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="DERECHO" <?= $dal === 'DERECHO' ? 'checked' : '' ?>> Der</label>
+                                        <input type="radio" name="dolor_articular_lado" value="DERECHO" <?= $dal === 'DERECHO' ? 'checked' : '' ?>> Der
+                                    </label>
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="IZQUIERDO" <?= $dal === 'IZQUIERDO' ? 'checked' : '' ?>> Izq</label>
+                                        <input type="radio" name="dolor_articular_lado" value="IZQUIERDO" <?= $dal === 'IZQUIERDO' ? 'checked' : '' ?>> Izq
+                                    </label>
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="BILATERAL" <?= $dal === 'BILATERAL' ? 'checked' : '' ?>> Bilat</label>
+                                        <input type="radio" name="dolor_articular_lado" value="BILATERAL" <?= $dal === 'BILATERAL' ? 'checked' : '' ?>> Bilat
+                                    </label>
                                 </div>
                             </div>
                             <div>
@@ -363,11 +378,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $daf = $historia['dolor_articular_fase'] ?? ''; ?>
                                 <div class="space-y-1 text-sm mt-1">
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN REPOSO" <?= $daf === 'EN REPOSO' ? 'checked' : '' ?>> En Reposo</label>
+                                        <input type="radio" name="dolor_articular_fase" value="EN REPOSO" <?= $daf === 'EN REPOSO' ? 'checked' : '' ?>> En Reposo
+                                    </label>
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN APERTURA" <?= $daf === 'EN APERTURA' ? 'checked' : '' ?>> En Apertura</label>
+                                        <input type="radio" name="dolor_articular_fase" value="EN APERTURA" <?= $daf === 'EN APERTURA' ? 'checked' : '' ?>> En Apertura
+                                    </label>
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN MOVIMIENTO DE LATERALIDAD" <?= $daf === 'EN MOVIMIENTO DE LATERALIDAD' ? 'checked' : '' ?>> Mov. Lateralidad</label>
+                                        <input type="radio" name="dolor_articular_fase" value="EN MOVIMIENTO DE LATERALIDAD" <?= $daf === 'EN MOVIMIENTO DE LATERALIDAD' ? 'checked' : '' ?>> Mov. Lateralidad
+                                    </label>
                                 </div>
                             </div>
                             <div class="pt-3 border-t border-slate-200">
@@ -407,7 +425,8 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             </label>";
                                     }
                                     echo "
-                                        </div>
+                                        </div>";
+                                    echo "
                                         </div>";
                                 }
                                 ?>
@@ -434,11 +453,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $pe = $historia['perfil_esqueletico'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLI" <?= $pe === 'CLI' ? 'checked' : '' ?>> CLI</label>
+                                                    <input type="radio" name="perfil_esqueletico" value="CLI" <?= $pe === 'CLI' ? 'checked' : '' ?>> CLI
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLII" <?= $pe === 'CLII' ? 'checked' : '' ?>> CLII</label>
+                                                    <input type="radio" name="perfil_esqueletico" value="CLII" <?= $pe === 'CLII' ? 'checked' : '' ?>> CLII
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLIII" <?= $pe === 'CLIII' ? 'checked' : '' ?>> CLIII</label>
+                                                    <input type="radio" name="perfil_esqueletico" value="CLIII" <?= $pe === 'CLIII' ? 'checked' : '' ?>> CLIII
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -446,9 +468,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $pt = $historia['prognatismo_total'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="prognatismo_total" value="MAXILAR" <?= $pt === 'MAXILAR' ? 'checked' : '' ?>> Max</label>
+                                                    <input type="radio" name="prognatismo_total" value="MAXILAR" <?= $pt === 'MAXILAR' ? 'checked' : '' ?>> Max
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="prognatismo_total" value="MANDIBULAR" <?= $pt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand</label>
+                                                    <input type="radio" name="prognatismo_total" value="MANDIBULAR" <?= $pt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -456,9 +480,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $rt = $historia['retrognatismo_total'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="retrognatismo_total" value="MAXILAR" <?= $rt === 'MAXILAR' ? 'checked' : '' ?>> Max</label>
+                                                    <input type="radio" name="retrognatismo_total" value="MAXILAR" <?= $rt === 'MAXILAR' ? 'checked' : '' ?>> Max
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="retrognatismo_total" value="MANDIBULAR" <?= $rt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand</label>
+                                                    <input type="radio" name="retrognatismo_total" value="MANDIBULAR" <?= $rt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -466,9 +492,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $tc = $historia['tipo_crecimiento'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="tipo_crecimiento" value="VERTICAL" <?= $tc === 'VERTICAL' ? 'checked' : '' ?>> Vert</label>
+                                                    <input type="radio" name="tipo_crecimiento" value="VERTICAL" <?= $tc === 'VERTICAL' ? 'checked' : '' ?>> Vert
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="tipo_crecimiento" value="HORIZONTAL" <?= $tc === 'HORIZONTAL' ? 'checked' : '' ?>> Horiz</label>
+                                                    <input type="radio" name="tipo_crecimiento" value="HORIZONTAL" <?= $tc === 'HORIZONTAL' ? 'checked' : '' ?>> Horiz
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -482,9 +510,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $pa = $historia['protrusion_alveolar'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="protrusion_alveolar" value="SUPERIOR" <?= $pa === 'SUPERIOR' ? 'checked' : '' ?>> Sup</label>
+                                                    <input type="radio" name="protrusion_alveolar" value="SUPERIOR" <?= $pa === 'SUPERIOR' ? 'checked' : '' ?>> Sup
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="protrusion_alveolar" value="INFERIOR" <?= $pa === 'INFERIOR' ? 'checked' : '' ?>> Inf</label>
+                                                    <input type="radio" name="protrusion_alveolar" value="INFERIOR" <?= $pa === 'INFERIOR' ? 'checked' : '' ?>> Inf
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -492,9 +522,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $ra = $historia['retrusion_alveolar'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="retrusion_alveolar" value="SUPERIOR" <?= $ra === 'SUPERIOR' ? 'checked' : '' ?>> Sup</label>
+                                                    <input type="radio" name="retrusion_alveolar" value="SUPERIOR" <?= $ra === 'SUPERIOR' ? 'checked' : '' ?>> Sup
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="retrusion_alveolar" value="INFERIOR" <?= $ra === 'INFERIOR' ? 'checked' : '' ?>> Inf</label>
+                                                    <input type="radio" name="retrusion_alveolar" value="INFERIOR" <?= $ra === 'INFERIOR' ? 'checked' : '' ?>> Inf
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -502,9 +534,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $mac = $historia['macrognatismo'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="macrognatismo" value="MAXILAR" <?= $mac === 'MAXILAR' ? 'checked' : '' ?>> Max</label>
+                                                    <input type="radio" name="macrognatismo" value="MAXILAR" <?= $mac === 'MAXILAR' ? 'checked' : '' ?>> Max
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="macrognatismo" value="MANDIBULAR" <?= $mac === 'MANDIBULAR' ? 'checked' : '' ?>> Mand</label>
+                                                    <input type="radio" name="macrognatismo" value="MANDIBULAR" <?= $mac === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -512,9 +546,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $mic = $historia['micrognatismo'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="micrognatismo" value="MAXILAR" <?= $mic === 'MAXILAR' ? 'checked' : '' ?>> Max</label>
+                                                    <input type="radio" name="micrognatismo" value="MAXILAR" <?= $mic === 'MAXILAR' ? 'checked' : '' ?>> Max
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="micrognatismo" value="MANDIBULAR" <?= $mic === 'MANDIBULAR' ? 'checked' : '' ?>> Mand</label>
+                                                    <input type="radio" name="micrognatismo" value="MANDIBULAR" <?= $mic === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -528,11 +564,14 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $cpf = $historia['cefalometrico_perfil_facial'] ?? ''; ?>
                                             <div class="flex flex-col gap-1">
                                                 <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="RECTO" <?= $cpf === 'RECTO' ? 'checked' : '' ?>> Recto</label>
+                                                    <input type="radio" name="cefalometrico_perfil_facial" value="RECTO" <?= $cpf === 'RECTO' ? 'checked' : '' ?>> Recto
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONCAVO" <?= $cpf === 'CONCAVO' ? 'checked' : '' ?>> Cóncavo</label>
+                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONCAVO" <?= $cpf === 'CONCAVO' ? 'checked' : '' ?>> Cóncavo
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONVEXO" <?= $cpf === 'CONVEXO' ? 'checked' : '' ?>> Convexo</label>
+                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONVEXO" <?= $cpf === 'CONVEXO' ? 'checked' : '' ?>> Convexo
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -540,9 +579,11 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $pr = $historia['proquelia'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="proquelia" value="SUPERIOR" <?= $pr === 'SUPERIOR' ? 'checked' : '' ?>> Superior</label>
+                                                    <input type="radio" name="proquelia" value="SUPERIOR" <?= $pr === 'SUPERIOR' ? 'checked' : '' ?>> Superior
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="proquelia" value="INFERIOR" <?= $pr === 'INFERIOR' ? 'checked' : '' ?>> Inferior</label>
+                                                    <input type="radio" name="proquelia" value="INFERIOR" <?= $pr === 'INFERIOR' ? 'checked' : '' ?>> Inferior
+                                                </label>
                                             </div>
                                         </div>
                                         <div>
@@ -550,14 +591,51 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                             <?php $rq = $historia['retroquelia'] ?? ''; ?>
                                             <div class="flex gap-3">
                                                 <label>
-                                                    <input type="radio" name="retroquelia" value="SUPERIOR" <?= $rq === 'SUPERIOR' ? 'checked' : '' ?>> Superior</label>
+                                                    <input type="radio" name="retroquelia" value="SUPERIOR" <?= $rq === 'SUPERIOR' ? 'checked' : '' ?>> Superior
+                                                </label>
                                                 <label>
-                                                    <input type="radio" name="retroquelia" value="INFERIOR" <?= $rq === 'INFERIOR' ? 'checked' : '' ?>> Inferior</label>
+                                                    <input type="radio" name="retroquelia" value="INFERIOR" <?= $rq === 'INFERIOR' ? 'checked' : '' ?>> Inferior
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN DE FIRMAS DEL DOCTOR Y PACIENTE EN LA HISTORIA GUARDADA -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="text-center border-t border-slate-200 pt-4">
+                                <?php if (!empty($historia['doctor_firma_base64'])): ?>
+                                    <img src="<?= $historia['doctor_firma_base64'] ?>" class="h-16 mx-auto mb-2 object-contain">
+                                <?php else: ?>
+                                    <p class="text-xs text-slate-400 italic h-16 flex items-center justify-center">Sin firma registrada en el usuario del doctor</p>
+                                <?php endif; ?>
+                                <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($historia['doctor_nombre'] ?? 'Doctor Asignado') ?></p>
+                                <span class="text-[10px] text-slate-500 uppercase font-semibold">Firma del Profesional</span>
+                            </div>
+                            <!-- FIRMA DEL PACIENTE (REQUERIDA AL GUARDAR/EDITAR) -->
+
+                            <div class="text-center border-t border-slate-200 pt-4">
+                                <?php if (!empty($historia['firma_paciente_base64'])): ?>
+                                    <img src="<?= $historia['firma_paciente_base64'] ?>" class="h-16 mx-auto mb-2 object-contain">
+                                <?php else: ?>
+                                    <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-3">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">
+                                            Firma del Paciente <span class="text-rose-500">* (Requerida)</span>
+                                        </label>
+                                        <div class="relative bg-slate-50 border border-slate-300 rounded-xl overflow-hidden max-w-md w-full">
+                                            <canvas id="canvas-firma-paciente" class="w-full h-32 block touch-none cursor-crosshair"></canvas>
+                                            <button type="button" id="clear-firma-paciente" class="absolute top-2 right-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-2 py-1 rounded text-[10px] font-bold uppercase">
+                                                Limpiar
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="firma_paciente_base64" id="firma_paciente_base64">
+                                    </div>
+                                <?php endif; ?>
+                                <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></p>
+                                <span class="text-[10px] text-slate-500 uppercase font-semibold">Firma del Paciente / Acudiente</span>
                             </div>
                         </div>
 
@@ -582,7 +660,6 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             </div>
                         </div>
 
-                        <!-- Botón para alternar modo edición -->
                         <div class="flex items-center gap-3">
                             <a href="?modo=editar" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i> Editar Diagnóstico
@@ -652,6 +729,9 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         </div>
 
                     </div>
+
+
+
                 <?php endif; ?>
 
             </div>
@@ -662,6 +742,7 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                 document.addEventListener("DOMContentLoaded", () => {
                     lucide.createIcons();
 
+                    // Canvas para evoluciones
                     const canvasEvo = document.getElementById('canvas-evo');
                     if (canvasEvo) {
                         canvasEvo.width = canvasEvo.parentElement.clientWidth;
@@ -669,7 +750,33 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         const padEvo = new SignaturePad(canvasEvo, { backgroundColor: 'rgb(255, 255, 255)' });
                         document.getElementById('clear-evo').addEventListener('click', () => padEvo.clear());
                         document.getElementById('form-evolucion').addEventListener('submit', (e) => {
-                            if (!padEvo.isEmpty()) document.getElementById('firma_evo_base64').value = padEvo.toDataURL('image/png');
+                            if (!padEvo.isEmpty()) {
+                                document.getElementById('firma_evo_base64').value = padEvo.toDataURL('image/png');
+                            }
+                        });
+                    }
+                    // Canvas para diagnóstico base (Creación / Edición)
+                    const canvasDiag = document.getElementById('canvas-firma-paciente');
+                    if (canvasDiag) {
+                        // Asegurar un ancho mínimo si el contenedor está oculto o re dimensionándose
+                        canvasDiag.width = canvasDiag.parentElement.clientWidth || 400;
+                        canvasDiag.height = 128;
+
+                        const padDiag = new SignaturePad(canvasDiag, { backgroundColor: 'rgb(255, 255, 255)' });
+
+                        document.getElementById('clear-firma-paciente').addEventListener('click', () => {
+                            padDiag.clear();
+                            document.getElementById('firma_paciente_base64').value = '';
+                        });
+
+                        document.getElementById('form-diagnostico').addEventListener('submit', (e) => {
+                            if (padDiag.isEmpty()) {
+                                e.preventDefault();
+                                alert('El paciente debe firmar antes de guardar la historia clínica.');
+                                return false;
+                            }
+                            // Asignar los datos en base64 justo antes de enviar el formulario
+                            document.getElementById('firma_paciente_base64').value = padDiag.toDataURL('image/png');
                         });
                     }
                 });

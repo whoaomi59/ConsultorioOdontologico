@@ -12,7 +12,7 @@ class HistoriaOrtodoncia {
     }
 
     public function getByPacienteId($paciente_id) {
-        $sql = "SELECT h.*, u.nombre AS doctor_nombre
+        $sql = "SELECT h.*, u.nombre AS doctor_nombre, u.firma_base64 AS doctor_firma_base64
             FROM historias_ortodoncia h
             LEFT JOIN usuarios u ON h.usuario_id = u.id
             WHERE h.paciente_id = ? LIMIT 1";
@@ -77,3 +77,4 @@ class HistoriaOrtodoncia {
         ]);
     }
 }
+?>
