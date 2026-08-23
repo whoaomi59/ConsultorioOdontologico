@@ -6,6 +6,7 @@
         <title>Sistema Clínico Odontológico</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="./public/css/style.css">
     </head>
     <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex">
 
@@ -49,8 +50,9 @@
                             </div>
                             <i id="historias-arrow" data-lucide="chevron-down" class="w-4 h-4 text-indigo-300 transition-transform duration-200"></i>
                         </button>
-                        <?php if (hasPermission('historia_odontologia')): ?>
-                            <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
+
+                        <div id="historias-dropdown" class="hidden pl-11 pr-2 py-1 space-y-1">
+                            <?php if (hasPermission('historia_odontologia')): ?>
                                 <a href="<?= BASE_URL ?>/historias/odontologia" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                                     <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
                                     <span>Odontología</span>
@@ -108,7 +110,9 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span>Sistema Activo</span>
+                        <span>
+                            <?= $_SESSION['usuario_nombre'] ?? 'Usuario' ?>
+                        </span>
                     </span>
 
                     <a href="<?= BASE_URL ?>/logout" class="flex items-center space-x-1.5 text-xs text-rose-600 hover:text-rose-700 font-medium hover:bg-rose-50 px-2.5 py-1.5 rounded-lg transition">

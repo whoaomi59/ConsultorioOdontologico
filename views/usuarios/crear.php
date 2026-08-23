@@ -27,10 +27,20 @@ $seccionesPermisos = [
             'historia' => 'Historias Clínicas',
             'historia_ver' => 'historia_ver',
             'historia_odontologia' => 'historia_odontologia',
-            'historia_ortodoncia' => 'historia_ortodoncia',
+            'historia_ortodoncia' => 'historia_ortodoncia'
+        ]
+    ],
+    'Citas' => [
+        'icon' => 'folder-heart',
+        'modulos' => [
+            'citas' => 'Citas',
+            'citas_ver' => 'citas_ver',
+            'citas_editar' => 'citas_editar',
+            'citas_eliminar' => 'citas_eliminar',
         ]
     ]
 ];
+
 ?>
 
 
