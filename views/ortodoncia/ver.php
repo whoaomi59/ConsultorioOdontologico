@@ -930,7 +930,7 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 
                                 <!-- Nuevo: Valor de la Evolución en Pesos Colombianos -->
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Valor de la Evolución (COP) <span class="text-rose-500">*</span>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Valor Consulta <span class="text-rose-500">*</span>
                                     </label>
                                     <div class="relative">
                                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-slate-500">$</span>
@@ -1046,6 +1046,10 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         document.getElementById('form-evolucion').addEventListener('submit', (e) => {
                             if (!padEvo.isEmpty()) {
                                 document.getElementById('firma_evo_base64').value = padEvo.toDataURL('image/png');
+                            }else{
+                                e.preventDefault();
+                                alert('El paciente debe firmar antes de guardar la historia clínica.');
+                                return false;
                             }
                         });
                     }

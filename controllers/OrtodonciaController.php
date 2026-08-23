@@ -18,6 +18,20 @@ class OrtodonciaController {
         $this->ortodonciaModel  = new HistoriaOrtodoncia($this->db);
         $this->consultorioModel = new Consultorio($this->db);
     }
+    // Buscador / Lista de pacientes
+    public function ortodoncia() {
+        $busqueda = isset($_GET['q']) ? trim($_GET['q']) : '';
+
+        if (!empty($busqueda)) {
+            $pacientes = $this->pacienteModel->buscar($busqueda);
+        } else {
+            $pacientes = $this->pacienteModel->getAll();
+        }
+
+        require_once ROOT_PATH . '/views/layout/header.php';
+        require_once ROOT_PATH . '/views/ortodoncia/ortodoncia_buscar.php';
+        require_once ROOT_PATH . '/views/layout/footer.php';
+    }
 
     public function ver($pacienteId) {
         requirePermission('historia_ortodoncia');
