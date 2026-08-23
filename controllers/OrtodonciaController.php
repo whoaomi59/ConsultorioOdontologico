@@ -72,12 +72,38 @@ class OrtodonciaController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $historiaId = $_POST['historia_id'] ?? null;
             if ($historiaId) {
+                $rutaPdf = null;
+
+                // Procesar subida de PDF de Radiografía
+                if (isset($_FILES['radiografia_pdf']) && $_FILES['radiografia_pdf']['error'] === UPLOAD_ERR_OK) {
+                    $fileTmpPath   = $_FILES['radiografia_pdf']['tmp_name'];
+                    $fileName      = $_FILES['radiografia_pdf']['name'];
+                    $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                    if ($fileExtension === 'pdf') {
+                        $uploadDir = ROOT_PATH . '/public/uploads/radiografias/';
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+
+                        $newFileName = 'radio_' . $historiaId . '_' . time() . '.pdf';
+                        $dest_path   = $uploadDir . $newFileName;
+
+                        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                            $rutaPdf = 'public/uploads/radiografias/' . $newFileName;
+                        }
+                    }
+                }
+
                 $data = [
                     'historia_id'           => $historiaId,
                     'usuario_id'            => $_SESSION['usuario_id'] ?? null,
                     'descripcion_evolucion' => htmlspecialchars($_POST['descripcion_evolucion'] ?? ''),
+                    'valor_evolucion'       => isset($_POST['valor_evolucion']) ? (float)$_POST['valor_evolucion'] : 0.00,
+                    'radiografia_pdf'       => $rutaPdf,
                     'firma_paciente_base64' => !empty($_POST['firma_paciente_base64']) ? $_POST['firma_paciente_base64'] : null
                 ];
+
                 $this->ortodonciaModel->createEvolucion($data);
             }
             header('Location: ' . BASE_URL . '/ortodoncia/ver/' . $pacienteId);

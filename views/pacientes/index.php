@@ -119,7 +119,7 @@
                                     </a>
                                     <!-- Ver Historia ortodoncia -->
                                     <a href="<?= BASE_URL ?>/ortodoncia/ver/<?= $p['id'] ?>" class="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-white rounded-lg transition" title="Historia Ortodoncia">
-                                        <i data-lucide="notepad-text" class="w-4 h-4"></i>
+                                        <i data-lucide="face-slightly-smiling" class="w-4 h-4"></i>
                                     </a>
 
                                     <!-- Ver Historia Odontológica -->

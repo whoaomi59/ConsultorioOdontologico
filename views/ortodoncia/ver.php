@@ -17,39 +17,46 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 ?>
 
 <div class="space-y-6 bg-slate-50/50 p-2 md:p-4 rounded-2xl">
-
     <!-- Encabezado Institucional -->
-    <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+        <!-- Barra lateral decorativa -->
         <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-600"></div>
 
-        <div class="flex items-center gap-4">
+        <!-- Bloque Izquierdo: Logo y Datos Institucionales -->
+        <div class="flex items-center gap-5 pl-2 w-full md:w-auto">
             <?php if (!empty($consultorio['Logo'])): ?>
-                <img src="<?= BASE_URL ?>/<?= htmlspecialchars($consultorio['Logo']) ?>" alt="Logo Consultorio" class="h-14 w-auto object-contain">
+                <div class="w-16 h-16 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center justify-center p-2 shadow-xs shrink-0">
+                    <img src="<?= BASE_URL ?>/<?= htmlspecialchars($consultorio['Logo']) ?>" alt="Logo Consultorio" class="max-h-full max-w-full object-contain">
+                </div>
             <?php endif; ?>
-            <div>
-                <a href="<?= BASE_URL ?>/paciente/index" class="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800 mb-1 gap-1 transition">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>Volver al Directorio
+
+            <div class="space-y-1">
+                <a href="<?= BASE_URL ?>/paciente/index" class="inline-flex items-center text-xs font-bold text-indigo-600 hover:text-indigo-800 gap-1.5 transition-colors print">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Directorio
                 </a>
                 <h1 class="text-xl md:text-2xl font-black text-slate-800 uppercase tracking-tight">
                     <?= htmlspecialchars($consultorio['Nombre'] ?? 'Historia de Ortodoncia Correctiva') ?>
                 </h1>
-                <p class="text-xs text-slate-500 mt-0.5 font-medium flex items-center gap-1.5">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-indigo-500"></i> <?= htmlspecialchars($consultorio['direccion'] ?? 'Dirección no registrada') ?>
-                </p>
+                <?php if (!empty($consultorio['direccion'])): ?>
+                    <p class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> <?= htmlspecialchars($consultorio['direccion']) ?>
+                    </p>
+                <?php endif; ?>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-            <div class="text-left md:text-right">
-                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
-                <span class="block text-lg font-bold text-indigo-700"><?= htmlspecialchars($historia['hoja_numero'] ?? $paciente['documento']) ?></span>
+        <!-- Bloque Derecho: Número de Hoja y Botón de Impresión -->
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
+            <div class="bg-slate-50/80 px-4 py-2 rounded-xl border border-slate-200/60 text-left md:text-right">
+                <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
+                <span class="block text-base font-black text-indigo-700"><?= htmlspecialchars($historia['hoja_numero'] ?? $paciente['documento']) ?></span>
             </div>
-            <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+
+            <button type="button" onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-5 py-3 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer shrink-0">
                 <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / PDF
             </button>
         </div>
     </div>
-
     <?php if (!$historia || $esEdicion): ?>
         <!-- FORMULARIO DE HISTORIA BASE (CREACIÓN / EDICIÓN) -->
         <form action="<?= BASE_URL ?>/ortodoncia/<?= $esEdicion ? 'editarDiagnostico/' . $paciente['id'] : 'guardarDiagnostico/' . $paciente['id'] ?>" method="POST" id="form-diagnostico" class="space-y-6">
@@ -912,25 +919,43 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             <h3 class="text-sm font-bold text-slate-800 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
                                 <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i> Registrar Control
                             </h3>
-                            <form action="<?= BASE_URL ?>/ortodoncia/guardarEvolucion/<?= $paciente['id'] ?>" method="POST" id="form-evolucion" class="space-y-4">
+                            <form action="<?= BASE_URL ?>/ortodoncia/guardarEvolucion/<?= $paciente['id'] ?>" method="POST" enctype="multipart/form-data" id="form-evolucion" class="space-y-4">
                                 <input type="hidden" name="historia_id" value="<?= $historia['id'] ?>">
 
                                 <div>
                                     <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Procedimiento Realizado <span class="text-rose-500">*</span>
                                     </label>
-                                    <textarea name="descripcion_evolucion" required rows="5" placeholder="Describa el progreso, cambios de arco, elásticos..." class="w-full border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                                    <textarea name="descripcion_evolucion" required rows="4" placeholder="Describa el progreso, cambios de arco, elásticos..." class="w-full border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                                </div>
+
+                                <!-- Nuevo: Valor de la Evolución en Pesos Colombianos -->
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Valor de la Evolución (COP) <span class="text-rose-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-slate-500">$</span>
+                                        <input type="text" id="input_valor_mostrar" placeholder="0" required class="w-full pl-7 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 bg-slate-50 focus:ring-2 focus:ring-indigo-500">
+                                        <input type="hidden" name="valor_evolucion" id="valor_evolucion_real">
+                                    </div>
+                                </div>
+
+                                <!-- Nuevo: Carga de Radiografía en PDF -->
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Radiografía / Examen (PDF)</label>
+                                    <input type="file" name="radiografia_pdf" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer border border-slate-200 rounded-xl bg-slate-50">
+                                    <p class="text-[10px] text-slate-400 mt-1">Formato permitido: Solo archivos PDF (Máx. recomendado 10MB).</p>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label class="block text-xs font-bold text-slate-600 uppercase">Firma del Paciente</label>
                                     <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
-                                        <canvas id="canvas-evo" class="w-full h-28 touch-none cursor-crosshair"></canvas>
+                                        <canvas id="canvas-evo" class="w-full h-28 touch-none cursor-crosshair" required></canvas>
                                         <button type="button" id="clear-evo" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition">Limpiar</button>
                                     </div>
-                                    <input type="hidden" name="firma_paciente_base64" id="firma_evo_base64">
+                                    <input type="hidden" name="firma_paciente_base64" id="firma_evo_base64" required>
                                 </div>
 
-                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition flex justify-center items-center gap-2">
+                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition flex justify-center items-center gap-2 cursor-pointer">
                                     <i data-lucide="plus" class="w-4 h-4"></i> Guardar Control
                                 </button>
                             </form>
@@ -944,14 +969,29 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             <?php if (!empty($evoluciones)): ?>
                                 <div class="space-y-3">
                                     <?php foreach ($evoluciones as $evo): ?>
-                                        <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
-                                            <div class="flex justify-between items-center text-xs border-b border-slate-200 pb-1.5">
+                                        <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-3">
+                                            <div class="flex justify-between items-center text-xs border-b border-slate-200 pb-2">
                                                 <span class="font-bold text-indigo-600 flex items-center gap-1">
                                                     <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
                                                     <?= date('d/m/Y - h:i A', strtotime($evo['fecha_consulta'])) ?>
                                                 </span>
+                                                <!-- Badge de Precio en COP -->
+                                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-lg font-extrabold">
+                                                    $ <?= number_format($evo['valor_evolucion'] ?? 0, 0, ',', '.') ?> COP
+                                                </span>
                                             </div>
+
                                             <p class="text-xs text-slate-700 whitespace-pre-line"><?= htmlspecialchars($evo['descripcion_evolucion']) ?></p>
+
+                                            <!-- Botón de Radiografía PDF si existe -->
+                                            <?php if (!empty($evo['radiografia_pdf'])): ?>
+                                                <div>
+                                                    <a href="<?= BASE_URL ?>/<?= htmlspecialchars($evo['radiografia_pdf']) ?>" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl transition">
+                                                        <i data-lucide="file-text" class="w-4 h-4"></i> Ver Radiografía (PDF)
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
+
                                             <?php if (!empty($evo['firma_paciente_base64'])): ?>
                                                 <div class="pt-1 flex items-center gap-2">
                                                     <span class="text-[10px] text-slate-400 font-semibold">Firma Paciente:</span>
@@ -1036,6 +1076,22 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                 });
 
 
+            </script>
+            <script>
+                const inputMostrar = document.getElementById('input_valor_mostrar');
+                const inputReal    = document.getElementById('valor_evolucion_real');
+
+                if (inputMostrar) {
+                    inputMostrar.addEventListener('input', (e) => {
+                        let val = e.target.value.replace(/\D/g, '');
+                        inputReal.value = val;
+                        if (val !== '') {
+                            e.target.value = Number(val).toLocaleString('es-CO');
+                        } else {
+                            e.target.value = '';
+                        }
+                    });
+                }
             </script>
             <style>
                 @media print {

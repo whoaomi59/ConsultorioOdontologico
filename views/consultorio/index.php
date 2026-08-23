@@ -33,7 +33,7 @@
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
                 <i data-lucide="stethoscope" class="w-4 h-4 text-indigo-600"></i> Nombre del Consultorio / Doctor
             </label>
-            <input type="text" name="nombre" value="<?= htmlspecialchars($consultorio['Nombre'] ?? '') ?>" required maxlength="40"
+            <input type="text" name="nombre" value="<?= htmlspecialchars($consultorio['Nombre'] ?? '') ?>" required maxlength="60"
             placeholder="Ej. Clínica Odontológica Sonrisas"
             class="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all">
         </div>
@@ -43,7 +43,7 @@
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
                 <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i> Dirección Física
             </label>
-            <input type="text" name="direccion" value="<?= htmlspecialchars($consultorio['direccion'] ?? '') ?>" required maxlength="40"
+            <input type="text" name="direccion" value="<?= htmlspecialchars($consultorio['direccion'] ?? '') ?>" required maxlength="60"
             placeholder="Ej. Calle Principal # 45 - 12"
             class="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all">
         </div>
