@@ -94,6 +94,7 @@ class OrtodonciaController {
         // Eliminar las variables temporales enviadas por la vista que no existen como columnas DB
         unset($data['periodonto_dientes'], $data['retenidos_dientes'], $data['supernumerarios_dientes'], $data['longitud_dientes']);
 
+        // Añadir en el array $checkboxes dentro de prepararDatosDiagnostico():
         $checkboxes = [
             'frenillo_sobreinsertado_sup', 'frenillo_sobreinsertado_inf',
             'frenillo_sobreinsertado_lat', 'frenillo_sobreinsertado_lin', 'habito_onicofagia',
@@ -101,7 +102,10 @@ class OrtodonciaController {
             'habito_alternacion_foniatricas', 'deglucion_empuje_lingual_simple', 'deglucion_empuje_lingual_complejo',
             'deglucion_infantil', 'bruxismo_diurno', 'bruxismo_nocturno', 'ruido_cliking', 'ruido_crepitacion',
             'dolor_muscular_presente', 'periodonto_disminuido', 'dientes_retenidos_impactados',
-            'dientes_supernumerarios', 'longitud_radicular_disminuida'
+            'dientes_supernumerarios', 'longitud_radicular_disminuida',
+            // Nuevos campos de mordidas cruzadas/abiertas
+            'mordida_cruzada_posterior_der', 'mordida_cruzada_posterior_izq',
+            'mordida_cruzada_anterior', 'mordida_abierta_anterior', 'mordida_abierta_posterior'
         ];
 
         foreach ($checkboxes as $cb) {

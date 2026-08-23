@@ -26,9 +26,10 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>Volver al Directorio
             </a>
             <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight">Historia de Ortodoncia Correctiva</h1>
+            <!--
             <p class="text-xs text-slate-500 mt-1 font-medium flex items-center gap-2">
                 <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Fady J. Guatibonza Jaimes — Reg. 30391241 — UNICOC
-            </p>
+            </p>-->
         </div>
         <div class="text-right">
             <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
@@ -75,16 +76,23 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                     </div>
                     <div>
                         <label class="font-semibold block text-slate-600 text-xs uppercase tracking-wide mb-1">Fecha Apertura</label>
-                        <input type="date" name="fecha_apertura" value="<?= htmlspecialchars($historia['fecha_apertura'] ?? date('Y-m-d')) ?>" class="w-full border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                        <input type="date" name="fecha_apertura" value="<?= htmlspecialchars($historia['fecha_apertura'] ?? date('Y-m-d')) ?>" class="w-full border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500" disabled>
                     </div>
                     <div class="md:col-span-2">
                         <label class="font-semibold block text-slate-600 text-xs uppercase tracking-wide mb-1">Remitido Por</label>
-                        <input type="text" name="remitido_por" value="<?= htmlspecialchars($historia['remitido_por'] ?? '') ?>" placeholder="Nombre del profesional..." class="w-full border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                        <input type="text" name="remitido_por" value="<?= htmlspecialchars($historia['remitido_por'] ?? '') ?>" placeholder="Nombre del profesional..." class="w-full border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div class="md:col-span-2">
                         <label class="font-semibold block text-slate-600 text-xs uppercase tracking-wide mb-1">Motivo de Consulta</label>
-                        <input type="text" name="motivo_consulta" value="<?= htmlspecialchars($historia['motivo_consulta'] ?? '') ?>" required placeholder="Describe el motivo principal..." class="w-full border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                        <div class="md:col-span-2">
+
+                            <textarea name="motivo_consulta" required rows="3" placeholder="Describe el motivo principal..." class="w-full  border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500"><?= htmlspecialchars($historia['motivo_consulta'] ?? '') ?></textarea>
+                        </div>
+
                     </div>
+                    <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+                        <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / Guardar PDF
+                    </button>
                 </div>
 
                 <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/50">
@@ -603,6 +611,225 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 
                             </div>
                         </div>
+                        <!-- 5. ANÁLISIS DE MODELOS DE ESTUDIO -->
+                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                            <h3 class="text-sm font-bold text-indigo-700 uppercase flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+                                <i data-lucide="box" class="w-4 h-4"></i> 5. Análisis de Modelos de Estudio
+                            </h3>
+
+                            <div class="space-y-6 text-sm">
+                                <!-- Dentición -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                    <span class="block font-bold text-slate-800 text-xs uppercase mb-2">Dentición</span>
+                                    <div class="flex flex-wrap gap-6">
+                                        <?php $dent = $historia['analisis_denticion'] ?? ''; ?>
+                                        <label class="flex items-center gap-2">
+                                            <input type="radio" name="analisis_denticion" value="TEMPORAL" <?= $dent === 'TEMPORAL' ? 'checked' : '' ?>> Temporal
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="radio" name="analisis_denticion" value="MIXTA" <?= $dent === 'MIXTA' ? 'checked' : '' ?>> Mixta
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="radio" name="analisis_denticion" value="PERMANENTE" <?= $dent === 'PERMANENTE' ? 'checked' : '' ?>> Permanente
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- 5.1 Clasificación Canina y Molar -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                    <span class="block font-bold text-slate-800 text-xs uppercase mb-3">5.1. Clasificación Canina y Molar</span>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <span class="block font-xs font-semibold text-slate-500 uppercase mb-1">Relación Derecha</span>
+                                            <div class="flex gap-4">
+                                                <input type="text" name="analisis_relacion_derecha_canina" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full border-slate-200 rounded text-xs p-2">
+                                                <input type="text" name="analisis_relacion_derecha_molar" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full border-slate-200 rounded text-xs p-2">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span class="block font-xs font-semibold text-slate-500 uppercase mb-1">Relación Izquierda</span>
+                                            <div class="flex gap-4">
+                                                <input type="text" name="analisis_relacion_izquierda_canina" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full border-slate-200 rounded text-xs p-2">
+                                                <input type="text" name="analisis_relacion_izquierda_molar" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full border-slate-200 rounded text-xs p-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5.2 Análisis Transversal -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                    <span class="block font-bold text-slate-800 text-xs uppercase mb-3">5.2. Análisis Transversal</span>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">Parámetros Mayoral</label>
+                                            <input type="text" name="analisis_transversal_mayoral" value="<?= htmlspecialchars($historia['analisis_transversal_mayoral'] ?? '') ?>" placeholder="Ej: 35 mm" class="w-full border-slate-200 rounded text-xs p-2">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">Bogue</label>
+                                            <input type="text" name="analisis_transversal_bogue" value="<?= htmlspecialchars($historia['analisis_transversal_bogue'] ?? '') ?>" placeholder="Ej: Normal / Macrog." class="w-full border-slate-200 rounded text-xs p-2">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">Paciente</label>
+                                            <input type="text" name="analisis_transversal_paciente" value="<?= htmlspecialchars($historia['analisis_transversal_paciente'] ?? '') ?>" placeholder="Medida real" class="w-full border-slate-200 rounded text-xs p-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5.3 & 5.4 Sobremordidas -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <span class="block font-bold text-slate-800 text-xs uppercase mb-2">5.3. Sobremordida Horizontal (Overjet)</span>
+                                        <?php $oj = $historia['sobremordida_horizontal'] ?? ''; ?>
+                                        <div class="flex flex-wrap gap-4">
+                                            <label>
+                                                <input type="radio" name="sobremordida_horizontal" value="NORMAL" <?= $oj === 'NORMAL' ? 'checked' : '' ?>> Normal
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sobremordida_horizontal" value="AUMENTADA" <?= $oj === 'AUMENTADA' ? 'checked' : '' ?>> Aumentada
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sobremordida_horizontal" value="INVERTIDA" <?= $oj === 'INVERTIDA' ? 'checked' : '' ?>> Invertida
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sobremordida_horizontal" value="BORDE A BORDE" <?= $oj === 'BORDE A BORDE' ? 'checked' : '' ?>> Borde a Borde
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <span class="block font-bold text-slate-800 text-xs uppercase mb-2">5.4. Sobremordida Vertical (Overbite)</span>
+                                        <?php $ob = $historia['sobremordida_vertical'] ?? ''; ?>
+                                        <div class="flex flex-wrap gap-4">
+                                            <label>
+                                                <input type="radio" name="sobremordida_vertical" value="NORMAL" <?= $ob === 'NORMAL' ? 'checked' : '' ?>> Normal
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sobremordida_vertical" value="PROFUNDA" <?= $ob === 'PROFUNDA' ? 'checked' : '' ?>> Profunda
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="sobremordida_vertical" value="ABIERTA" <?= $ob === 'ABIERTA' ? 'checked' : '' ?>> Abierta
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5.5 Línea Media & 5.6 Morfología -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                                        <span class="block font-bold text-slate-800 text-xs uppercase">5.5. Línea Media</span>
+                                        <div class="space-y-3 text-xs">
+                                            <!-- Superior -->
+                                            <div class="space-y-1.5">
+                                                <span class="block text-[11px] font-semibold text-slate-500 uppercase">Superior</span>
+                                                <div class="flex flex-wrap items-center gap-4">
+                                                    <?php
+                                                    $lms             = $historia['linea_media_superior'] ?? '';
+                                                    $lms_mm          = $historia['linea_media_superior_mm'] ?? '';
+                                                    $es_desviada_sup = ($lms === 'DESVIADA DERECHA' || $lms === 'DESVIADA IZQUIERDA');
+                                                    ?>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_superior" value="CENTRADA" <?= ($lms === 'CENTRADA' || $lms === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('superior', false)"> Centrada
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_superior" value="DESVIADA DERECHA" <?= $lms === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)"> Desviada Der.
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_superior" value="DESVIADA IZQUIERDA" <?= $lms === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)"> Desviada Izq.
+                                                    </label>
+                                                    <div id="div_mm_superior" class="flex items-center gap-1 <?= $es_desviada_sup ? '' : 'hidden' ?>">
+                                                        <input type="text" name="linea_media_superior_mm" value="<?= htmlspecialchars($lms_mm) ?>" placeholder="Ej: 2 mm" class="w-20 border-slate-200 rounded text-xs p-1.5">
+                                                        <span class="text-[10px] text-slate-500">mm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Inferior -->
+                                            <div class="space-y-1.5 pt-2 border-t border-slate-200">
+                                                <span class="block text-[11px] font-semibold text-slate-500 uppercase">Inferior</span>
+                                                <div class="flex flex-wrap items-center gap-4">
+                                                    <?php
+                                                    $lmi             = $historia['linea_media_inferior'] ?? '';
+                                                    $lmi_mm          = $historia['linea_media_inferior_mm'] ?? '';
+                                                    $es_desviada_inf = ($lmi === 'DESVIADA DERECHA' || $lmi === 'DESVIADA IZQUIERDA');
+                                                    ?>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_inferior" value="CENTRADA" <?= ($lmi === 'CENTRADA' || $lmi === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('inferior', false)"> Centrada
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_inferior" value="DESVIADA DERECHA" <?= $lmi === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)"> Desviada Der.
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="linea_media_inferior" value="DESVIADA IZQUIERDA" <?= $lmi === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)"> Desviada Izq.
+                                                    </label>
+                                                    <div id="div_mm_inferior" class="flex items-center gap-1 <?= $es_desviada_inf ? '' : 'hidden' ?>">
+                                                        <input type="text" name="linea_media_inferior_mm" value="<?= htmlspecialchars($lmi_mm) ?>" placeholder="Ej: 2 mm" class="w-20 border-slate-200 rounded text-xs p-1.5">
+                                                        <span class="text-[10px] text-slate-500">mm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 5.6 Morfología del Arco Dentario -->
+                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                                        <span class="block font-bold text-slate-800 text-xs uppercase">5.6. Morfología del Arco Dentario</span>
+                                        <div class="space-y-2 text-xs">
+                                            <div>
+                                                <span class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">Superior</span>
+                                                <div class="flex flex-wrap gap-3">
+                                                    <?php $mas = $historia['morfologia_arco_superior'] ?? ''; ?>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_superior" value="OVOIDE" <?= $mas === 'OVOIDE' ? 'checked' : '' ?>> Ovoide
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_superior" value="TRIANGULAR" <?= $mas === 'TRIANGULAR' ? 'checked' : '' ?>> Triangular
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_superior" value="CUADRADA" <?= $mas === 'CUADRADA' ? 'checked' : '' ?>> Cuadrada
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">Inferior</span>
+                                                <div class="flex flex-wrap gap-3">
+                                                    <?php $mai = $historia['morfologia_arco_inferior'] ?? ''; ?>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_inferior" value="OVOIDE" <?= $mai === 'OVOIDE' ? 'checked' : '' ?>> Ovoide
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_inferior" value="TRIANGULAR" <?= $mai === 'TRIANGULAR' ? 'checked' : '' ?>> Triangular
+                                                    </label>
+                                                    <label class="flex items-center gap-1.5">
+                                                        <input type="radio" name="morfologia_arco_inferior" value="CUADRADA" <?= $mai === 'CUADRADA' ? 'checked' : '' ?>> Cuadrada
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5.7 Relaciones Interarco (Mordidas cruzadas y abiertas) -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                    <span class="block font-bold text-slate-800 text-xs uppercase mb-3">5.7. Relaciones Interarco</span>
+                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" name="mordida_cruzada_posterior_der" value="1" <?= !empty($historia['mordida_cruzada_posterior_der']) ? 'checked' : '' ?> class="rounded"> Cruzada Post. Der
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" name="mordida_cruzada_posterior_izq" value="1" <?= !empty($historia['mordida_cruzada_posterior_izq']) ? 'checked' : '' ?> class="rounded"> Cruzada Post. Izq
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" name="mordida_cruzada_anterior" value="1" <?= !empty($historia['mordida_cruzada_anterior']) ? 'checked' : '' ?> class="rounded"> Cruzada Anterior
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" name="mordida_abierta_anterior" value="1" <?= !empty($historia['mordida_abierta_anterior']) ? 'checked' : '' ?> class="rounded"> Abierta Anterior
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" name="mordida_abierta_posterior" value="1" <?= !empty($historia['mordida_abierta_posterior']) ? 'checked' : '' ?> class="rounded"> Abierta Posterior
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- SECCIÓN DE FIRMAS DEL DOCTOR Y PACIENTE EN LA HISTORIA GUARDADA -->
                         <div class="bg-white p-6 rounded-2xl border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -738,9 +965,25 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 
             <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
             <script src="https://unpkg.com/lucide@latest"></script>
+            <!-- Aseguramos que la función esté en el ámbito global mediante window -->
+            <script>
+                window.toggleMmInput = function(arcada, mostrar) {
+                    const contenedor = document.getElementById('div_mm_' + arcada);
+                    if (contenedor) {
+                        if (mostrar) {
+                            contenedor.classList.remove('hidden');
+                        } else {
+                            contenedor.classList.add('hidden');
+                            const inputMm = contenedor.querySelector('input');
+                            if (inputMm) inputMm.value = ''; // Limpia el valor si marca centrada
+                        }
+                    }
+                };
+            </script>
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     lucide.createIcons();
+
 
                     // Canvas para evoluciones
                     const canvasEvo = document.getElementById('canvas-evo');
@@ -780,4 +1023,6 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         });
                     }
                 });
+
+
             </script>

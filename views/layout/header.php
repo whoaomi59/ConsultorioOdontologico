@@ -6,6 +6,7 @@
         <title>Sistema Clínico Odontológico</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="./public/css/style.css">
     </head>
     <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex">
 
