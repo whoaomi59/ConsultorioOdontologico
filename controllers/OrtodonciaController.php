@@ -2,20 +2,21 @@
 require_once ROOT_PATH . '/helpers/auth.php';
 require_once ROOT_PATH . '/models/Paciente.php';
 require_once ROOT_PATH . '/models/HistoriaOrtodoncia.php';
+require_once ROOT_PATH . '/models/Consultorio.php';
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class OrtodonciaController {
     private $pacienteModel;
     private $ortodonciaModel;
+    private $consultorioModel; // <--- Declarada aquí para evitar el aviso (deprecated)
     private $db;
 
     public function __construct($db = null) {
         if ($db === null) { global $db; }
-        $this->db              = $db;
-        $this->pacienteModel   = new Paciente($this->db);
-        $this->ortodonciaModel = new HistoriaOrtodoncia($this->db);
+        $this->db               = $db;
+        $this->pacienteModel    = new Paciente($this->db);
+        $this->ortodonciaModel  = new HistoriaOrtodoncia($this->db);
+        $this->consultorioModel = new Consultorio($this->db);
     }
 
     public function ver($pacienteId) {
@@ -29,6 +30,7 @@ class OrtodonciaController {
 
         $historia    = $this->ortodonciaModel->getByPacienteId($pacienteId);
         $evoluciones = $historia ? $this->ortodonciaModel->getEvolucionesByHistoriaId($historia['id']) : [];
+        $consultorio = $this->consultorioModel->getInfo();
         $modoEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar';
 
         require_once ROOT_PATH . '/views/layout/header.php';

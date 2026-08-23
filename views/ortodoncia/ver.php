@@ -21,21 +21,32 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
     <!-- Encabezado Institucional -->
     <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-600"></div>
-        <div>
-            <a href="<?= BASE_URL ?>/paciente/index" class="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800 mb-2 gap-1 transition">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>Volver al Directorio
-            </a>
-            <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight">Historia de Ortodoncia Correctiva</h1>
-            <!--
-            <p class="text-xs text-slate-500 mt-1 font-medium flex items-center gap-2">
-                <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Fady J. Guatibonza Jaimes — Reg. 30391241 — UNICOC
-            </p>--><button type="button" onclick="window.print()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
-                <i data-lucide="printer" class="w-4 h-4"></i> Descargar / Imprimir PDF
-            </button>
+
+        <div class="flex items-center gap-4">
+            <?php if (!empty($consultorio['Logo'])): ?>
+                <img src="<?= BASE_URL ?>/<?= htmlspecialchars($consultorio['Logo']) ?>" alt="Logo Consultorio" class="h-14 w-auto object-contain">
+            <?php endif; ?>
+            <div>
+                <a href="<?= BASE_URL ?>/paciente/index" class="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800 mb-1 gap-1 transition">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>Volver al Directorio
+                </a>
+                <h1 class="text-xl md:text-2xl font-black text-slate-800 uppercase tracking-tight">
+                    <?= htmlspecialchars($consultorio['Nombre'] ?? 'Historia de Ortodoncia Correctiva') ?>
+                </h1>
+                <p class="text-xs text-slate-500 mt-0.5 font-medium flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-indigo-500"></i> <?= htmlspecialchars($consultorio['direccion'] ?? 'Dirección no registrada') ?>
+                </p>
+            </div>
         </div>
-        <div class="text-right">
-            <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
-            <span class="block text-xl font-bold text-indigo-700"><?= htmlspecialchars($documentoPaciente) ?></span>
+
+        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            <div class="text-left md:text-right">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Hoja Clínica N°</span>
+                <span class="block text-lg font-bold text-indigo-700"><?= htmlspecialchars($historia['hoja_numero'] ?? $paciente['documento']) ?></span>
+            </div>
+            <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+                <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / PDF
+            </button>
         </div>
     </div>
 
@@ -868,7 +879,7 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
 
                         <button type="submit" class="w-full bg-indigo-600 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl hover:bg-indigo-700 shadow-md hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
                             <i data-lucide="save" class="w-5 h-5"></i>
-                            <?= $esEdicion ? 'Actualizar Diagnóstico Base' : 'Guardar Diagnóstico Base Definitivo' ?>
+                            <?= $esEdicion ? 'Actualizar Diagnóstico' : 'Guardar Diagnóstico' ?>
                         </button>
                     </form>
 
