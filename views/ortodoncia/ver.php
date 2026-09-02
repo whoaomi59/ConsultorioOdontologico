@@ -947,7 +947,8 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-xs font-bold text-slate-600 uppercase">Firma del Paciente</label>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase">Firma del Paciente <span class="text-rose-500">*</span>
+                                    </label>
                                     <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
                                         <canvas id="canvas-evo" class="w-full h-28 touch-none cursor-crosshair" required></canvas>
                                         <button type="button" id="clear-evo" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition">Limpiar</button>

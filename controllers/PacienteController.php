@@ -120,6 +120,20 @@ class PacienteController {
             exit;
         }
 
+        // Cargar modelos necesarios para traer las historias del paciente
+        require_once ROOT_PATH . '/models/HistoriaClinica.php';
+        require_once ROOT_PATH . '/models/HistoriaOrtodoncia.php';
+
+        $historiaClinicaModel    = new HistoriaClinica();
+        $historiaOrtodonciaModel = new HistoriaOrtodoncia();
+
+        // Obtener datos detallados
+        $historiaBase         = $historiaClinicaModel->getBaseByPacienteId($id);
+        $consultasOdontologia = $historiaClinicaModel->getByPacienteId($id);
+
+        $historiaOrtodoncia    = $historiaOrtodonciaModel->getByPacienteId($id);
+        $evolucionesOrtodoncia = $historiaOrtodoncia ? $historiaOrtodonciaModel->getEvolucionesByHistoriaId($historiaOrtodoncia['id']) : [];
+
         require_once ROOT_PATH . '/views/layout/header.php';
         require_once ROOT_PATH . '/views/pacientes/perfil.php';
         require_once ROOT_PATH . '/views/layout/footer.php';

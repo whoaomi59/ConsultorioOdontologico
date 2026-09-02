@@ -122,7 +122,7 @@
 
                     <!-- Acciones -->
                     <div class="w-full sm:w-auto flex justify-end">
-                        <a href="<?= BASE_URL ?>/paciente/historia/<?= $paciente['id'] ?>" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white px-4 py-2.5 rounded-xl text-xs font-semibold border border-indigo-100 hover:border-indigo-600 transition duration-200 shadow-2xs group">
+                        <a href="<?= BASE_URL ?>/historias/ver/<?= $paciente['id'] ?>" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white px-4 py-2.5 rounded-xl text-xs font-semibold border border-indigo-100 hover:border-indigo-600 transition duration-200 shadow-2xs group">
                             <i data-lucide="folder-open" class="w-4 h-4 text-indigo-600 group-hover:text-white transition"></i>
                             <span>Ver Historia Clínica</span>
                         </a>

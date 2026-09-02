@@ -123,8 +123,8 @@
                                     </a>
 
                                     <!-- Ver Historia Odontológica -->
-                                    <a href="<?= BASE_URL ?>/paciente/historia/<?= $p['id'] ?>" class="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-white rounded-lg transition" title="Historia Clínica">
-                                        <i data-lucide="folder-open" class="w-4 h-4"></i>
+                                    <a href="<?= BASE_URL ?>/historias/ver/<?= $p['id'] ?>" class="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-white rounded-lg transition" title="Historia Clínica">
+                                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
                                     </a>
 
                                     <!-- Editar -->
