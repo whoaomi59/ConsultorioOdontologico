@@ -1,4 +1,10 @@
 
-*Falta los permisos y roles
-* poder cargar radiografias
-*Falta terminar las historias de ortodoncia
+* Falta los permisos y roles.
+
+* poder cargar radiografias en las historias de odontologia.
+
+* Validar los dias en el calendario que van las de ortodoncia, debe poder mirar solo la agenda del dia de agenden.
+
+* Modulo reportes: Debe tener los reporde de ortodoncia, odontologia y de los pacientes que se han atendido en el dia, ademas el control de los ingresos de las consultas de ortodoncia.
+
+* Mostrar datos del paciente en la historia de ortodonciazxc  sdfdsdf
