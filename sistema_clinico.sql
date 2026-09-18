@@ -38,24 +38,7 @@ CREATE TABLE `citas` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `citas`
---
 
-INSERT INTO `citas` (`id`, `paciente_id`, `fecha`, `hora`, `hora_final`, `motivo`, `estado`, `created_at`) VALUES
-(1, 1, '2026-09-02', '17:00:00', '17:30:00', '', 'atendida', '2026-09-02 22:04:20'),
-(2, 4, '2026-09-02', '18:04:00', '18:37:00', '', 'atendida', '2026-09-02 22:04:57'),
-(3, 17, '2026-09-09', '17:52:00', '18:22:00', '', 'cancelada', '2026-09-02 22:52:52'),
-(4, 1, '2026-09-11', '08:56:00', '09:26:00', '', 'atendida', '2026-09-10 19:56:29'),
-(5, 51, '2026-09-20', '09:00:00', '10:00:00', '[Cirugía de Cordales] Porque si', 'cancelada', '2026-09-11 21:40:25'),
-(6, 52, '2026-09-28', '08:00:00', '08:30:00', '[Consulta General] Dolor', 'pendiente', '2026-09-11 21:42:05'),
-(7, 53, '2026-10-09', '14:00:00', '15:00:00', '[Cirugía de Cordales] Citugia de cordales', 'pendiente', '2026-09-11 21:43:24');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `consultorio`
---
 
 CREATE TABLE `consultorio` (
   `ID` int(11) NOT NULL,
@@ -64,18 +47,6 @@ CREATE TABLE `consultorio` (
   `direccion` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `consultorio`
---
-
-INSERT INTO `consultorio` (`ID`, `Nombre`, `Logo`, `direccion`) VALUES
-(1, 'Consultorio Odontológico Dr Felipe Cabrera', 'public/uploads/consultorio/logo_consultorio_1788385271.png', 'San Agustin,calle 3 #4-52 Barrio San Martin');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `convenciones`
---
 
 CREATE TABLE `convenciones` (
   `id` int(11) NOT NULL,
@@ -113,18 +84,6 @@ CREATE TABLE `fechas_atencion_doctores` (
   `hora_fin` time DEFAULT '18:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `fechas_atencion_doctores`
---
-
-INSERT INTO `fechas_atencion_doctores` (`id`, `usuario_id`, `fecha`, `hora_inicio`, `hora_fin`) VALUES
-(1, 8, '2026-08-21', '08:00:11', '18:00:11');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `historias_clinicas`
---
 
 CREATE TABLE `historias_clinicas` (
   `id` int(11) NOT NULL,
@@ -141,19 +100,6 @@ CREATE TABLE `historias_clinicas` (
   `odontograma` longtext DEFAULT NULL,
   `fecha_consulta` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `historias_clinicas`
---
-
-INSERT INTO `historias_clinicas` (`id`, `paciente_id`, `usuario_id`, `motivo_consulta`, `diagnostico`, `tratamiento`, `observaciones`, `acudiente_nombre`, `acudiente_documento`, `acudiente_parentesco`, `firma_base64`, `odontograma`, `fecha_consulta`) VALUES
-(1, 49, 1, 'n', '´dfgdfgbvbm,mnbvdfghj', 'rrrrr', 'wrrrr', NULL, NULL, NULL, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcYAAACMCAYAAADm1gmXAAAQAElEQVR4AeydBZwVVRvG30E/OxC7MTCwu3VRUezuwhYJASUUKSnBAARRUAELEAwUAxQJRREUDEBaVhEpQRRRUr79H5zr3WTZu3fvxMNvz50zfc7/DPOc9z0x5dbqnwiIgAiIgAiIQIJAOdM/ERABERABERCBBAEJYwJFBCLKggiIgAiIQMoEJIwpI9QFREAEREAEokRAwhil0lReokRAeREBEcgQAQljhsDrtiIgAiIgAsEkIGEMZrkoVSIgAlEioLyEioCEMVTFpcSKgAiIgAikm4CEMd2EdX0REAEREIFQEViPMIYqL0qsCIiACIiACKRMQMKYMkJdQAREQAREIEoEJIxRKs315EW7RUAEREAE1k9Awrh+RjpCBERABEQgRgQkjDEqbGU1SgSUFxEQgXQRkDCmi6yuKwIiIAIiEEoCEsZQFpsSLQIiECUCykuwCEgYg1UeSo0IiIAIiECGCUgYM1wAur0IiIAIiECwCKQmjMHKi1IjAiIgAiIgAikTkDCmjFAXEAEREAERiBIBCWOUSjO1vOhsERABERCBHAISxhwI+hMBERABERABn4CE0SehpQhEiYDyIgIiUGICEsYSo9OJIiACIiACUSQgYYxiqSpPIiACUSKgvJQxAQljGQPX7URABERABIJNQMIY7PJR6kRABERABMqYQFqFsYzzotuJgAiIgAiIQMoEJIwpI9QFREAEREAEokRAwhil0kxrXnRxERABEYgHAQljPMpZuRQBERABESgmAQljMUHpMBGIEgHlRQREoHACEsbC2WiPCIiACIhADAlIGGNY6MqyCIhAlAgoL6VNQMJY2kR1PREQAREQgVATkDCGuviUeBEQAREQgdImkElhLO28xPZ6PXr0MEJsASjjIiACIlCKBCSMpQgzE5dCEO+++24jEM9EGnRPERABEYgSAQljyEuzb9++iRwsXLgwES/zSM4Nu3XrZlWqVLHatWtb7969bcSIETlb9ScCIiAC4SIgYQxXeeVL7QEHHJDYVq1atUS8LCMdO3a0Qw891GrWrOnEsGvXrnbrrbfahAkTyjIZupcIiIAIlAoBCWOpYMzcRaZNm5a4+dKlSxPxdEewVCtVqmSe51n9+vVt0qRJ6b6lrl92BHQnEYg1AQljhIp/5MiRac/NypUrrW3btnb99dfbjBkzCrzfRhttZNddd50ddthhBe7XRhEQAREIMgEJY5BLpxhpmzp1auIo2vUSK2mK3HLLLdakSZNCr37yySc767FPnz6WlZVV6HHaIQIiUEYEdJsNJiBh3GBkwTph7ty5iQRlZ2cn4qUdWbx4sZ122mnWr1+/Ai+9zTbbWPv27W3o0KF24IEHFniMNoqACIhAGAhIGMNQSoWksaBeqGPGjCnk6JJvXr16tR155JE2atSoAi/SsGFDo62T5eabb17gMdooAiIgAmEhEGBhDAvCzKVzxx13zOeuHDx4cKklaMGCBXbPPffYZpttZrNnz853XXqezp8/31mKO++8c7792iACIiACYSQgYQxjqSWluXLlyklrZi1atLABAwbk2rahK/RurVevnu22227WvXt3W7NmTa5LbL311jZu3Djr2bOn7bTTTrn2aUUEREAEwk5AwhjyErz55pvz5eDqq6+21q1b2/Lly/PtK2rDkCFD7Mwzz7S9997bOnXqlE8QOZf2Q6zEo48+mtViBx0oAiIgAmEhIGEMS0kVks4TTjjBWYl5dzdt2tT22GMPa9asmWv/y7uf9dGjRxuz07Rs2dIQUyYIGD58uP3222/szhU8zzN6pI4dO9bUjpgLjVZEQAQiRkDCGIECxe3Zv3//fDlZtGiRtWrVyvUS9TzPDcb3PM822WQTJ5oMrahSpYoT1oLcr7Qt+helPRORpfepv03LuBJQvkUg2gTKRTt78cgdYnXVVVdZly5drEKFCuvN9KpVq2zOnDmFHoel2aZNm4QrduONN7bGjRvbvvvuW+g52iECIiACUSEgYYxKSebko1atWsYQDqy//fbbL2fLhv0hroMGDbIpU6Y4kfXPrlq1qmGV+utaioAIRIeAcpKfgIQxP5NQbylXrpxdeeWVNn36dBs2bJjVqVMnn6WHK3W77bazu+66y6pXr+5cqRMnTjTcsRdeeKHrbTpv3jzHYfvttze+muFW9CMCIiACMSAgYYxoIXue5z4B1blzZ5s5c6atXbs2EVasWGHMZMNQjF69elnz5s3tkEMOcSSWLVvm5kJ1Kzk/DRo0sIoVK+bE9CcCIiAC8SAQXmGMR/mUeS4RS99aPPXUU61Ro0ZlngbdUAREQAQySUDCmEn6Abs3U7916NDBpep///tfLsvRbdSPCIiACMSAgIQxBoVc3CwyQTiD9zn+rLPOcpOGEy+DoFuIgAiIQGAISBgDUxSZT8jAgQMTibj99tsTcUVEQAREIE4EJIxxKu315JVerBzC/KeXX345UQUR2HACOkMEQk5AwhjyAiyt5NNL1Z8KrlKlSsawj9K6tq4jAiIgAmEiIGEMU2mlMa0M6fAvf8ABB/hRLUVABOJNIJa5lzDGstjzZ9q3FtmDK5WlggiIgAjEkYCEMY6lXkCelyxZktjK3KuJFUVEQAREIGYEIiuMMSvHlLM7fvz4xDX8IRuJDYqIgAiIQIwISBhjVNhFZXXTTTdN7D7ppJMScUVEQAREIG4EJIxxK/FC8jtr1qzEnsqVKyfiwYgoFSIgAiJQdgQkjGXHOtB3+uWXXxLp23PPPRNxRURABEQgbgQkjHEr8ULyu2DBAreHOVLLly/v4voRgXQQ0DVFIOgEJIxBL6EySp8/oH/VqlXmeV4Z3VW3EQEREIHgEZAwBq9MMpKinXfeOXHfyZMnJ+KKiIAIiEDhBKK5R8IYzXLd4FydeeaZiXO6deuWiCsiAiIgAnEjIGGMW4kXkt/q1avbxhtv7PY+88wzprGMDoV+REAEYkggrsIYw6IuOsu4Utu1a+cOWrNmjXXu3NnF9SMCIiACcSMgYYxbiReR34svvti22GILd8STTz5pv//+u4vrRwREQATiREDCGKfSXk9e+arGEUcc4Y5asWKFde/e3cUD/6MEioAIiEApEpAwliLMKFzqpptuSmSjWbNmlvzVjcQORURABEQgwgQkjBEu3JJkrUaNGnbGGWe4U7EaH3jgARfXjwiUEQHdRgQyTkDCmPEiCF4COnbsmEhUz549bdiwYYl1RURABEQg6gQkjFEv4RLk76ijjrJ77703cWbdunVt5cqViXVFREAERKBYBEJ6kIQxpAWX7mS3b9/edt99d3ebCRMm2P333+/i+hEBERCBqBOQMEa9hEuYv6222soYsuGf3rVrV/v000/9VS1FQAREILIEJIwFFq02QuCqq66yG264gagLN998syV/nspt1E/sCIwYMcKuvvpqN9m852nC+dg9ADHIsIQxBoVc0ix6nmdPPfWU7bvvvu4S2dnZVrVqVVuyZIlb10/4CXz++ef2ySef2KhRo2zMmDH2zjvvWIcOHezxxx93sx898cQT1qpVK2PyB8/znBheeOGFNmDAgPBnXjkQgUIISBgLAaPN6whUqFDBevfubZtuuqnb8P3339vZZ59tf/zxh1sPw09U07h06VIbOnSoffjhh/bBBx/Yxx9/bI888ohrD65Xr541btzYzjnnHDv66KPt2GOPdcNwPG+duHmeZ7jLTznlFLf9tNNOsxNPPNEuueQSa9SokQ0aNMjeeustF/r372+fffZZAuOyZctcnAkhOM6t6EcEIkRAwhihwkxXVnhp9uvXLzHJ+Lhx44wZcrAw0nXPKF93+vTpNn78eJs6darBlSExWOaE66+/3i699FK75pprnEhhqV1xxRW24447OmvN8/4Ttl122cVZ8Oeee66df/759vDDD7uhNZTP119/bbNnz7aTTz7ZWXtYeZdffrkNHz48Ed577z1bu3ZtvrBgwQLjnngKxo4daxMnTrTFixfnKpJjjjnGzYzEdXPt0IoIRICAhDEChVgWWeBl/fLLL9tGG23kbpedne0sjeeee86tx+0HgcFKw1obPXq0tW3b1lq0aOHcjswYhKV2wQUX2HnnnWd77rmnbb311rbddts5Kw1LC2E59dRT7dlnn7WXXnrJvvrqKyc+7DvyyCPt4IMPNobNwL127drOdck9/TBnzhzDcksWNtIxYsQIG/FvePXVV12aWuSki3DfffdZVlZWIvgTOVB2TBz/2GOPORGlNzLH9urVy/hwNfv9sMceexgWJOnNyrmWv73slrqTCKSfgIQx/Ywjc4drr73WJk+ebBUrVnR5Ymacu+66yy666CKbN2+e2xb0ny+++MLefPNNe+2115zYYK3dc889duedd9ptt91mxOl0hEARDjnkEDvssMPyWWt8vxIrDWsNq6xJkybOpYk7k967uC6PO+44O+GEE+zRRx9NuCaxEn0xW7hwofkihjgiXnkDacrKyrKsPGG33XYrFdRYluSBT441bNjQpTOvGHKjnXbayerXr29YkPBhm4IIRJWAhDGqJZumfFWqVMloZ2zevHnCenz33XcNKye5HSpNt3eXxYX75ZdfGhYS345s06aNa1uj0whzvWKJnXTSSXbWWWdZ+fLlc4ka23ETXpsj8vSsvP32251L8Pnnn3ftaFOmTDEEC+HhOogAx5PfLl26JNyQWG5Ybb7IsaQjC0LHPt+CROjo2esLG9aYy0SGfqjMUDl48MEHneDT/ojVW1BysFofeughGzlypJFXOuLsuuuuBR2qbSJQIgJBPUnCGNSSKYN0YeX99NNP9uOPP7rAy48einSoIHz00UeGYOCS69atm+FKZTwjrrTtt9/ecBVuu+22LqXz5883hIS2sMqVK7s2SMQSdyABKxOX4t57723E99lnH6ONzPP+azPzvOLF6SRy/PHHu/YzZuihbQ3hotPIK6+84gQOVy9tbHxnEsvv8MMPNzqaELDwcCMijojeZZddZgjqoYceaqQPaw9LDXfnfvvtZ4gBgrbNNtu49rZZs2YZ7HBlfvvttzZt2jTXZkhbHG2HtPER/vrrL8cm0z90lHrhhRdcpxryQ+UAK5b05k0bZQdLKjlUgKh0nH766Yn25bzHa10EokhAwhjwUmVoBBYIIkVo0KCBVa9e3XXM4IVOrR6RwsJBeOgwgRDwImcbvUk333xz16uU+JZbbmmbbbaZ++4iIsCLsmLFik6saD9CMOjwQaCdrGbNmnbjjTcaS8Yx0t7F/evUqeO69uf9ZuOvv/7q3K3fffedIRrffPONfZMTEN+ff/7ZfCFGuBDTvPhJP0KKtYe7smnTpsaLmvDiiy/msth4ccOmoNC3b1/r0aOHswb5fBYfXm7durUReNljyd19991Wq1Ytu+6669yQFFymCDa9NX/44QdnOc6cOdPmzp3r0k2nmTfeeMNIB22DuF9pi/NFlPMRU4SVAGvPK57Yk2/EnvPp2MS1heAMVQAADMNJREFUcOMSDjroICNQVhxH+R544IHG+v77728cQ5xngR7D5OnKK69051BR4fm444473DAMKj95me+yyy6OAXl6+umnXa/jf/75x3UOyntsSdbhR0WLIR5UsujljOuYCSSwyOnAQ7oRYCo9VGIQ6Io5zyX5wo0LS5Y8y56XnynfEeUYKmrklzzBkwoPLmAmw6fihMvbf6Z4Blq2bOm8DTwTVBaw9GlrJc6QFaxkthH69OljeAWwukvCQeeEh4CEsSRllYZzsHR4Eey1117O9VeuXDm3pMMGAoFIVatWzY0rxHJjvNnAgQMN1x89Bnn5IDxYM7zAGYjPNuY4Xb58uZvrlDhWDP+x//77b7dt9erVReaGc4o8oIidvMBJu2/RIW606SUL2YwZMww3pB8QIqwuhiHQXsfwgxb/dh5BmLOysizr34AQ+PFUlryc/XsUtmQsH4G04y5NDowB9NOfd0n5cE5hoVOnTk74yRttlrTXUuHBkiVdhGtz3L5Y51R8eD6o8GDFsk5lBvEjTgcf+NEhCgGnPZOKyvrKGOuXigTtq1WqVDF6IRMQY1+IEB3i3IM4+0kTwzvoIMR5CNwOO+zgnlvP8xJL0ktFC9c1laxbb73VbrnlFjes5PXXXzd6x1LWtM3iJmcKQtqyqUz5FRSeW1zcPMsFPXI8zxyDdcz/BypduNv5f8Wk+AgcrnYEjsoRzxWiSHnzXPKM4l5GOGlrJU4lFEFlGwGXOB4HxNfz/ssfx+OdKChd2hZOAuXCmezopZoaOh0gEETaxXjB5s0lxyBULPPuK+k67kOsxIICLzBeGskByyv5JY/rlbQSeDHx0vHTgouR9iwEmto6LyGumSxiWAT+8VFcYtkl5zdvHIsTLusLvNiTxdiPY4EhoogGQpCdne0qPD5LxAzrm/MRHnqfUlbJgXOSyzQ5/vbbbxtpQyQoQ+bMJc41scrwGODV4Hp//vmnFfU8FfSMsQ1x99MbhiUVy+R0YmHS9o7Y0+6dvE/xcBKQMAak3LAYsJ54SfFxYF40yQELEDckFgD7saqwDpNfYslxaszJ5xcWp3buv2TzLrHueCkmB1yoyS93LAcfIS9hatakEzcj2xFL2rdwUVJb5yXK9gCF0CWFihFudSxJhJcywa3sZwRXNJUZjuFZwfrGnUgbMBUv/zh/iUs9uUyT43gquFbyM+DHKde8z0xJ1rG2Cns+2c7zlPxsJ8epGJC+dAbcrAzB8e/RuHFj57VA1AlY1ogl7mHar2nDJd0+Xy3DR0DCGJIy811ntJ9gUfLyw/Wa/BJLjtMek6ms4dajfQ/XLm4mOq0g1IgmL2FmZaGtJlPpC+t9qQzRSxR3KoLFkBM6AJEf3HvwRSA5DvGi3Y52ZfaHOfA8JT/byXEmRCCv6Qww992u3Kddu3aGOPuVACqBuJh9xqr8+STCu5QwhrfsAp9yOgDx+So6fPAyIcG0AXXq1Mn1EGUmFsST7QoFE8ANTfsXQkjHHDjCk6MRPVyatCeyDTc27a7si21Ic8bx6mCJ04EHa9HzPNdWSl+AGjVquHlnaR/1PC/NKdHl00lAwphOurq2I0AvT9xPuFXpiUhnEXYwFydtM7gEGWjONoV1BLAEcd/hKsWVx8t43R5zvVCpcNCGi5uUCgYdYvz9WqZOgA5JtKfTwxeLkN7ADP3heaWSwpAl3NK0u9IJLjunbZchTclNC6mnQlfIFAEJY6bIx/C+tEHiRqXXLG4/3Kr0MsQlyEBzerDSZhRDNLmyzBhCOqTQC5aJwtnJSxl3Hu3KjD/ERY1LlX0KqRFYtGiRmw2JyhtT+OH6p+mCdXrJMnyESgrPKUOPaD+kxy/uVIZ10DPX82QhplYKBZ6dsY0Sxoyhj++NaQ/D7Ud7GNOz0SkEGrxo6M6PKNDDDxch2+MUGFqAi85vp4IFQylw4fFypl05TjxKO694JuhpyxhFOsp4nmcMMaFnL9tpw6fSxrPIsA96+vpjd2nbZIxpaadJ1wseAQlj8MokNiliUDZj9hhGwPg7BqFTW6e9jB5+DFL3PM8YJ0ePQKYuw8KMKiB/MDpDKsgjPZVpr8LVjDuabQrFI4B7E1c94xB5fnBxep7nPsHFOpUu3KN0Eps0aZIbSwtrxj3iHkUE8XAU7246KmoEJIxpKFFdcsMJ8JJiYDptO7isaMdBJLkSNXkGZDPZNS8rBJVZUhiwzQswCmLJrDC8lMkvAasFHhJEaOQOtL/S5sqkALiUYVWtWjX3zUnP89zEAlS4aHvlKyC0aVetWtU4x3eFMt4Q3rQfMstO7jtoLe4EJIxxfwICln+EjxlShgwZYgweHzZsmJuyixefL5TMcoKVSc2eFyDneJ5nuCCZro75XGmH47iAZa/A5CCK5NnfyRdL6PW4ySab+JtitWTcIi5Pvk9JJyPYUFHC5el5nvs2JesMR2ECCb74wVdMmHmHGaFGjhzpLEDaAhlSQQUDNzTHyxUaq0epxJmVMJYYnU4sCwJVqlQxRIJvHyKUTEjAnJW4VhFFXoh+OpiFh3lMaRNirlEsS3prMiUZFgPuMYSTc5mthPajwYMHGx0s/GvkX6Z3C248Xvz+XUgjc7syFMPfFoXlggULjPlzmVydKfQYsoMbk17KfOGESk358uWd6NEpi85YdMSirQ+LjvZAZu9hnWniED0CZY4l2LJlSzdDD1Pq4U2IAjPlIXMEJIyZY687l4AAU44x6TcDrem4g8XAC5KA0OFeY6wfFgJzjzLwmrGADGvAkkA4ccvigmOSaXohMnG1561zwdEbkfGCBGaUwdXGC5yJr+mJWIIkF3kKc4X6BzAvKm1f/noQl7TD0XbHp8YQKVgzAB7eVEgYV4ll5rfpYeVTQaFXLdYak6szbyoucCo4lBkD+K+55hpjGxYeZUmgwkLFhbIm0CGLigNT0QWRjdIUHQISxuiUZexzwkuXIR90s8eCYHJq2ix5yfqBFzEvdF7CWI4E5ivFYiF4nuc+IcXsMXx/kc9u8RUO5nhl6i/PWyegzCxE71qsE3o08rJneAVuXKwhzmXKNKbyK6pgkvfj+sUFjNjTBobwY9kyng5rievjLqTtjI5JxLm3P5k3QwcQKs5h+j2OR1AQLSYJoC0ONgTmPEVoGIpA4AsdVDoYp8fk74yfxOr2vHX59bx1S6w37o9lBmtEkcoIlhvWPFP/0csYgeRrHbg233//fUu28ujtiQAS6HFLGvl8GKJHOorileo+nS8CxSEgYSwOJR0TGQKIJy9gxp7xQiYgZLykCQgVIspkBKzTxkk7FwKKRYR48uJn0m5m8aGtEwHjs0oIEMcwVhNrk162zP7jeetExfPyL7FGfbhYYVyfuTZxHSJ6WLZ169Z138VEgJgnFWFhzlwm7WYMHp1RcDNjXdE2S4WAHrwcTx4QLdyXjI9EdAm4NPl6RYUKFYxABxWsZaxxplljyf3JN4JLZcIPfE4MRn7AsuM+BCoSMCVQoYA1AcH086mlCASdgIQx6CWk9GWEAB16ECnaOBEnXvR0BuHljxj6okDbmS8YLLEYEZPiBj5lhKuRTNK2yDUIeSfWxoXJvbG+WKYj0FaHm5m8Jgc6OSFufsDCJL0KIpBZAum7u4QxfWx15RgQwNLyBYNlzZo1XSeQZGEpKs6QASw+hJbeqFyDwMD+GOBTFkUgkAQkjIEsFiVKBERABEQgUwQkjGVPXncUAREQAREIMAEJY4ALR0kTAREQAREoewISxrJnrjtGiYDyIgIiEDkCEsbIFakyJAIiIAIikAoBCWMq9HSuCIhAlAgoLyLgCEgYHQb9iIAIiIAIiMA6AhLGdRz0KwIiIAIiECUCKeRFwpgCPJ0qAiIgAiIQPQISxuiVqXIkAiIgAiKQAgEJYwrw0nOqrioCIiACIpBJAhLGTNLXvUVABERABAJHQMIYuCJRgqJEQHkRAREIHwEJY/jKTCkWAREQARFIIwEJYxrh6tIiIAJRIqC8xIWAhDEuJa18ioAIiIAIFIuAhLFYmHSQCIiACIhAlAgUlRcJY1F0tE8EREAERCB2BCSMsStyZVgEREAERKAoAhLGougEcZ/SJAIiIAIikFYCEsa04tXFRUAEREAEwkZAwhi2ElN6o0RAeREBEQggAQljAAtFSRIBERABEcgcAQlj5tjrziIgAlEioLxEhoCEMTJFqYyIgAiIgAiUBgEJY2lQ1DVEQAREQAQiQ6CcWWTyooyIgAiIgAiIQMoEZDGmjFAXEAEREAERiBIBCWOUStPMlB0REAEREIHUCEgYU+Ons0VABERABCJGQMIYsQJVdqJEQHkRARHIBAEJYyao654iIAIiIAKBJSBhDGzRKGEiIAJRIqC8hIfA/wEAAP//7TsfYgAAAAZJREFUAwBDv3MeD9wyxgAAAABJRU5ErkJggg==', '{\"12\":{\"right\":\"#ef4444\",\"center\":\"#ef4444\"},\"21\":{\"center\":\"#22c55e\"},\"23\":{\"center\":\"#eab308\"},\"24\":{\"center\":\"#64748b\"},\"25\":{\"center\":\"#a855f7\"},\"52\":{\"right\":\"#ef4444\"},\"62\":{\"center\":\"#64748b\"},\"63\":{\"left\":\"#64748b\"},\"64\":{\"left\":\"#64748b\"}}', '2026-09-10 20:37:59');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `historias_clinicas_base`
---
 
 CREATE TABLE `historias_clinicas_base` (
   `id` int(11) NOT NULL,
@@ -189,18 +135,6 @@ CREATE TABLE `historias_clinicas_base` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `historias_clinicas_base`
---
-
-INSERT INTO `historias_clinicas_base` (`id`, `paciente_id`, `alerta_medica`, `ant_hipertension`, `ant_traumas`, `ant_cirugias`, `ant_hepatitis`, `ant_convulsiones`, `ant_alergias`, `ant_hipoglicemia_diabetes`, `ant_gastritis_resp`, `ant_t_mentales`, `ant_enf_cardiovascular`, `ant_cancer`, `ant_embarazo`, `ant_fiebre_reumatica`, `ant_sida`, `ant_otras`, `higiene_cepillado`, `higiene_cepillado_cant`, `higiene_seda`, `higiene_seda_cant`, `higiene_enjuague`, `higiene_enjuague_cant`, `higiene_otro`, `higiene_otro_cual`, `examen_estomatologico`, `acudiente_nombre`, `acudiente_documento`, `acudiente_parentesco`, `created_at`) VALUES
-(1, 49, '', 'Si', '', '', 'Si', '', '', 'Si', '', '', 'Si', '', '', '', 'Si', 'rthyju,.ñ', '', '', '', '', '', '', '', '', '{\"labios\":\"\",\"maxilares\":\"\",\"carrillos\":\"\",\"glándulas_salivales\":\"Si\",\"frenillos\":\"\",\"gingival\":\"Si\",\"trauma\":\"Si\",\"patología_pulpar\":\"\",\"músculos\":\"\",\"orofaringe\":\"\",\"piso_de_boca\":\"\",\"mucosa_oral\":\"Si\",\"atm\":\"\",\"ganglios\":\"\",\"hábitos\":\"Si\",\"otros\":\"\",\"color_dental\":\"\",\"esmalte_dental\":\"\",\"desgaste_dental\":\"\",\"movilidad\":\"\",\"cantidad_dientes\":\"\",\"oclusión\":\"\",\"posición_dental\":\"\"}', '', '', NULL, '2026-09-10 20:36:23');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `historias_ortodoncia`
---
 
 CREATE TABLE `historias_ortodoncia` (
   `id` int(11) NOT NULL,
@@ -208,7 +142,7 @@ CREATE TABLE `historias_ortodoncia` (
   `usuario_id` int(11) DEFAULT NULL,
   `hoja_numero` varchar(50) DEFAULT NULL,
   `fecha_apertura` date DEFAULT NULL,
-  `remitido_por` varchar(150) DEFAULT NULL,
+  `remitido_por` text DEFAULT NULL,
   `motivo_consulta` text DEFAULT NULL,
   `tratamiento_previo_ortodoncia` tinyint(1) DEFAULT 0,
   `tipo_tratamiento` varchar(50) DEFAULT 'CORRECTIVO',
@@ -289,14 +223,11 @@ CREATE TABLE `historias_ortodoncia` (
   `linea_media_superior` varchar(50) DEFAULT NULL,
   `linea_media_superior_mm` varchar(20) DEFAULT NULL,
   `linea_media_inferior` varchar(50) DEFAULT NULL,
-  `linea_media_inferior_mm` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `linea_media_inferior_mm` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `ortodoncia_evoluciones`
---
 
 CREATE TABLE `ortodoncia_evoluciones` (
   `id` int(11) NOT NULL,
