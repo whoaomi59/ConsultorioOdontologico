@@ -30,15 +30,33 @@ class Cita {
     }
 
     public function create($data) {
-        $sql = "INSERT INTO citas (paciente_id, fecha, hora, motivo, estado)
-            VALUES (:paciente_id, :fecha, :hora, :motivo, :estado)";
+        $sql = "INSERT INTO citas (paciente_id, fecha, hora, hora_final, motivo, estado)
+            VALUES (:paciente_id, :fecha, :hora, :hora_final, :motivo, :estado)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             ':paciente_id' => $data['paciente_id'],
             ':fecha'       => $data['fecha'],
             ':hora'        => $data['hora'],
+            ':hora_final'    => $data['hora_final'],
             ':motivo'      => $data['motivo'],
             ':estado'      => $data['estado'] ?? 'pendiente'
+        ]);
+    }
+
+
+
+    public function update($datos) {
+        // Ejemplo usando PDO (ajusta la consulta según cómo estés conectando tu base de datos)
+        $sql  = "UPDATE citas SET paciente_id = ?, fecha = ?, hora = ?, hora_final = ?, estado = ?, motivo = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            $datos['paciente_id'],
+            $datos['fecha'],
+            $datos['hora'],
+            $datos['hora_final'],
+            $datos['estado'], // <- Importante para que guarde el cambio de estado
+            $datos['motivo'],
+            $datos['id']
         ]);
     }
 

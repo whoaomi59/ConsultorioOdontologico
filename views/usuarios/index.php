@@ -48,7 +48,7 @@
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase
                                     <?= $u['rol'] === 'admin' ? 'bg-purple-50 text-purple-700 border border-purple-200' : '' ?>
                                     <?= $u['rol'] === 'doctor' ? 'bg-blue-50 text-blue-700 border border-blue-200' : '' ?>
-                                    <?= $u['rol'] === 'recepcionista' ? 'bg-amber-50 text-amber-700 border border-amber-200' : '' ?>">
+                                    <?= $u['rol'] === 'auxiliar' ? 'bg-amber-50 text-amber-700 border border-amber-200' : '' ?>">
                                 <?= htmlspecialchars($u['rol']) ?>
                             </span>
                         </td>

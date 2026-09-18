@@ -2,9 +2,9 @@
 // config/database.php
 
 $host     = 'localhost';
-$dbname   = 'sistema_clinico';
+$dbname   = 'consultorio';
 $username = 'root';
-$password = '';
+$password = 'pirata';
 
 try {
     $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8mb4", $username, $password, [

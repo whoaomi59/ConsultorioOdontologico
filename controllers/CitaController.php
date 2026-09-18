@@ -22,24 +22,51 @@ class CitaController {
         require_once ROOT_PATH . '/views/layout/footer.php';
     }
 
-    // GUARDAR NUEVA CITA
+    // GUARDAR O ACTUALIZAR CITA
+    // GUARDAR O ACTUALIZAR CITA
     public function guardar() {
-        requirePermission('citas_crear');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'paciente_id' => $_POST['paciente_id'],
-                'fecha'       => $_POST['fecha'],
-                'hora'        => $_POST['hora'],
-                'motivo'      => htmlspecialchars($_POST['motivo']),
-                'estado'      => 'pendiente'
-            ];
+        $id         = $_POST['id'] ?? null;
+        $pacienteId = $_POST['paciente_id'] ?? null;
+        $fecha      = $_POST['fecha'] ?? null;
+        $hora       = $_POST['hora'] ?? null;
+        $estado     = $_POST['estado'] ?? 'pendiente';
+        $motivo     = $_POST['motivo'] ?? '';
 
-            $this->citaModel->create($data);
-            header('Location: ' . BASE_URL . '/cita/index');
-            exit;
+        if ($id) {
+            // AL ACTUALIZAR: Se permite modificar la hora final enviada desde el formulario
+            $horaFinal = $_POST['hora_final'] ?? null;
+
+            $this->citaModel->update([
+                'id'         => $id,
+                'paciente_id'=> $pacienteId,
+                'fecha'      => $fecha,
+                'hora'       => $hora,
+                'hora_final' => $horaFinal,
+                'estado'     => $estado,
+                'motivo'     => $motivo
+            ]);
+        } else {
+            // AL CREAR: Por defecto calculamos 30 minutos más a la hora de inicio
+            if ($hora) {
+                $timestampInicio = strtotime($hora);
+                $horaFinal       = date('H:i:s', strtotime('+30 minutes', $timestampInicio));
+            } else {
+                $horaFinal = null;
+            }
+
+            $this->citaModel->create([
+                'paciente_id'=> $pacienteId,
+                'fecha'      => $fecha,
+                'hora'       => $hora,
+                'hora_final' => $horaFinal, // Se guarda con los 30 minutos por defecto
+                'estado'     => $estado,
+                'motivo'     => $motivo
+            ]);
         }
-    }
 
+        header('Location: ' . BASE_URL . '/cita');
+        exit();
+    }
     // CAMBIAR ESTADO (Atendida, Cancelada, etc.)
     public function cambiarEstado($id) {
         requirePermission('citas_editar');

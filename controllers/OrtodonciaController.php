@@ -2,17 +2,35 @@
 require_once ROOT_PATH . '/helpers/auth.php';
 require_once ROOT_PATH . '/models/Paciente.php';
 require_once ROOT_PATH . '/models/HistoriaOrtodoncia.php';
+require_once ROOT_PATH . '/models/Consultorio.php';
+
 
 class OrtodonciaController {
     private $pacienteModel;
     private $ortodonciaModel;
+    private $consultorioModel; // <--- Declarada aquí para evitar el aviso (deprecated)
     private $db;
 
     public function __construct($db = null) {
         if ($db === null) { global $db; }
-        $this->db              = $db;
-        $this->pacienteModel   = new Paciente($this->db);
-        $this->ortodonciaModel = new HistoriaOrtodoncia($this->db);
+        $this->db               = $db;
+        $this->pacienteModel    = new Paciente($this->db);
+        $this->ortodonciaModel  = new HistoriaOrtodoncia($this->db);
+        $this->consultorioModel = new Consultorio($this->db);
+    }
+    // Buscador / Lista de pacientes
+    public function ortodoncia() {
+        $busqueda = isset($_GET['q']) ? trim($_GET['q']) : '';
+
+        if (!empty($busqueda)) {
+            $pacientes = $this->pacienteModel->buscar($busqueda);
+        } else {
+            $pacientes = $this->pacienteModel->getAll();
+        }
+
+        require_once ROOT_PATH . '/views/layout/header.php';
+        require_once ROOT_PATH . '/views/ortodoncia/ortodoncia_buscar.php';
+        require_once ROOT_PATH . '/views/layout/footer.php';
     }
 
     public function ver($pacienteId) {
@@ -26,6 +44,7 @@ class OrtodonciaController {
 
         $historia    = $this->ortodonciaModel->getByPacienteId($pacienteId);
         $evoluciones = $historia ? $this->ortodonciaModel->getEvolucionesByHistoriaId($historia['id']) : [];
+        $consultorio = $this->consultorioModel->getInfo();
         $modoEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar';
 
         require_once ROOT_PATH . '/views/layout/header.php';
@@ -67,12 +86,38 @@ class OrtodonciaController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $historiaId = $_POST['historia_id'] ?? null;
             if ($historiaId) {
+                $rutaPdf = null;
+
+                // Procesar subida de PDF de Radiografía
+                if (isset($_FILES['radiografia_pdf']) && $_FILES['radiografia_pdf']['error'] === UPLOAD_ERR_OK) {
+                    $fileTmpPath   = $_FILES['radiografia_pdf']['tmp_name'];
+                    $fileName      = $_FILES['radiografia_pdf']['name'];
+                    $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                    if ($fileExtension === 'pdf') {
+                        $uploadDir = ROOT_PATH . '/public/uploads/radiografias/';
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+
+                        $newFileName = 'radio_' . $historiaId . '_' . time() . '.pdf';
+                        $dest_path   = $uploadDir . $newFileName;
+
+                        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                            $rutaPdf = 'public/uploads/radiografias/' . $newFileName;
+                        }
+                    }
+                }
+
                 $data = [
                     'historia_id'           => $historiaId,
                     'usuario_id'            => $_SESSION['usuario_id'] ?? null,
                     'descripcion_evolucion' => htmlspecialchars($_POST['descripcion_evolucion'] ?? ''),
+                    'valor_evolucion'       => isset($_POST['valor_evolucion']) ? (float)$_POST['valor_evolucion'] : 0.00,
+                    'radiografia_pdf'       => $rutaPdf,
                     'firma_paciente_base64' => !empty($_POST['firma_paciente_base64']) ? $_POST['firma_paciente_base64'] : null
                 ];
+
                 $this->ortodonciaModel->createEvolucion($data);
             }
             header('Location: ' . BASE_URL . '/ortodoncia/ver/' . $pacienteId);

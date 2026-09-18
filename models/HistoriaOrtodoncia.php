@@ -67,12 +67,16 @@ class HistoriaOrtodoncia {
     }
 
     public function createEvolucion($data) {
-        $sql  = "INSERT INTO ortodoncia_evoluciones (historia_id, usuario_id, descripcion_evolucion, firma_paciente_base64) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO ortodoncia_evoluciones
+            (historia_id, usuario_id, descripcion_evolucion, valor_evolucion, radiografia_pdf, firma_paciente_base64)
+            VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             $data['historia_id'],
             $data['usuario_id'],
             $data['descripcion_evolucion'],
+            $data['valor_evolucion'],
+            $data['radiografia_pdf'],
             $data['firma_paciente_base64'] ?? null
         ]);
     }

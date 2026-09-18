@@ -7,7 +7,7 @@ session_start();
 
 // Definir la ruta raíz del proyecto en el sistema de archivos
 define('ROOT_PATH', dirname(__DIR__));
-define('BASE_URL', '/sistema_clinico');
+define('BASE_URL', '/ConsultorioOdontologico');
 
 require_once ROOT_PATH . '/config/database.php';
 require_once '../helpers/auth.php';
