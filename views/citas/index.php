@@ -13,29 +13,28 @@ $hoy          = date('Y-m-d');
 $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 ?>
 
-<div class="max-w-7xl mx-auto space-y-6 font-sans pb-12">
+<div class="max-w-7xl mx-auto space-y-6 font-sans pb-12 px-3 sm:px-6">
 
-    <!-- Encabezado Principal -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs">
-        <div class="flex items-center gap-4">
-            <div class="p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100/80 shadow-xs">
-                <i data-lucide="calendar" class="w-7 h-7"></i>
+    <!-- Encabezado Principal Estilizado -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-5 sm:p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 w-full sm:w-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-2 border border-indigo-500/30">
+                <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> Módulo de Gestión
             </div>
-            <div>
-                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Agenda de Citas</h1>
-                <p class="text-xs text-slate-500 mt-0.5">Gestión, control e historial de citas médicas del sistema clínico.</p>
-            </div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight">Agenda de Citas</h1>
+            <p class="text-xs text-slate-300 mt-1">Gestión, control e historial de citas médicas del sistema clínico en tiempo real.</p>
         </div>
-        <button id="btn-nueva-cita" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+        <button id="btn-nueva-cita" class="relative z-10 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>Agendar Nueva Cita</span>
         </button>
     </div>
 
     <!-- Barra de Control: Navegación de Fechas y Cambiador de Vista -->
-    <div class="bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
-            <div class="inline-flex items-center gap-1 bg-slate-50 p-1.5 rounded-2xl border border-slate-200/80">
+    <div class="bg-white p-4 rounded-3xl border border-slate-200/60 shadow-xs flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+            <div class="inline-flex items-center gap-1 bg-slate-50/80 p-1.5 rounded-2xl border border-slate-200/60 w-full sm:w-auto justify-center">
                 <button type="button" id="btn-prev-date" class="p-2 hover:bg-white hover:shadow-xs rounded-xl text-slate-600 transition-all cursor-pointer" title="Anterior">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
@@ -46,20 +45,20 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
             </div>
-            <span id="period-label" class="text-sm font-bold text-slate-800 tracking-tight px-2">
+            <span id="period-label" class="text-xs sm:text-sm font-bold text-slate-800 tracking-tight px-2 text-center sm:text-left">
                 Semana actual
             </span>
         </div>
 
-        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-            <div class="inline-flex bg-slate-100 p-1.5 rounded-2xl text-xs font-semibold">
-                <button type="button" class="tab-btn active px-4 py-2 rounded-xl text-indigo-600 bg-white shadow-xs transition-all cursor-pointer" data-view="semana">
+        <div class="flex items-center gap-3 w-full md:w-auto justify-center md:justify-end overflow-x-auto pb-1 md:pb-0">
+            <div class="inline-flex bg-slate-100/80 p-1.5 rounded-2xl text-xs font-semibold border border-slate-200/40 shrink-0">
+                <button type="button" class="tab-btn active px-3 sm:px-4 py-2 rounded-xl text-indigo-600 bg-white shadow-xs transition-all cursor-pointer" data-view="semana">
                     <i data-lucide="calendar-days" class="w-3.5 h-3.5 inline mr-1.5"></i> Semana
                 </button>
-                <button type="button" class="tab-btn px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer" data-view="mes">
+                <button type="button" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer" data-view="mes">
                     <i data-lucide="calendar-range" class="w-3.5 h-3.5 inline mr-1.5"></i> Mes
                 </button>
-                <button type="button" class="tab-btn px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer" data-view="lista">
+                <button type="button" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer" data-view="lista">
                     <i data-lucide="list" class="w-3.5 h-3.5 inline mr-1.5"></i> Lista
                 </button>
             </div>
@@ -67,36 +66,42 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
     </div>
 
     <!-- VISTA 1: CALENDARIO SEMANAL DINÁMICO -->
-    <div id="view-semana" class="view-content bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <div id="semana-headers" class="grid grid-cols-7 border-b border-slate-200/80 bg-slate-50/80 text-center text-xs font-bold text-slate-600"></div>
-        <div id="semana-grid" class="grid grid-cols-7 divide-x divide-slate-100 min-h-[500px] bg-slate-50/20 text-xs"></div>
+    <div id="view-semana" class="view-content bg-white rounded-3xl border border-slate-200/60 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+            <div class="min-w-[768px]">
+                <div id="semana-headers" class="grid grid-cols-7 border-b border-slate-200/60 bg-slate-50/50 text-center text-xs font-bold text-slate-600"></div>
+                <div id="semana-grid" class="grid grid-cols-7 divide-x divide-slate-100 min-h-[500px] bg-slate-50/10 text-xs"></div>
+            </div>
+        </div>
     </div>
 
     <!-- VISTA 2: CALENDARIO MENSUAL DINÁMICO -->
-    <div id="view-mes" class="view-content hidden bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6">
-        <div class="grid grid-cols-7 gap-3 text-center text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">
-            <div>Domingo</div>
-            <div>Lunes</div>
-            <div>Martes</div>
-            <div>Miércoles</div>
-            <div>Jueves</div>
-            <div>Viernes</div>
-            <div>Sábado</div>
+    <div id="view-mes" class="view-content hidden bg-white rounded-3xl border border-slate-200/60 shadow-xs p-4 sm:p-6 overflow-x-auto">
+        <div class="min-w-[650px]">
+            <div class="grid grid-cols-7 gap-2 sm:gap-3 text-center text-[10px] sm:text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">
+                <div>Domingo</div>
+                <div>Lunes</div>
+                <div>Martes</div>
+                <div>Miércoles</div>
+                <div>Jueves</div>
+                <div>Viernes</div>
+                <div>Sábado</div>
+            </div>
+            <div id="mes-grid" class="grid grid-cols-7 gap-2 sm:gap-3 text-xs"></div>
         </div>
-        <div id="mes-grid" class="grid grid-cols-7 gap-3 text-xs"></div>
     </div>
 
     <!-- VISTA 3: TABLA LISTA -->
-    <div id="view-lista" class="view-content hidden bg-white rounded-3xl border  shadow-xs overflow-hidden">
+    <div id="view-lista" class="view-content hidden bg-white rounded-3xl border border-slate-200/60 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-                <thead class="bg-slate-50/80 border-b  text-slate-500 font-bold uppercase tracking-wider">
+            <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                <thead class="bg-slate-50/60 border-b border-slate-200/60 text-slate-500 font-bold uppercase tracking-wider">
                     <tr>
-                        <th class="p-5">Horario</th>
-                        <th class="p-5">Paciente</th>
-                        <th class="p-5">Motivo</th>
-                        <th class="p-5">Estado</th>
-                        <th class="p-5 text-right">Acciones</th>
+                        <th class="p-4 sm:p-5">Horario</th>
+                        <th class="p-4 sm:p-5">Paciente</th>
+                        <th class="p-4 sm:p-5">Motivo</th>
+                        <th class="p-4 sm:p-5">Estado</th>
+                        <th class="p-4 sm:p-5 text-right">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-slate-700">
@@ -104,24 +109,25 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                         <?php foreach ($citas as $c): ?>
                             <?php
                             $horaFinText = !empty($c['hora_final']) ? date('h:i A', strtotime($c['hora_final'])) : 'N/A';
+                            $esAtendida  = ($c['estado'] === 'atendida');
                             ?>
-                            <tr class="hover:bg-slate-50/60 transition-colors">
-                                <td class="p-4.5">
-                                    <div class="inline-flex items-center gap-2.5 bg-amber-50/80 border border-amber-200/70 rounded-2xl p-2.5 pr-3.5 shadow-2xs">
-                                        <div class="bg-amber-500/15 text-amber-700 p-2 rounded-xl">
+                            <tr class="hover:bg-slate-50/55 transition-colors">
+                                <td class="p-3.5 sm:p-4.5">
+                                    <div class="inline-flex items-center gap-2.5 bg-amber-50/50 border border-amber-200/40 rounded-2xl p-2.5 pr-3.5 shadow-2xs">
+                                        <div class="bg-amber-500/10 text-amber-700 p-2 rounded-xl">
                                             <i data-lucide="clock" class="w-4 h-4"></i>
                                         </div>
                                         <div>
                                             <div class="font-bold text-slate-900 text-xs">
                                                 <?= date('d/m/Y', strtotime($c['fecha'])) ?>
                                             </div>
-                                            <div class="text-[11px] font-extrabold text-amber-800 tracking-wide mt-0.5">
+                                            <div class="text-[11px] font-extrabold text-amber-700 tracking-wide mt-0.5">
                                                 <?= date('h:i A', strtotime($c['hora'])) ?> - <?= $horaFinText ?>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-4.5">
+                                <td class="p-3.5 sm:p-4.5">
                                     <div class="font-bold text-slate-900 text-sm">
                                         <?= htmlspecialchars($c['paciente_nombre'] . ' ' . $c['paciente_apellido']) ?>
                                     </div>
@@ -129,10 +135,10 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                                         Tel: <?= htmlspecialchars($c['paciente_telefono'] ?? 'No registrado') ?>
                                     </span>
                                 </td>
-                                <td class="p-4.5 text-slate-600 max-w-xs truncate font-medium">
+                                <td class="p-3.5 sm:p-4.5 text-slate-600 max-w-xs truncate font-medium">
                                     <?= htmlspecialchars($c['motivo']) ?>
                                 </td>
-                                <td class="p-4.5">
+                                <td class="p-3.5 sm:p-4.5">
                                     <?php
                                     $badge = match($c['estado']) {
                                         'atendida'  => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
@@ -150,22 +156,28 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                                         <?= $c['estado'] ?>
                                     </span>
                                 </td>
-                                <td class="p-4.5 text-right">
-                                    <div class="inline-flex items-center justify-end gap-1.5">
+                                <td class="p-3.5 sm:p-4.5 text-right">
+                                    <div class="inline-flex items-center justify-end gap-1.5 flex-wrap">
                                         <button type="button"
                                         class="px-3 py-1.5 text-indigo-700 hover:bg-indigo-50 bg-indigo-50/40 border border-indigo-100/80 rounded-xl font-bold text-xs transition-all btn-editar-cita cursor-pointer shadow-2xs"
                                         data-id="<?= $c['id'] ?>"
                                         data-paciente-id="<?= $c['paciente_id'] ?>"
-                                        data-paciente-nombre="<?= htmlspecialchars($c['paciente_nombre'] . ' ' . $c['paciente_apellido'], ENT_QUOTES) ?>"
+                                        data-paciente-nombre="<?= htmlspecialchars($c['paciente_nombre'] . ' ' .$c['paciente_apellido'], ENT_QUOTES) ?>"
                                         data-fecha="<?= $c['fecha'] ?>"
                                         data-hora="<?= $c['hora'] ?>"
                                         data-hora-fin="<?= $c['hora_final'] ?? '' ?>"
                                         data-motivo="<?= htmlspecialchars($c['motivo'], ENT_QUOTES) ?>"
                                         data-estado="<?= $c['estado'] ?>">
-                                        Editar
+                                        <?= $esAtendida ? 'Ver Detalles' : 'Editar' ?>
                                     </button>
-                                    <a href="<?= BASE_URL ?>/cita/cambiarEstado/<?= $c['id'] ?>?estado=atendida" class="px-3 py-1.5 text-emerald-700 hover:bg-emerald-50 bg-emerald-50/40 border border-emerald-100/80 rounded-xl font-bold text-xs transition-all shadow-2xs">Atendida</a>
-                                    <a href="<?= BASE_URL ?>/cita/cambiarEstado/<?= $c['id'] ?>?estado=cancelada" class="px-3 py-1.5 text-rose-700 hover:bg-rose-50 bg-rose-50/40 border border-rose-100/80 rounded-xl font-bold text-xs transition-all shadow-2xs">Cancelar</a>
+
+                                    <?php if (!$esAtendida): ?>
+                                        <a href="<?= BASE_URL ?>/cita/cambiarEstado/<?= $c['id'] ?>?estado=atendida" class="px-3 py-1.5 text-emerald-700 hover:bg-emerald-50 bg-emerald-50/40 border border-emerald-100/80 rounded-xl font-bold text-xs transition-all shadow-2xs">Atendida</a>
+                                        <a href="<?= BASE_URL ?>/cita/cambiarEstado/<?= $c['id'] ?>?estado=cancelada" class="px-3 py-1.5 text-rose-700 hover:bg-rose-50 bg-rose-50/40 border border-rose-100/80 rounded-xl font-bold text-xs transition-all shadow-2xs">Cancelar</a>
+                                    <?php else: ?>
+                                        <span class="px-3 py-1.5 text-slate-400 bg-slate-100 border border-slate-200 rounded-xl font-bold text-xs cursor-not-allowed" title="Cita finalizada, no se puede modificar">Finalizada</span>
+                                    <?php endif; ?>
+
                                     <a href="<?= BASE_URL ?>/cita/eliminar/<?= $c['id'] ?>" onclick="return confirm('¿Estás seguro de eliminar esta cita?')" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all ml-1" title="Eliminar Cita">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </a>
@@ -191,12 +203,12 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 </div>
 
 <!-- Modal: Registrar o Editar Cita -->
-<div id="modal-cita" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 transition-all opacity-0 pointer-events-none duration-200">
-    <div id="modal-contenido" class="bg-white rounded-3xl max-w-lg w-full p-7 space-y-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200">
+<div id="modal-cita" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 transition-all opacity-0 pointer-events-none duration-200">
+    <div id="modal-contenido" class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 space-y-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center border-b border-slate-100 pb-4">
             <div>
-                <h3 id="modal-titulo" class="text-lg font-extrabold text-slate-900">Agendar Nueva Cita</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Complete los detalles para programar la atención médica.</p>
+                <h3 id="modal-titulo" class="text-base sm:text-lg font-bold text-slate-900">Agendar Nueva Cita</h3>
+                <p id="modal-subtitulo" class="text-xs text-slate-500 mt-0.5">Complete los detalles para programar la atención médica.</p>
             </div>
             <button type="button" id="btn-cerrar-modal" class="text-slate-400 hover:text-slate-600 p-2 hover:bg-slate-100 rounded-xl transition-all cursor-pointer">
                 <i data-lucide="x" class="w-5 h-5"></i>
@@ -212,7 +224,7 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                 </label>
                 <input type="hidden" name="paciente_id" id="paciente_id_hidden" required>
                 <div class="relative">
-                    <input type="text" id="buscador-paciente-input" placeholder="Escribe el nombre o documento del paciente..." autocomplete="off" class="w-full px-3.5 py-3 pl-10 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                    <input type="text" id="buscador-paciente-input" placeholder="Escribe el nombre o documento del paciente..." autocomplete="off" class="w-full px-3.5 py-3 pl-10 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
                 </div>
                 <div id="sugerencias-box" class="absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-48 overflow-y-auto z-50 hidden divide-y divide-slate-100"></div>
@@ -221,41 +233,44 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             <div>
                 <label class="block font-bold text-slate-700 mb-2">Fecha <span class="text-rose-500">*</span>
                 </label>
-                <input type="date" name="fecha" id="input_fecha" required class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                <input type="date" name="fecha" id="input_fecha" required class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
             </div>
 
             <!-- Horas: Inicio y Fin -->
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div class="col-span-2 transition-all duration-300" id="contenedor-hora-inicio">
                     <label class="block font-bold text-slate-700 mb-2">Hora de Inicio <span class="text-rose-500">*</span>
                     </label>
-                    <input type="time" name="hora" id="input_hora" required class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                    <input type="time" name="hora" id="input_hora" required class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
                 </div>
                 <!-- Hora Final: Oculta al crear, visible solo al editar -->
                 <div class="col-span-2 hidden transition-all duration-300" id="grupo-hora-final">
                     <label class="block font-bold text-slate-700 mb-2">Hora Final</label>
-                    <input type="time" name="hora_final" id="input_hora_fin" class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                    <input type="time" name="hora_final" id="input_hora_fin" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
                 </div>
             </div>
 
             <!-- Selector de Estado de la Cita -->
             <div>
                 <label class="block font-bold text-slate-700 mb-2">Estado de la Cita</label>
-                <select name="estado" id="input_estado" class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                <select name="estado" id="input_estado" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
                     <option value="pendiente">Pendiente</option>
                     <option value="atendida">Atendida</option>
                     <option value="cancelada">Cancelada</option>
                 </select>
+                <p id="alerta-estado-atendida" class="text-[11px] text-emerald-600 font-bold mt-1.5 hidden flex items-center gap-1">
+                    <i data-lucide="lock" class="w-3.5 h-3.5 inline"></i> Esta cita ya fue atendida. Sus datos están bloqueados y no se pueden modificar.
+                </p>
             </div>
 
             <div>
                 <label class="block font-bold text-slate-700 mb-2">Motivo de Consulta</label>
-                <textarea name="motivo" id="input_motivo" rows="3" placeholder="Ej. Procedimiento largo, control u ortodoncia avanzada" class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs resize-none"></textarea>
+                <textarea name="motivo" id="input_motivo" rows="3" placeholder="Ej. Procedimiento largo, control u ortodoncia avanzada" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs resize-none"></textarea>
             </div>
 
-            <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                <button type="button" id="btn-cancelar-modal" class="px-5 py-2.5 border border-slate-200 hover:bg-slate-50 rounded-2xl font-bold text-slate-600 transition-all cursor-pointer">Cancelar</button>
-                <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-md transition-all cursor-pointer">Guardar Cambios</button>
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-100" id="contenedor-botones-modal">
+                <button type="button" id="btn-cancelar-modal" class="w-full sm:w-auto px-5 py-2.5 border border-slate-200 hover:bg-slate-50 rounded-2xl font-bold text-slate-600 transition-all cursor-pointer text-center">Cancelar</button>
+                <button type="submit" id="btn-guardar-cambios" class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-sm transition-all cursor-pointer text-center">Guardar Cambios</button>
             </div>
         </form>
     </div>
@@ -292,10 +307,10 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             return [year, month, day].join('-');
         }
 
-        // Funciones para animar el Modal de forma fluida
         const modalCita      = document.getElementById('modal-cita');
         const modalContenido = document.getElementById('modal-contenido');
         const modalTitulo    = document.getElementById('modal-titulo');
+        const modalSubtitulo = document.getElementById('modal-subtitulo');
 
         function abrirModal() {
             modalCita.classList.remove('hidden');
@@ -336,18 +351,18 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                 if (i === 6) finLabel = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
                 let headerDiv = document.createElement('div');
-                headerDiv.className = `p-3.5 border-r border-slate-100 border-b-2 ${esHoy ? 'border-b-indigo-600 bg-indigo-50/60 text-indigo-700 font-bold' : 'border-b-transparent text-slate-500'}`;
+                headerDiv.className = `p-3.5 border-r border-slate-100 border-b-2 ${esHoy ? 'border-b-indigo-600 bg-indigo-50/40 text-indigo-700 font-bold' : 'border-b-transparent text-slate-500'}`;
                 headerDiv.innerHTML = `<div class="uppercase tracking-wider text-[11px]">${diasNombres[i]}</div>
-                <div class="text-xs ${esHoy ? 'text-indigo-600 font-extrabold bg-white inline-block px-2 py-0.5 rounded-full shadow-2xs mt-1' : 'text-slate-400 font-semibold'} mt-0.5">${d.getDate()}/${d.getMonth()+1}</div>`;
+                <div class="text-xs ${esHoy ? 'text-indigo-600 font-bold bg-white inline-block px-2 py-0.5 rounded-full shadow-2xs mt-1' : 'text-slate-400 font-semibold'} mt-0.5">${d.getDate()}/${d.getMonth()+1}</div>`;
                 semanaHeaders.appendChild(headerDiv);
 
                 let colDiv = document.createElement('div');
-                colDiv.className = `p-2.5 space-y-3 ${esHoy ? 'bg-indigo-50/15' : ''}`;
+                colDiv.className = `p-2.5 space-y-3 ${esHoy ? 'bg-indigo-50/10' : ''}`;
 
                 let citasDia = citasData[fechaStr] || [];
                 citasDia.forEach(c => {
-                    let cardBg = c.estado === 'atendida' ? 'bg-emerald-50/90 border-emerald-200/80 text-emerald-900 hover:bg-emerald-100/80' :
-                    (c.estado === 'cancelada' ? 'bg-rose-50/90 border-rose-200/80 text-rose-900 opacity-70 hover:bg-rose-100/80' : 'bg-amber-50/90 border-amber-200/80 text-amber-900 hover:bg-amber-100/80');
+                    let cardBg = c.estado === 'atendida' ? 'bg-emerald-50/80 border-emerald-200/60 text-emerald-900 hover:bg-emerald-100/60' :
+                    (c.estado === 'cancelada' ? 'bg-rose-50/80 border-rose-200/60 text-rose-900 opacity-60 hover:bg-rose-100/60' : 'bg-amber-50/80 border-amber-200/60 text-amber-900 hover:bg-amber-100/60');
                     let dotColor = c.estado === 'atendida' ? 'bg-emerald-500' : (c.estado === 'cancelada' ? 'bg-rose-500' : 'bg-amber-500');
 
                     let horaFinStr = c.hora_final ? c.hora_final : '';
@@ -365,15 +380,15 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                     card.dataset.estado = c.estado;
 
                     card.innerHTML = `
-                    <div class="flex items-center justify-between text-[11px] font-extrabold pb-1.5 border-b border-black/5">
+                    <div class="flex items-center justify-between text-[11px] font-bold pb-1.5 border-b border-black/5">
                         <span class="flex items-center gap-1">
                             <i data-lucide="clock" class="w-3 h-3"></i>
                             ${c.hora}${horaFinStr ? ' - ' + horaFinStr : ''}
                         </span>
-                        <span class="w-2.5 h-2.5 rounded-full ${dotColor} shadow-xs"></span>
+                        <span class="w-2 h-2 rounded-full ${dotColor} shadow-xs"></span>
                     </div>
                     <div class="font-bold text-slate-900 mt-2 truncate text-xs ${c.estado === 'cancelada' ? 'line-through' : ''}">${c.paciente_nombre} ${c.paciente_apellido}</div>
-                    <p class="text-[10px] text-slate-500 truncate mt-1 font-medium bg-white/50 p-1.5 rounded-xl border border-black/5">${c.motivo || 'Sin motivo especificado'}</p>
+                    <p class="text-[10px] text-slate-500 truncate mt-1 font-medium bg-white/60 p-1.5 rounded-xl border border-black/5">${c.motivo || 'Sin motivo especificado'}</p>
                     `;
 
                     colDiv.appendChild(card);
@@ -399,7 +414,7 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 
             for (let i = 0; i < offset; i++) {
                 let blank = document.createElement('div');
-                blank.className = 'min-h-[95px] p-2.5 border border-slate-100 rounded-2xl bg-slate-50/20 opacity-30';
+                blank.className = 'min-h-[80px] sm:min-h-[95px] p-2 sm:p-2.5 border border-slate-100 rounded-2xl bg-slate-50/10 opacity-20';
                 mesGrid.appendChild(blank);
             }
 
@@ -409,13 +424,13 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                 let esHoyMes = (fechaFormato === hoyStr);
 
                 let cell = document.createElement('div');
-                cell.className = `min-h-[95px] p-3 border ${esHoyMes ? 'border-indigo-400 bg-indigo-50/30 shadow-xs' : 'border-slate-100 bg-slate-50/40'} rounded-2xl flex flex-col justify-between hover:border-indigo-300 transition-all`;
+                cell.className = `min-h-[80px] sm:min-h-[95px] p-2 sm:p-3 border ${esHoyMes ? 'border-indigo-400 bg-indigo-50/20 shadow-xs' : 'border-slate-100 bg-slate-50/30'} rounded-2xl flex flex-col justify-between hover:border-indigo-300 transition-all`;
 
-                let badgeHtml = countCitas > 0 ? `<div class="bg-indigo-600 text-white text-[10px] font-extrabold px-2 py-1 rounded-xl text-center shadow-xs flex items-center justify-center gap-1">
-                    <i data-lucide="calendar" class="w-3 h-3"></i>
+                let badgeHtml = countCitas > 0 ? `<div class="bg-indigo-600 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-1 rounded-xl text-center shadow-xs flex items-center justify-center gap-1">
+                    <i data-lucide="calendar" class="w-3 h-3 hidden sm:inline"></i>
                     ${countCitas} ${countCitas === 1 ? 'Cita' : 'Citas'}
                 </div>` : '';
-                cell.innerHTML = `<span class="font-bold text-xs ${esHoyMes ? 'text-indigo-600 bg-white w-7 h-7 rounded-full flex items-center justify-center shadow-2xs font-extrabold' : 'text-slate-700'}">${dia}</span>${badgeHtml}`;
+                cell.innerHTML = `<span class="font-bold text-xs ${esHoyMes ? 'text-indigo-600 bg-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center shadow-2xs' : 'text-slate-700'}">${dia}</span>${badgeHtml}`;
                 mesGrid.appendChild(cell);
             }
             lucide.createIcons();
@@ -476,37 +491,64 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             });
         });
 
-        // Botón Nueva Cita
         document.getElementById('btn-nueva-cita')?.addEventListener('click', () => {
             modalTitulo.textContent = "Agendar Nueva Cita";
+            modalSubtitulo.textContent = "Complete los detalles para programar la atención médica.";
             document.getElementById('cita_id_hidden').value = '';
             document.getElementById('paciente_id_hidden').value = '';
             document.getElementById('buscador-paciente-input').value = '';
+            document.getElementById('buscador-paciente-input').disabled = false;
             document.getElementById('input_fecha').value = '';
+            document.getElementById('input_fecha').disabled = false;
             document.getElementById('input_hora').value = '';
+            document.getElementById('input_hora').disabled = false;
 
             document.getElementById('input_hora_fin').value = '';
+            document.getElementById('input_hora_fin').disabled = false;
             document.getElementById('grupo-hora-final').classList.add('hidden');
             document.getElementById('contenedor-hora-inicio').className = "col-span-4";
 
-            document.getElementById('input_estado').value = 'pendiente';
+            const selectEstado = document.getElementById('input_estado');
+            selectEstado.value = 'pendiente';
+            selectEstado.disabled = false;
+            selectEstado.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+            document.getElementById('alerta-estado-atendida').classList.add('hidden');
+
             document.getElementById('input_motivo').value = '';
+            document.getElementById('input_motivo').disabled = false;
+            document.getElementById('btn-guardar-cambios').classList.remove('hidden');
+
             abrirModal();
         });
 
-        // Delegación de eventos global para Editar Cita
         document.addEventListener('click', (e) => {
             const btnEditar = e.target.closest('.btn-editar-cita');
             if (!btnEditar) return;
 
             e.stopPropagation();
-            modalTitulo.textContent = "Editar Cita y Horarios";
+
+            const estadoActual = btnEditar.dataset.estado || 'pendiente';
+            const esAtendida   = (estadoActual === 'atendida');
+
+            if (esAtendida) {
+                modalTitulo.textContent = "Detalles de Cita Atendida";
+                modalSubtitulo.textContent = "Esta cita se encuentra finalizada y sus datos están protegidos contra modificaciones.";
+            } else {
+                modalTitulo.textContent = "Editar Cita y Horarios";
+                modalSubtitulo.textContent = "Modifique los detalles de la cita seleccionada.";
+            }
 
             document.getElementById('cita_id_hidden').value = btnEditar.dataset.id || '';
             document.getElementById('paciente_id_hidden').value = btnEditar.dataset.pacienteId || '';
-            document.getElementById('buscador-paciente-input').value = btnEditar.dataset.pacienteNombre || '';
-            document.getElementById('input_fecha').value = btnEditar.dataset.fecha || '';
-            document.getElementById('input_hora').value = btnEditar.dataset.hora || '';
+
+            const inputBuscador = document.getElementById('buscador-paciente-input');
+            inputBuscador.value = btnEditar.dataset.pacienteNombre || '';
+
+            const inputFecha = document.getElementById('input_fecha');
+            inputFecha.value = btnEditar.dataset.fecha || '';
+
+            const inputHora = document.getElementById('input_hora');
+            inputHora.value = btnEditar.dataset.hora || '';
 
             const inputHoraFin         = document.getElementById('input_hora_fin');
             const grupoHoraFinal       = document.getElementById('grupo-hora-final');
@@ -516,24 +558,73 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             grupoHoraFinal.classList.remove('hidden');
             contenedorHoraInicio.className = "col-span-2";
 
-            document.getElementById('input_estado').value = btnEditar.dataset.estado || 'pendiente';
-            document.getElementById('input_motivo').value = btnEditar.dataset.motivo || '';
+            const selectEstado   = document.getElementById('input_estado');
+            const alertaAtendida = document.getElementById('alerta-estado-atendida');
+            const btnGuardar     = document.getElementById('btn-guardar-cambios');
+            const inputMotivo    = document.getElementById('input_motivo');
+
+            selectEstado.value = estadoActual;
+            inputMotivo.value = btnEditar.dataset.motivo || '';
+
+            // Bloquear o desbloquear formulario completo según estado
+            if (esAtendida) {
+                inputBuscador.disabled = true;
+                inputFecha.disabled = true;
+                inputHora.disabled = true;
+                inputHoraFin.disabled = true;
+                inputMotivo.disabled = true;
+                selectEstado.disabled = true;
+
+                // Estilos visuales de bloqueo total
+                [inputBuscador, inputFecha, inputHora, inputHoraFin, inputMotivo, selectEstado].forEach(el => {
+                    el.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+                });
+
+                alertaAtendida.classList.remove('hidden');
+                btnGuardar.classList.add('hidden'); // Ocultar botón guardar porque no hay nada que actualizar
+            } else {
+                inputBuscador.disabled = false;
+                inputFecha.disabled = false;
+                inputHora.disabled = false;
+                inputHoraFin.disabled = false;
+                inputMotivo.disabled = false;
+                selectEstado.disabled = false;
+
+                [inputBuscador, inputFecha, inputHora, inputHoraFin, inputMotivo, selectEstado].forEach(el => {
+                    el.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+                });
+
+                alertaAtendida.classList.add('hidden');
+                btnGuardar.classList.remove('hidden');
+            }
 
             abrirModal();
+        });
+
+        // Asegurar campos habilitados antes de enviar (por si acaso el navegador bloquea disabled al enviar)
+        document.querySelector('#modal-cita form').addEventListener('submit', function(e) {
+            const estadoInput = document.getElementById('input_estado').value;
+            if (estadoInput === 'atendida') {
+                // Doble seguridad en cliente: prohibir envío si de alguna forma se intentó alterar
+                e.preventDefault();
+                alert('No se pueden guardar cambios en una cita que ya se encuentra atendida.');
+                cerrarModal();
+                return;
+            }
+            document.getElementById('input_estado').disabled = false;
         });
 
         document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
         document.getElementById('btn-cancelar-modal')?.addEventListener('click', cerrarModal);
 
-        // Autocompletado de Pacientes
         const inputBuscador    = document.getElementById('buscador-paciente-input');
         const hiddenPacienteId = document.getElementById('paciente_id_hidden');
         const sugerenciasBox   = document.getElementById('sugerencias-box');
 
         const pacientesLista = [
-        <?php foreach ($pacientes as $p): ?> {
+        <?php foreach ($pacientes as$p): ?> {
                 id: "<?= $p['id'] ?>",
-                nombre: "<?= htmlspecialchars($p['nombre'] . ' ' . $p['apellido'], ENT_QUOTES) ?>",
+                nombre: "<?= htmlspecialchars($p['nombre'] . ' ' .$p['apellido'], ENT_QUOTES) ?>",
                 documento: "<?= htmlspecialchars($p['documento'] ?? 'Sin documento', ENT_QUOTES) ?>"
             },
         <?php endforeach; ?>
@@ -541,6 +632,7 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 
         if (inputBuscador && sugerenciasBox) {
             inputBuscador.addEventListener('input', (e) => {
+                if (inputBuscador.disabled) return;
                 const query = e.target.value.toLowerCase().trim();
                 hiddenPacienteId.value = '';
 

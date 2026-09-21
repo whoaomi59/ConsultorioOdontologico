@@ -1,31 +1,31 @@
 <div class="space-y-6">
 
     <!-- Header del Módulo -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2.5">
-                <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
-                    <i data-lucide="file-text" class="w-6 h-6"></i>
-                </div>
-                Historias Clínicas — Ortodoncia
-            </h1>
-            <p class="text-xs text-slate-500 mt-1">
-                Busca un paciente por nombre, apellido o número de documento para acceder o registrar su historia clínica y odontograma.
-            </p>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex items-center gap-4">
+            <div class="p-3 bg-indigo-500/20 text-indigo-300 rounded-2xl border border-indigo-500/30">
+                <i data-lucide="file-text" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-black tracking-tight">Historias Clínicas — Ortodoncia</h1>
+                <p class="text-xs text-slate-300 mt-1">Busca un paciente para acceder o registrar su historia clínica y seguimiento de ortodoncia.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Barra de Búsqueda Instantánea -->
-    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
-        <div class="relative flex-1">
+    <!-- Barra de Herramientas: Búsqueda y Paginación -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between gap-4 items-center">
+        <!-- Buscador Instantáneo -->
+        <div class="relative w-full md:w-96">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <i data-lucide="search" class="w-5 h-5"></i>
+                <i data-lucide="search" class="w-4 h-4"></i>
             </div>
             <input
             type="text"
             id="search-input"
-            placeholder="Escribe el nombre, apellido o documento para filtrar en tiempo real..."
-            class="w-full pl-11 pr-10 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition"
+            placeholder="Escribe nombre, apellido o documento..."
+            class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-indigo-500 transition shadow-inner"
             autofocus
             >
             <button
@@ -36,10 +36,21 @@
             <i data-lucide="x" class="w-4 h-4"></i>
         </button>
     </div>
+
+    <!-- Selector de Registros por Página -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 font-medium w-full md:w-auto justify-end">
+        <span>Mostrar:</span>
+        <select id="rows-per-page" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-indigo-500 transition">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+    </div>
 </div>
 
 <!-- Lista de Pacientes / Resultados -->
-<div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+<div class="bg-white rounded-3xl shadow-sm border border-slate-200/80 overflow-hidden">
 
     <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
         <span class="text-xs font-semibold text-slate-600" id="search-status">
@@ -52,53 +63,52 @@
 
     <?php if (!empty($pacientes)): ?>
         <div class="divide-y divide-slate-100" id="patients-list">
-            <?php foreach ($pacientes as $paciente): ?>
+            <?php foreach ($pacientes as$paciente): ?>
                 <?php
-                $searchData = mb_strtolower($paciente['nombre'] . ' ' . $paciente['apellido'] . ' ' . $paciente['documento']);
+                $searchData = mb_strtolower($paciente['nombre'] . ' ' . $paciente['apellido'] . ' ' .$paciente['documento']);
 
                 // Cálculo exacto de la edad
                 $edad        = null;
                 $esMenorEdad = false;
                 if (!empty($paciente['fecha_nacimiento'])) {
                     $nacimiento  = new DateTime($paciente['fecha_nacimiento']);
-                    $hoy         = new DateTime();
-                    $edad        = $hoy->diff($nacimiento)->y;
+                    $hoy         = new DateTime();$edad        = $hoy->diff($nacimiento)->y;
                     $esMenorEdad = $edad < 18;
                 }
                 ?>
-                <div class="patient-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-slate-50/80 transition" data-search="<?= htmlspecialchars($searchData) ?>">
+                <div class="patient-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-indigo-50/30 transition duration-150" data-search="<?= htmlspecialchars($searchData) ?>">
 
                     <!-- Info del Paciente -->
                     <div class="flex items-center space-x-4">
-                        <!-- Avatar con Iniciales -->
-                        <div class="w-11 h-11 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
-                            <?= strtoupper(substr($paciente['nombre'], 0, 1) . substr($paciente['apellido'], 0, 1)) ?>
+                        <!-- Avatar con Iniciales Estilizado -->
+                        <div class="w-11 h-11 bg-gradient-to-br from-indigo-500 to-indigo-700 text-white rounded-2xl flex items-center justify-center font-black text-xs shadow-md shadow-indigo-500/20 shrink-0">
+                            <?= strtoupper(substr($paciente['nombre'] ?? 'P', 0, 1) . substr($paciente['apellido'] ?? '', 0, 1)) ?>
                         </div>
 
                         <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-slate-800 text-sm">
-                                    <?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="font-extrabold text-slate-900 text-sm">
+                                    <?= htmlspecialchars($paciente['nombre'] . ' ' .$paciente['apellido']) ?>
                                 </h3>
 
                                 <!-- Insignia Mayor / Menor de Edad -->
                                 <?php if ($edad !== null): ?>
                                     <?php if ($esMenorEdad): ?>
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold bg-amber-50 text-amber-700 border border-amber-100 shadow-2xs">
                                             <i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i>
-                                            Menor de edad (<?= $edad ?>)
+                                            Menor (<?= $edad ?>)
                                         </span>
                                     <?php else: ?>
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200/80">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-100 shadow-2xs">
                                             <i data-lucide="shield-check" class="w-3 h-3 text-blue-500"></i>
-                                            Mayor de edad (<?= $edad ?>)
+                                            Mayor (<?= $edad ?>)
                                         </span>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
 
-                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-slate-500">
-                                <span class="flex items-center gap-1 font-medium">
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-slate-500 font-medium">
+                                <span class="flex items-center gap-1">
                                     <i data-lucide="id-card" class="w-3.5 h-3.5 text-slate-400"></i>
                                     Doc: <strong class="text-slate-700"><?= htmlspecialchars($paciente['documento']) ?></strong>
                                 </span>
@@ -133,11 +143,11 @@
         </div>
 
         <!-- Estado Vacío por Búsqueda sin Resultados -->
-        <div id="no-results" class="hidden p-12 text-center">
-            <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                <i data-lucide="user-x" class="w-6 h-6"></i>
+        <div id="no-results" class="hidden p-16 text-center text-slate-400">
+            <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                <i data-lucide="search-x" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-sm font-semibold text-slate-700">No se encontraron pacientes</h3>
+            <h3 class="text-sm font-bold text-slate-700">No se encontraron pacientes</h3>
             <p class="text-xs text-slate-400 mt-1">
                 No hay ningún paciente registrado que coincida con el término ingresado.
             </p>
@@ -145,35 +155,147 @@
 
     <?php else: ?>
         <!-- Estado Vacío General (Sin Pacientes en la Base de Datos) -->
-        <div class="p-12 text-center">
-            <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <div class="p-16 text-center">
+            <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
                 <i data-lucide="user-x" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-sm font-semibold text-slate-700">No hay pacientes registrados</h3>
+            <h3 class="text-sm font-bold text-slate-700">No hay pacientes registrados</h3>
             <p class="text-xs text-slate-400 mt-1">
                 Aún no existen registros de pacientes en la base de datos.
             </p>
         </div>
     <?php endif; ?>
 
+    <!-- Paginador Footer -->
+    <?php if (!empty($pacientes)): ?>
+        <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-xs text-slate-500 font-medium" id="pagination-info">
+                Mostrando registros...
+            </div>
+            <div class="flex items-center gap-1.5" id="pagination-buttons">
+                <!-- Botones de paginación generados por JS -->
+            </div>
+        </div>
+    <?php endif; ?>
+
 </div>
 </div>
 
-<!-- Script de Búsqueda Instantánea -->
+<!-- Script de Paginación y Búsqueda Instantánea -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
 
-        const searchInput  = document.getElementById('search-input');
-        const clearBtn     = document.getElementById('clear-btn');
-        const patientCards = document.querySelectorAll('.patient-card');
-        const noResults    = document.getElementById('no-results');
-        const searchStatus = document.getElementById('search-status');
-        const patientCount = document.getElementById('patient-count');
+        const searchInput       = document.getElementById('search-input');
+        const clearBtn          = document.getElementById('clear-btn');
+        const rowsPerPageSelect = document.getElementById('rows-per-page');
+        const allCards          = Array.from(document.querySelectorAll('.patient-card'));
+        const noResults         = document.getElementById('no-results');
+        const searchStatus      = document.getElementById('search-status');
+        const patientCount      = document.getElementById('patient-count');
+        const paginationInfo    = document.getElementById('pagination-info');
+        const paginationButtons = document.getElementById('pagination-buttons');
 
         if (!searchInput) return;
+
+        let currentPage = 1;
+        let rowsPerPage = parseInt(rowsPerPageSelect.value);
+        let filteredCards = [...allCards];
+
+        function renderList() {
+            allCards.forEach(card => card.style.display = 'none');
+
+            const totalRows  = filteredCards.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage) || 1;
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start        = (currentPage - 1) * rowsPerPage;
+            const end          = start + rowsPerPage;
+            const currentCards = filteredCards.slice(start, end);
+
+            currentCards.forEach(card => card.style.display = '');
+
+            const query = searchInput.value.trim();
+            if (totalRows === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            patientCount.textContent = `${totalRows} ${totalRows === 1 ? 'paciente' : 'pacientes'}`;
+            if (query.length > 0) {
+                searchStatus.textContent = 'Resultados filtrados:';
+            } else {
+                searchStatus.textContent = 'Todos los Pacientes Registrados:';
+            }
+
+            const startText = totalRows > 0 ? start + 1 : 0;
+            const endText   = Math.min(end, totalRows);
+            if (paginationInfo) {
+                paginationInfo.textContent = `Mostrando ${startText} a ${endText} de ${totalRows} pacientes`;
+            }
+
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            if (!paginationButtons) return;
+            paginationButtons.innerHTML = '';
+
+            // Botón Anterior
+            const prevBtn = document.createElement('button');
+            prevBtn.innerHTML = '<i data-lucide="chevron-left" class="w-4 h-4"></i>';
+            prevBtn.className = `p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center ${currentPage === 1 ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 shadow-2xs'}`;
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderList();
+                }
+            });
+            paginationButtons.appendChild(prevBtn);
+
+            // Números de página
+            let maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.textContent = i;
+                pageBtn.className = `px-3.5 py-2 rounded-xl text-xs font-bold border transition shadow-2xs ${i === currentPage ? 'bg-indigo-600 text-white border-indigo-600 shadow-indigo-600/30' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderList();
+                });
+                paginationButtons.appendChild(pageBtn);
+            }
+
+            // Botón Siguiente
+            const nextBtn = document.createElement('button');
+            nextBtn.innerHTML = '<i data-lucide="chevron-right" class="w-4 h-4"></i>';
+            nextBtn.className = `p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center ${currentPage === totalPages || totalPages === 0 ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 shadow-2xs'}`;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderList();
+                }
+            });
+            paginationButtons.appendChild(nextBtn);
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
 
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
@@ -184,38 +306,30 @@
                 clearBtn.classList.add('hidden');
             }
 
-            let visibleCount = 0;
-
-            patientCards.forEach(card => {
+            filteredCards = allCards.filter(card => {
                 const searchData = card.getAttribute('data-search');
-
-                if (searchData.includes(query)) {
-                    card.classList.remove('hidden');
-                    visibleCount++;
-                } else {
-                    card.classList.add('hidden');
-                }
+                return searchData.includes(query);
             });
 
-            patientCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'paciente' : 'pacientes'}`;
-
-            if (query.length > 0) {
-                searchStatus.textContent = 'Resultados filtrados:';
-            } else {
-                searchStatus.textContent = 'Todos los Pacientes Registrados:';
-            }
-
-            if (visibleCount === 0 && patientCards.length > 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-            }
+            currentPage = 1;
+            renderList();
         });
 
         clearBtn.addEventListener('click', () => {
             searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input'));
+            clearBtn.classList.add('hidden');
+            filteredCards = [...allCards];
+            currentPage = 1;
+            renderList();
             searchInput.focus();
         });
+
+        rowsPerPageSelect.addEventListener('change', (e) => {
+            rowsPerPage = parseInt(e.target.value);
+            currentPage = 1;
+            renderList();
+        });
+
+        renderList();
     });
 </script>

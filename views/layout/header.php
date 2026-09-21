@@ -1,3 +1,24 @@
+<?php
+// Asegurar disponibilidad del modelo de consultorio
+require_once ROOT_PATH . '/models/Consultorio.php';
+
+// Verificamos si la conexión global $db existe, de lo contrario intentamos declararla global
+if (!isset($db) && isset($GLOBALS['db'])) {
+    $db = $GLOBALS['db'];
+}
+
+// Inicializamos el modelo de manera segura pasando la conexión si existe
+$consultorioModel = new Consultorio($db ?? null);
+
+// Solo intentamos consultar si el modelo tiene una conexión válida para evitar el Fatal Error
+$infoConsultorio = [];
+if (method_exists($consultorioModel, 'getInfo') && isset($db)) {
+    $infoConsultorio = $consultorioModel->getInfo();
+}
+
+$logoNavbar        = $infoConsultorio['Logo'] ?? ($infoConsultorio['logo'] ?? '');
+$nombreConsultorio = $infoConsultorio['Nombre'] ?? ($infoConsultorio['nombre'] ?? 'DentalControl');
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -6,22 +27,42 @@
         <title>Sistema Clínico Odontológico</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="icon" href="./public/img/diente.jpg" type="image/x-icon">
         <link rel="stylesheet" href="./public/css/style.css">
     </head>
-    <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex">
+    <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col lg:flex-row relative">
 
-        <aside class="w-64 bg-indigo-900 text-white flex flex-col min-h-screen shadow-lg shrink-0">
-            <div class="p-5 border-b border-indigo-800/60 flex items-center space-x-3">
-                <div class="p-2 bg-indigo-800/80 rounded-xl">
-                    <i data-lucide="activity" class="w-6 h-6 text-indigo-300"></i>
+        <!-- Overlay para móviles (Fondo oscuro al abrir el menú) -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden transition-opacity"></div>
+
+        <!-- ASIDE / MENÚ LATERAL -->
+        <aside id="sidebar" class="w-64 bg-indigo-900 text-white flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static min-h-screen shadow-lg shrink-0 transition-transform duration-300 ease-in-out">
+            <div class="p-5 border-b border-indigo-800/60 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+
+                    <!-- LOGOTIPO DINÁMICO O ICONO POR DEFECTO -->
+                    <?php if (!empty($logoNavbar)): ?>
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner shrink-0 overflow-hidden">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($logoNavbar) ?>" alt="Logo" class="max-h-full max-w-full object-contain">
+                        </div>
+                    <?php else: ?>
+                        <div class="p-2 bg-indigo-800/80 rounded-xl shrink-0">
+                            <i data-lucide="activity" class="w-6 h-6 text-indigo-300"></i>
+                        </div>
+                    <?php endif; ?>
+
+                    <div>
+                        <h1 class="font-bold text-lg leading-none tracking-wide"><?= htmlspecialchars($nombreConsultorio) ?></h1>
+                        <span class="text-xs text-indigo-300 font-normal">Gestión Odontológica</span>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg leading-none tracking-wide">DentalControl</h1>
-                    <span class="text-xs text-indigo-300 font-normal">Gestión Odontológica</span>
-                </div>
+                <!-- Botón de cerrar menú en móviles -->
+                <button onclick="toggleSidebar()" class="lg:hidden text-indigo-300 hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
 
-            <nav class="flex-1 p-4 space-y-1.5">
+            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
                 <a href="<?= BASE_URL ?>/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                     <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-300"></i>
                     <span>dashboard</span>
@@ -81,13 +122,13 @@
                         <span>Reportes</span>
                     </a>
                 <?php endif; ?>
+
                 <?php if (hasPermission('configuracion')): ?>
                     <a href="<?= BASE_URL ?>/consultorio/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                         <i data-lucide="cog" class="w-5 h-5 text-indigo-300"></i>
                         <span>Configuración</span>
                     </a>
                 <?php endif; ?>
-
             </nav>
 
             <div class="p-4 border-t border-indigo-800/60 flex items-center justify-between">
@@ -109,12 +150,19 @@
             </div>
         </aside>
 
+        <!-- CONTENIDO PRINCIPAL -->
         <div class="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-            <header class="bg-white shadow-sm border-b px-8 py-4 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-slate-700">Módulo Odontológico</h2>
+            <header class="bg-white shadow-sm border-b px-4 sm:px-8 py-4 flex justify-between items-center sticky top-0 z-30">
+                <div class="flex items-center space-x-3">
+                    <!-- Botón hamburguesa para activar el menú en móviles -->
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <h2 class="text-base sm:text-lg font-semibold text-slate-700">Módulo Odontológico</h2>
+                </div>
 
                 <div class="flex items-center space-x-4">
-                    <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5">
+                    <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full hidden sm:flex items-center space-x-1.5">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                         <span>
                             <?= $_SESSION['usuario_nombre'] ?? 'Usuario' ?>
@@ -128,7 +176,7 @@
                 </div>
             </header>
 
-            <main class="p-8 max-w-7xl mx-auto w-full flex-grow">
+            <main class="p-4 sm:p-8 max-w-7xl mx-auto w-full flex-grow">
                 <?php if (!empty($_SESSION['error_acceso'])): ?>
                     <div class="mb-4 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center justify-between shadow-sm">
                         <div class="flex items-center gap-2">
@@ -142,16 +190,26 @@
                     <?php unset($_SESSION['error_acceso']); ?>
                 <?php endif; ?>
 
+
                 <script>
                     // Inicializar íconos Lucide
                     lucide.createIcons();
 
-                    // Función para abrir/cerrar desplegables
+                    // Función para abrir/cerrar desplegables de historias clínicas
                     function toggleDropdown(menuId, arrowId) {
                         const menu  = document.getElementById(menuId);
                         const arrow = document.getElementById(arrowId);
 
                         menu.classList.toggle('hidden');
                         arrow.classList.toggle('rotate-180');
+                    }
+
+                    // Función para abrir/cerrar el menú lateral en dispositivos móviles
+                    function toggleSidebar() {
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('sidebar-overlay');
+
+                        sidebar.classList.toggle('-translate-x-full');
+                        overlay.classList.toggle('hidden');
                     }
                 </script>
