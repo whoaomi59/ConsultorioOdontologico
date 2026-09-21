@@ -38,6 +38,12 @@ $seccionesPermisos = [
             'citas_editar' => 'citas_editar',
             'citas_eliminar' => 'citas_eliminar',
         ]
+    ],
+    'Configuraciones' => [
+        'icon' => 'folder-heart',
+        'modulos' => [
+            'configuracion' => 'Configuraciones',
+        ]
     ]
 ];
 ?>

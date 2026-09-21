@@ -38,7 +38,7 @@ $nombreConsultorio = $infoConsultorio['Nombre'] ?? ($infoConsultorio['nombre'] ?
         <!-- ASIDE / MENÚ LATERAL -->
         <aside id="sidebar" class="w-64 bg-indigo-900 text-white flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static min-h-screen shadow-lg shrink-0 transition-transform duration-300 ease-in-out">
             <div class="p-5 border-b border-indigo-800/60 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-3 min-w-0 flex-1">
 
                     <!-- LOGOTIPO DINÁMICO O ICONO POR DEFECTO -->
                     <?php if (!empty($logoNavbar)): ?>
@@ -51,13 +51,16 @@ $nombreConsultorio = $infoConsultorio['Nombre'] ?? ($infoConsultorio['nombre'] ?
                         </div>
                     <?php endif; ?>
 
-                    <div>
-                        <h1 class="font-bold text-lg leading-none tracking-wide"><?= htmlspecialchars($nombreConsultorio) ?></h1>
+                    <div class="min-w-0 flex-1">
+                        <!-- Se añadió 'truncate', 'block' y un atributo 'title' para ver el nombre completo al pasar el mouse -->
+                        <h1 class="font-bold text-lg leading-none tracking-wide truncate block" title="<?= htmlspecialchars($nombreConsultorio) ?>">
+                            <?= htmlspecialchars($nombreConsultorio) ?>
+                        </h1>
                         <span class="text-xs text-indigo-300 font-normal">Gestión Odontológica</span>
                     </div>
                 </div>
                 <!-- Botón de cerrar menú en móviles -->
-                <button onclick="toggleSidebar()" class="lg:hidden text-indigo-300 hover:text-white p-1">
+                <button onclick="toggleSidebar()" class="lg:hidden text-indigo-300 hover:text-white p-1 shrink-0 ml-2">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>

@@ -12,12 +12,7 @@
                 <p class="text-xs text-slate-300 mt-1">Administra la información institucional y la paleta de convenciones clínicas.</p>
             </div>
         </div>
-        <div class="relative z-10">
-            <button type="submit" form="form-configuracion" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-2xl text-xs shadow-lg shadow-indigo-600/30 transition-all duration-300 hover:scale-105 cursor-pointer">
-                <i data-lucide="save" class="w-4 h-4"></i>
-                <span>Guardar Cambios</span>
-            </button>
-        </div>
+
     </div>
 
     <!-- Alertas -->
@@ -95,6 +90,12 @@
                     </div>
                 </div>
             </div>
+            <div class="relative z-10">
+                <button type="submit" form="form-configuracion" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-2xl text-xs shadow-lg shadow-indigo-600/30 transition-all duration-300 hover:scale-105 cursor-pointer">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <span>Guardar Cambios</span>
+                </button>
+            </div>
         </div>
 
         <!-- SECCIÓN 2: GESTIÓN DE CONVENCIONES -->
@@ -109,9 +110,7 @@
                         <p class="text-[11px] text-slate-400">Define los códigos, colores y descripciones para el odontograma.</p>
                     </div>
                 </div>
-                <button type="button" id="btn-agregar-convencion" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition-all shadow-xs cursor-pointer">
-                    <i data-lucide="plus" class="w-4 h-4"></i> Nueva Convención
-                </button>
+
             </div>
 
             <div class="overflow-x-auto">
@@ -172,6 +171,9 @@
                         <?php endif; ?>
                     </tbody>
                 </table>
+                <button type="button" id="btn-agregar-convencion" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition-all shadow-xs cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Nueva Convención
+                </button>
             </div>
         </div>
 
