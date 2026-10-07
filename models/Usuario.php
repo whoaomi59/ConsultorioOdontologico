@@ -1,84 +1,236 @@
 <?php
+
 class Usuario {
     private $db;
 
-    public function __construct($dbConnection) {
-        $this->db = $dbConnection;
+    public function __construct($db) {
+        $this->db = $db;
     }
 
+    /* =========================================================
+       USUARIOS
+    ========================================================= */
+
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM usuarios ORDER BY id DESC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM usuarios ORDER BY id DESC";
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $sql  = "SELECT * FROM usuarios WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getByEmail($email) {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ? AND estado = 1 LIMIT 1");
+        $sql  = "SELECT * FROM usuarios WHERE email = ? AND estado = 1";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([$email]);
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create($data) {
-        $hashPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt         = $this->db->prepare("INSERT INTO usuarios (nombre, email, password, rol, foto, firma_base64, estado) VALUES (?, ?, ?, ?, ?, ?, 1)");
-        $stmt->execute([$data['nombre'],
-            $data['email'],$hashPassword,
-            $data['rol'],$data['foto'] ?? null,
+        $sql = "INSERT INTO usuarios
+            (nombre, email, password, rol, foto, firma_base64, estado)
+            VALUES (?, ?, ?, ?, ?, ?, 1)";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            $data['nombre'],
+            $data['email'],
+            $data['password'],
+            $data['rol'],
+            $data['foto'] ?? null,
             $data['firma_base64'] ?? null
         ]);
+
         return $this->db->lastInsertId();
     }
 
-    public function update($id, $data) {$fields = ["nombre = ?", "email = ?", "rol = ?", "estado = ?"];
-        $params = [$data['nombre'],$data['email'], $data['rol'],$data['estado']];
+    public function update($id, $data) {
+        $campos = [
+            'nombre = ?',
+            'email = ?',
+            'rol = ?',
+            'estado = ?'
+        ];
 
-        if (!empty($data['password'])) {$fields[] = "password = ?";
-            $params[] = password_hash($data['password'], PASSWORD_BCRYPT);
+        $valores = [
+            $data['nombre'],
+            $data['email'],
+            $data['rol'],
+            $data['estado']
+        ];
+
+        if (isset($data['password']) && trim($data['password']) !== '') {
+            $campos[]  = 'password = ?';
+            $valores[] = $data['password'];
         }
 
-        if (!empty($data['foto'])) {$fields[] = "foto = ?";
-            $params[] = $data['foto'];
+        if (array_key_exists('foto', $data)) {
+            $campos[]  = 'foto = ?';
+            $valores[] = $data['foto'];
         }
 
-        if (isset($data['firma_base64'])) {$fields[] = "firma_base64 = ?";
-            $params[] = $data['firma_base64'];
+        if (array_key_exists('firma_base64', $data)) {
+            $campos[]  = 'firma_base64 = ?';
+            $valores[] = $data['firma_base64'];
         }
 
-        $params[] = $id;
-        $sql      = "UPDATE usuarios SET " . implode(', ', $fields) . " WHERE id = ?";
+        $valores[] = $id;
+
+        $sql = "UPDATE usuarios SET "
+        . implode(', ', $campos)
+        . " WHERE id = ?";
 
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute($params);
-    }
 
-    public function delete($id) {
-        $stmt = $this->db->prepare("DELETE FROM usuarios WHERE id = ?");
-        return $stmt->execute([$id]);
+        return $stmt->execute($valores);
     }
 
     public function getPermisos($usuario_id) {
-        $stmt = $this->db->prepare("SELECT modulo FROM usuario_permisos WHERE usuario_id = ?");
+        $sql = "SELECT modulo
+            FROM usuario_permisos
+            WHERE usuario_id = ?";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([$usuario_id]);
+
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function syncPermisos($usuario_id, array$modulos) {
-        $stmtDel = $this->db->prepare("DELETE FROM usuario_permisos WHERE usuario_id = ?");
-        $stmtDel->execute([$usuario_id]);
+    public function syncPermisos($usuario_id, $modulos) {
+        $sql  = "DELETE FROM usuario_permisos WHERE usuario_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$usuario_id]);
 
-        $stmtIns = $this->db->prepare("INSERT INTO usuario_permisos (usuario_id, modulo) VALUES (?, ?)");
-        foreach ($modulos as $modulo) {$stmtIns->execute([$usuario_id,$modulo]);
+        if (!empty($modulos)) {
+            $sqlInsert = "INSERT INTO usuario_permisos
+                (usuario_id, modulo)
+                VALUES (?, ?)";
+
+            $stmtInsert = $this->db->prepare($sqlInsert);
+
+            foreach ($modulos as $modulo) {
+                $stmtInsert->execute([
+                    $usuario_id,
+                    $modulo
+                ]);
+            }
         }
     }
 
     public function updateUltimoAcceso($id) {
-        $stmt = $this->db->prepare("UPDATE usuarios SET ultimo_acceso = NOW() WHERE id = ?");
+        $sql = "UPDATE usuarios
+            SET ultimo_acceso = NOW()
+            WHERE id = ?";
+
+        $stmt = $this->db->prepare($sql);
+
         return $stmt->execute([$id]);
     }
+
+
+    /* =========================================================
+       AGENDA PERSONAL DEL DOCTOR
+    ========================================================= */
+
+    public function getFechasAtencion($usuarioId) {
+        $sql = "SELECT
+            id,
+            usuario_id,
+            fecha,
+            hora_inicio
+            FROM fechas_atencion_doctores
+            WHERE usuario_id = ?
+            ORDER BY fecha ASC, hora_inicio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$usuarioId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getFechasAtencionFuturas($usuarioId) {
+        $sql = "SELECT
+            id,
+            usuario_id,
+            fecha,
+            hora_inicio
+            FROM fechas_atencion_doctores
+            WHERE usuario_id = ?
+            AND fecha >= CURDATE()
+            ORDER BY fecha ASC, hora_inicio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$usuarioId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function fechaAtencionExiste($usuarioId, $fecha, $hora) {
+        $sql = "SELECT id
+            FROM fechas_atencion_doctores
+            WHERE usuario_id = ?
+            AND fecha = ?
+            AND hora_inicio = ?
+            LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            $usuarioId,
+            $fecha,
+            $hora
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function crearFechaAtencion($usuarioId, $fecha, $hora) {
+        $sql = "INSERT INTO fechas_atencion_doctores
+            (usuario_id, fecha, hora_inicio)
+            VALUES (?, ?, ?)";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            $usuarioId,
+            $fecha,
+            $hora
+        ]);
+    }
+
+    public function getFechaAtencionById($id, $usuarioId) {
+        $sql = "SELECT *
+            FROM fechas_atencion_doctores
+            WHERE id = ?
+            AND usuario_id = ?";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            $id,
+            $usuarioId
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function eliminarFechaAtencion($id, $usuarioId) {
+        $sql = "DELETE FROM fechas_atencion_doctores
+            WHERE id = ?
+            AND usuario_id = ?
+            AND fecha >= CURDATE()";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            $id,
+            $usuarioId
+        ]);
+    }
 }
-?>
