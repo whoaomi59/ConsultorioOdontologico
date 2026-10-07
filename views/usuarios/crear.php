@@ -34,6 +34,7 @@ $seccionesPermisos = [
         'icon' => 'folder-heart',
         'modulos' => [
             'citas' => 'Citas',
+            'citas_total' => 'citas_total',
             'citas_ver' => 'citas_ver',
             'citas_editar' => 'citas_editar',
             'citas_eliminar' => 'citas_eliminar',

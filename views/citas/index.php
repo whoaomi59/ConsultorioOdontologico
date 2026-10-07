@@ -11,26 +11,93 @@ if (!empty($citas)) {
 // Configuración inicial
 $hoy          = date('Y-m-d');
 $inicioSemana = date('Y-m-d', strtotime('monday this week'));
+
+
+
+/*
+|--------------------------------------------------------------------------
+| FECHAS PERMITIDAS PARA EL USUARIO
+|--------------------------------------------------------------------------
+*/
+
+$fechasPermitidas    = [];
+$horasInicioPorFecha = [];
+
+if (!empty($fechasAtencion)) {
+    foreach ($fechasAtencion as $fa) {
+        $fechaKey                       = date('Y-m-d', strtotime($fa['fecha']));
+        $fechasPermitidas[]             = $fechaKey;
+        $horasInicioPorFecha[$fechaKey] = substr(
+        $fa['hora_inicio'],
+        0,
+        5
+        );
+    }
+}
+
+$agendaDisponible = !empty($tieneCitasTotal) || !empty($fechasPermitidas);
+
+
 ?>
 
 <div class="max-w-7xl mx-auto space-y-6 font-sans pb-12 px-3 sm:px-6">
 
+
     <!-- Encabezado Principal Estilizado -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-5 sm:p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
+
         <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
         <div class="relative z-10 w-full sm:w-auto">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-2 border border-indigo-500/30">
-                <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> Módulo de Gestión
+                <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i>
+                Módulo de Gestión
             </div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight">Agenda de Citas</h1>
-            <p class="text-xs text-slate-300 mt-1">Gestión, control e historial de citas médicas del sistema clínico en tiempo real.</p>
+
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight">
+                Agenda de Citas
+            </h1>
+
+            <p class="text-xs text-slate-300 mt-1">
+                Gestión, control e historial de citas médicas del sistema clínico en tiempo real.
+            </p>
         </div>
-        <button id="btn-nueva-cita" class="relative z-10 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+
+        <?php if ($agendaDisponible): ?>
+
+            <button
+            id="btn-nueva-cita"
+            class="relative z-10 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+
             <i data-lucide="plus" class="w-4 h-4"></i>
+
             <span>Agendar Nueva Cita</span>
+
         </button>
+
+    <?php endif; ?>
+
+</div>
+<?php if (!$agendaDisponible): ?>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-3xl p-8 text-center">
+
+        <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="calendar-off" class="w-7 h-7"></i>
+        </div>
+
+        <h2 class="text-lg font-black text-slate-800">
+            No tienes días de atención programados
+        </h2>
+
+        <p class="text-sm text-slate-500 mt-2 max-w-xl mx-auto">
+            Actualmente no tienes ninguna fecha asignada para atender pacientes.
+            Cuando se programe un día de atención, aparecerá aquí tu agenda.
+        </p>
+
     </div>
 
+<?php else: ?>
     <!-- Barra de Control: Navegación de Fechas y Cambiador de Vista -->
     <div class="bg-white p-4 rounded-3xl border border-slate-200/60 shadow-xs flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto justify-between md:justify-start">
@@ -199,9 +266,9 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             </tbody>
         </table>
     </div>
-</div>
-</div>
-
+    </div>
+    </div>
+<?php endif; ?>
 <!-- Modal: Registrar o Editar Cita -->
 <div id="modal-cita" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 transition-all opacity-0 pointer-events-none duration-200">
     <div id="modal-contenido" class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 space-y-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200 max-h-[90vh] overflow-y-auto">
@@ -217,6 +284,7 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 
         <form action="<?= BASE_URL ?>/cita/guardar" method="POST" class="space-y-4 text-xs">
             <input type="hidden" name="id" id="cita_id_hidden">
+            <input type="hidden" id="estado_original_hidden" value="">
 
             <!-- Autocompletado Paciente -->
             <div class="relative">
@@ -224,7 +292,7 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
                 </label>
                 <input type="hidden" name="paciente_id" id="paciente_id_hidden" required>
                 <div class="relative">
-                    <input type="text" id="buscador-paciente-input" placeholder="Escribe el nombre o documento del paciente..." autocomplete="off" class="w-full px-3.5 py-3 pl-10 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
+                    <input type="text" id="buscador-paciente-input" placeholder="Escribe el nombre o documento del paciente..." autocomplete="off" class="w-full px-3.5 py-3 pl-10 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs" required>
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
                 </div>
                 <div id="sugerencias-box" class="absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-48 overflow-y-auto z-50 hidden divide-y divide-slate-100"></div>
@@ -251,39 +319,82 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             </div>
 
             <!-- Selector de Estado de la Cita -->
-            <div>
-                <label class="block font-bold text-slate-700 mb-2">Estado de la Cita</label>
-                <select name="estado" id="input_estado" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="atendida">Atendida</option>
-                    <option value="cancelada">Cancelada</option>
-                </select>
-                <p id="alerta-estado-atendida" class="text-[11px] text-emerald-600 font-bold mt-1.5 hidden flex items-center gap-1">
-                    <i data-lucide="lock" class="w-3.5 h-3.5 inline"></i> Esta cita ya fue atendida. Sus datos están bloqueados y no se pueden modificar.
-                </p>
-            </div>
+            <div id="contenedor-estado-cita" class="hidden">
+                <label class="block font-bold text-slate-700 mb-2">
+                    Estado de la Cita
+                </label>
 
-            <div>
-                <label class="block font-bold text-slate-700 mb-2">Motivo de Consulta</label>
-                <textarea name="motivo" id="input_motivo" rows="3" placeholder="Ej. Procedimiento largo, control u ortodoncia avanzada" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs resize-none"></textarea>
-            </div>
+                <select
+                name="estado"
+                id="input_estado"
+                class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs"
+                >
+                <option value="pendiente">Pendiente</option>
+                <option value="atendida">Atendida</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
 
-            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-100" id="contenedor-botones-modal">
-                <button type="button" id="btn-cancelar-modal" class="w-full sm:w-auto px-5 py-2.5 border border-slate-200 hover:bg-slate-50 rounded-2xl font-bold text-slate-600 transition-all cursor-pointer text-center">Cancelar</button>
-                <button type="submit" id="btn-guardar-cambios" class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-sm transition-all cursor-pointer text-center">Guardar Cambios</button>
-            </div>
-        </form>
+            <p
+            id="alerta-estado-atendida"
+            class="text-[11px] text-emerald-600 font-bold mt-1.5 hidden flex items-center gap-1"
+            >
+            <i data-lucide="lock" class="w-3.5 h-3.5 inline"></i>
+            Esta cita ya fue atendida. Sus datos están bloqueados y no se pueden modificar.
+        </p>
     </div>
+
+    <div>
+        <label class="block font-bold text-slate-700 mb-2">Motivo de Consulta</label>
+        <textarea name="motivo" id="input_motivo" rows="3" placeholder="Ej. Procedimiento largo, control u ortodoncia avanzada" class="w-full px-3.5 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-slate-800 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all shadow-2xs resize-none"></textarea>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-100" id="contenedor-botones-modal">
+        <button type="button" id="btn-cancelar-modal" class="w-full sm:w-auto px-5 py-2.5 border border-slate-200 hover:bg-slate-50 rounded-2xl font-bold text-slate-600 transition-all cursor-pointer text-center">Cancelar</button>
+        <button type="submit" id="btn-guardar-cambios" class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-sm transition-all cursor-pointer text-center">Guardar Cambios</button>
+    </div>
+</form>
+</div>
 </div>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         lucide.createIcons();
-        const BASE_URL  = "<?= BASE_URL ?>";
-        const citasData = <?= json_encode($citasPorFecha) ?>;
+        const BASE_URL = "<?= BASE_URL ?>";
+
+        const citasData = <?= json_encode(
+        $citasPorFecha,
+        JSON_UNESCAPED_UNICODE
+        ) ?>;
+
+        const tieneCitasTotal =
+        <?= !empty($tieneCitasTotal) ? 'true' : 'false' ?>;
+
+        const fechasPermitidas =
+        <?= json_encode(array_values($fechasPermitidas)) ?>;
+
+        const horasInicioPorFecha =
+        <?= json_encode($horasInicioPorFecha) ?>;
 
         let fechaActual = new Date();
+
+        if (!tieneCitasTotal && fechasPermitidas.length > 0) {
+            fechaActual = new Date(
+            fechasPermitidas[0] + 'T00:00:00'
+            );
+        }
+        function fechaEstaPermitida(fecha) {
+
+            if (tieneCitasTotal) {
+                return true;
+            }
+
+            return fechasPermitidas.includes(fecha);
+        }
+        ///
+
+
+
 
         const periodLabel   = document.getElementById('period-label');
         const semanaHeaders = document.getElementById('semana-headers');
@@ -342,9 +453,19 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             let finLabel = '';
 
             for (let i = 0; i < 7; i++) {
+
                 let d = new Date(lunes);
+
                 d.setDate(lunes.getDate() + i);
+
                 let fechaStr = formatDateKey(d);
+
+                // Los usuarios sin citas_total solamente pueden
+                // visualizar sus fechas programadas.
+                if (!fechaEstaPermitida(fechaStr)) {
+                    continue;
+                }
+
                 let esHoy = (fechaStr === hoyStr);
 
                 if (i === 0) inicioLabel = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -419,8 +540,18 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
             }
 
             for (let dia = 1; dia <= diasEnMes; dia++) {
-                let fechaFormato = `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-                let countCitas = (citasData[fechaFormato] || []).length;
+
+                let fechaFormato =
+                `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+
+                // Los usuarios sin citas_total solamente pueden
+                // visualizar sus fechas programadas.
+                if (!fechaEstaPermitida(fechaFormato)) {
+                    continue;
+                }
+
+                let countCitas =
+                (citasData[fechaFormato] || []).length;
                 let esHoyMes = (fechaFormato === hoyStr);
 
                 let cell = document.createElement('div');
@@ -492,31 +623,60 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
         });
 
         document.getElementById('btn-nueva-cita')?.addEventListener('click', () => {
+
             modalTitulo.textContent = "Agendar Nueva Cita";
-            modalSubtitulo.textContent = "Complete los detalles para programar la atención médica.";
+            modalSubtitulo.textContent =
+            "Complete los detalles para programar la atención médica.";
+
             document.getElementById('cita_id_hidden').value = '';
+
+            // Nueva cita: estado original vacío
+            document.getElementById('estado_original_hidden').value = '';
+
             document.getElementById('paciente_id_hidden').value = '';
             document.getElementById('buscador-paciente-input').value = '';
             document.getElementById('buscador-paciente-input').disabled = false;
+
             document.getElementById('input_fecha').value = '';
             document.getElementById('input_fecha').disabled = false;
+
             document.getElementById('input_hora').value = '';
             document.getElementById('input_hora').disabled = false;
 
             document.getElementById('input_hora_fin').value = '';
             document.getElementById('input_hora_fin').disabled = false;
+
             document.getElementById('grupo-hora-final').classList.add('hidden');
             document.getElementById('contenedor-hora-inicio').className = "col-span-4";
 
-            const selectEstado = document.getElementById('input_estado');
+            // Estado oculto al crear
+            const contenedorEstado =
+            document.getElementById('contenedor-estado-cita');
+
+            const selectEstado =
+            document.getElementById('input_estado');
+
             selectEstado.value = 'pendiente';
             selectEstado.disabled = false;
-            selectEstado.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
-            document.getElementById('alerta-estado-atendida').classList.add('hidden');
+
+            contenedorEstado.classList.add('hidden');
+
+            selectEstado.classList.remove(
+            'bg-slate-100',
+            'cursor-not-allowed',
+            'text-slate-500'
+            );
+
+            document
+            .getElementById('alerta-estado-atendida')
+            .classList.add('hidden');
 
             document.getElementById('input_motivo').value = '';
             document.getElementById('input_motivo').disabled = false;
-            document.getElementById('btn-guardar-cambios').classList.remove('hidden');
+
+            document
+            .getElementById('btn-guardar-cambios')
+            .classList.remove('hidden');
 
             abrirModal();
         });
@@ -529,6 +689,15 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
 
             const estadoActual = btnEditar.dataset.estado || 'pendiente';
             const esAtendida   = (estadoActual === 'atendida');
+
+            // Guardamos el estado ORIGINAL de la cita
+            document.getElementById('estado_original_hidden').value = estadoActual;
+
+            // Al editar sí mostramos el selector de estado
+            document
+            .getElementById('contenedor-estado-cita')
+            .classList.remove('hidden');
+
 
             if (esAtendida) {
                 modalTitulo.textContent = "Detalles de Cita Atendida";
@@ -602,15 +771,61 @@ $inicioSemana = date('Y-m-d', strtotime('monday this week'));
         });
 
         // Asegurar campos habilitados antes de enviar (por si acaso el navegador bloquea disabled al enviar)
+        // Validaciones antes de guardar
         document.querySelector('#modal-cita form').addEventListener('submit', function(e) {
-            const estadoInput = document.getElementById('input_estado').value;
-            if (estadoInput === 'atendida') {
-                // Doble seguridad en cliente: prohibir envío si de alguna forma se intentó alterar
+
+            const pacienteId =
+            document.getElementById('paciente_id_hidden').value.trim();
+
+            const estadoOriginal =
+            document.getElementById('estado_original_hidden').value;
+
+            // Validar paciente
+            if (
+            !pacienteId ||
+            !/^\d+$/.test(pacienteId) ||
+            parseInt(pacienteId, 10) <= 0
+            ) {
                 e.preventDefault();
-                alert('No se pueden guardar cambios en una cita que ya se encuentra atendida.');
-                cerrarModal();
+
+                alert(
+                'Debes seleccionar un paciente válido de la lista antes de guardar la cita.'
+                );
+
+                document
+                .getElementById('buscador-paciente-input')
+                .focus();
+
                 return;
             }
+
+        /*
+     * IMPORTANTE:
+     *
+     * Solo bloqueamos si la cita YA estaba atendida.
+     *
+     * Si estaba pendiente y ahora pasa a atendida,
+     * sí permitimos guardar.
+     */
+            if (estadoOriginal === 'atendida') {
+                e.preventDefault();
+
+                alert(
+                'Esta cita ya fue atendida y no puede modificarse.'
+                );
+
+                cerrarModal();
+
+                return;
+            }
+
+            // Si llegamos aquí:
+            // pendiente -> atendida     ✅
+            // pendiente -> cancelada    ✅
+            // pendiente -> pendiente    ✅
+            // nueva cita                ✅
+
+            // Aseguramos que el estado viaje al servidor
             document.getElementById('input_estado').disabled = false;
         });
 

@@ -14,7 +14,31 @@ class CitaController {
     // LISTAR CITAS (Agenda principal)
     public function index() {
         requirePermission('citas');
-        $citas     = $this->citaModel->getAll();
+
+        $usuarioId = $_SESSION['usuario_id'] ?? null;
+
+        // Verificamos si el usuario puede ver toda la agenda.
+        $tieneCitasTotal = hasPermission('citas_total');
+
+        if ($tieneCitasTotal) {
+
+            // Puede ver absolutamente todas las citas.
+            $citas = $this->citaModel->getAll();
+
+            // No necesita restricción de fechas.
+            $fechasAtencion = [];
+
+        } else {
+
+            // Solo obtiene las fechas que tiene programadas.
+            $fechasAtencion = $this->citaModel
+            ->getFechasAtencionDoctor($usuarioId);
+
+            // Solo obtiene citas pertenecientes a esas fechas.
+            $citas = $this->citaModel
+            ->getCitasPorFechasDoctor($usuarioId);
+        }
+
         $pacientes = $this->pacienteModel->getAll();
 
         require_once ROOT_PATH . '/views/layout/header.php';
@@ -25,6 +49,8 @@ class CitaController {
     // GUARDAR O ACTUALIZAR CITA
     // GUARDAR O ACTUALIZAR CITA
     public function guardar() {
+        requirePermission('citas');
+
         $id         = $_POST['id'] ?? null;
         $pacienteId = $_POST['paciente_id'] ?? null;
         $fecha      = $_POST['fecha'] ?? null;
@@ -32,37 +58,81 @@ class CitaController {
         $estado     = $_POST['estado'] ?? 'pendiente';
         $motivo     = $_POST['motivo'] ?? '';
 
+        $usuarioId = $_SESSION['usuario_id'] ?? null;
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | VALIDAR FECHA PROGRAMADA
+    |--------------------------------------------------------------------------
+    */
+
+        if (!hasPermission('citas_total')) {
+
+            if (!$this->citaModel->fechaEstaProgramada($usuarioId, $fecha)) {
+
+                $_SESSION['error_acceso'] =
+                'No tienes programada atención para la fecha seleccionada.';
+
+                header('Location: ' . BASE_URL . '/cita');
+                exit();
+            }
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | ACTUALIZAR
+    |--------------------------------------------------------------------------
+    */
+
         if ($id) {
-            // AL ACTUALIZAR: Se permite modificar la hora final enviada desde el formulario
+
             $horaFinal = $_POST['hora_final'] ?? null;
 
             $this->citaModel->update([
-                'id'         => $id,
-                'paciente_id'=> $pacienteId,
-                'fecha'      => $fecha,
-                'hora'       => $hora,
-                'hora_final' => $horaFinal,
-                'estado'     => $estado,
-                'motivo'     => $motivo
+                'id'          => $id,
+                'paciente_id' => $pacienteId,
+                'fecha'       => $fecha,
+                'hora'        => $hora,
+                'hora_final'  => $horaFinal,
+                'estado'      => $estado,
+                'motivo'      => $motivo
             ]);
+
         } else {
-            // AL CREAR: Por defecto calculamos 30 minutos más a la hora de inicio
+
+            /*
+        |--------------------------------------------------------------------------
+        | CREAR
+        |--------------------------------------------------------------------------
+        */
+
             if ($hora) {
+
                 $timestampInicio = strtotime($hora);
-                $horaFinal       = date('H:i:s', strtotime('+30 minutes', $timestampInicio));
+
+                $horaFinal = date(
+                'H:i:s',
+                strtotime('+30 minutes', $timestampInicio)
+                );
+
             } else {
+
                 $horaFinal = null;
             }
 
+
             $this->citaModel->create([
-                'paciente_id'=> $pacienteId,
-                'fecha'      => $fecha,
-                'hora'       => $hora,
-                'hora_final' => $horaFinal, // Se guarda con los 30 minutos por defecto
-                'estado'     => $estado,
-                'motivo'     => $motivo
+                'paciente_id' => $pacienteId,
+                'fecha'       => $fecha,
+                'hora'        => $hora,
+                'hora_final'  => $horaFinal,
+                'estado'      => $estado,
+                'motivo'      => $motivo
             ]);
         }
+
 
         header('Location: ' . BASE_URL . '/cita');
         exit();

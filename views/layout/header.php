@@ -79,7 +79,7 @@ $nombreConsultorio = $infoConsultorio['Nombre'] ?? ($infoConsultorio['nombre'] ?
                 <?php endif; ?>
 
                 <?php if (hasPermission('citas')): ?>
-                    <a href="<?= BASE_URL ?>/cita/index" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
+                    <a href="<?= BASE_URL ?>/cita" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-indigo-800/70 text-indigo-100 font-medium transition text-sm">
                         <i data-lucide="calendar" class="w-5 h-5 text-indigo-300"></i>
                         <span>Citas Odontológicas</span>
                     </a>
