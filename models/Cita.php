@@ -127,6 +127,30 @@ class Cita
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Indica si la fecha está asignada a un doctor diferente.
+     */
+    public function fechaAsignadaAOtroDoctor($usuarioId, $fecha)
+    {
+        if (empty($usuarioId) || empty($fecha)) {
+            return false;
+        }
+
+        $sql = "SELECT id
+            FROM fechas_atencion_doctores
+            WHERE fecha = :fecha
+            AND usuario_id <> :usuario_id
+            LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':fecha' => $fecha,
+            ':usuario_id' => (int) $usuarioId,
+        ]);
+
+        return (bool) $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function fechaEstaProgramada($usuarioId, $fecha)
     {
         if (empty($usuarioId) || empty($fecha)) {

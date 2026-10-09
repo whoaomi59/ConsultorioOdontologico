@@ -88,6 +88,14 @@ class CitaController
                 exit();
             }
 
+            // Impedir citas en una fecha que pertenezca a otro doctor.
+            if ($this->citaModel->fechaAsignadaAOtroDoctor($usuarioId, $fecha)) {
+                $_SESSION['error_acceso'] = 'La fecha seleccionada ya está asignada a otro doctor.';
+
+                header('Location: ' . BASE_URL . '/cita');
+                exit();
+            }
+
             // Comprobar que el doctor tenga ese día programado
             if (!$this->citaModel->fechaEstaProgramada($usuarioId, $fecha)) {
                 $_SESSION['error_acceso'] = 'No tienes programada atención para la fecha seleccionada.';
