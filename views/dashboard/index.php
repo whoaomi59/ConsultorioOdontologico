@@ -110,6 +110,188 @@ $citasHoy = is_array($citasHoy ?? null) ? $citasHoy : [];
             padding: 0.8rem 0.7rem !important;
         }
     }
+    
+    /* EDICIÓN ULTRA PREMIUM: identidad clínica azul noche + turquesa */
+    .dashboard-shell {
+        --clinic-night: #101d35;
+        --clinic-blue: #2457a7;
+        --clinic-teal: #0b938b;
+        --clinic-mint: #b9fff0;
+        position: relative;
+        isolation: isolate;
+    }
+    .dashboard-hero {
+        background: linear-gradient(118deg, #101b32 0%, #183e68 48%, #087f7b 100%) !important;
+        border: 1px solid rgba(180, 246, 237, 0.25) !important;
+        box-shadow:
+            0 24px 60px rgba(16, 37, 65, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    }
+    .dashboard-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.22;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(110deg, #000, transparent 78%);
+    }
+    .dashboard-hero::after {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        right: -90px;
+        bottom: -205px;
+        border: 1px solid rgba(185, 255, 240, 0.25);
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 28px rgba(185, 255, 240, 0.035),
+            0 0 0 58px rgba(185, 255, 240, 0.025);
+        pointer-events: none;
+    }
+    .dashboard-hero h1 {
+        text-wrap: balance;
+        text-shadow: 0 3px 22px rgba(0, 0, 0, 0.16);
+    }
+    .dashboard-hero .relative {
+        z-index: 1;
+    }
+    .dashboard-hero .rounded-full {
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+    }
+    .dashboard-card {
+        border-color: #e2eaf1;
+        border-radius: 1.45rem;
+        box-shadow:
+            0 8px 28px rgba(20, 39, 66, 0.045),
+            0 1px 2px rgba(20, 39, 66, 0.025);
+        backdrop-filter: blur(8px);
+    }
+    .dashboard-card:hover {
+        border-color: #c6dedf;
+        box-shadow:
+            0 18px 42px rgba(20, 50, 76, 0.09),
+            0 3px 8px rgba(20, 50, 76, 0.035);
+    }
+    .dashboard-stat {
+        min-height: 158px;
+        background: linear-gradient(145deg, #fff 0%, #fff 56%, #f7fbfc 100%);
+    }
+    .dashboard-stat::before {
+        content: '';
+        position: absolute;
+        inset: 0 22% auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, #2d5ed7, #19b7ad, transparent);
+        opacity: 0.9;
+    }
+    .dashboard-stat::after {
+        opacity: 0.65;
+        filter: blur(1px);
+    }
+    .dashboard-stat .dashboard-icon {
+        border-radius: 16px;
+        box-shadow: 0 7px 16px rgba(20, 50, 76, 0.055);
+        transition: transform 0.25s ease;
+    }
+    .dashboard-stat:hover .dashboard-icon {
+        transform: rotate(-4deg) scale(1.06);
+    }
+    .dashboard-stat p.text-3xl {
+        letter-spacing: -0.055em;
+    }
+    .dashboard-shortcut {
+        position: relative;
+        overflow: hidden;
+        min-height: 138px;
+        border-color: #e2eaf1;
+        background: linear-gradient(145deg, #fff 0%, #f5f9fc 100%);
+        box-shadow: 0 3px 10px rgba(17, 39, 67, 0.025);
+    }
+    .dashboard-shortcut::after {
+        content: '';
+        position: absolute;
+        width: 85px;
+        height: 85px;
+        right: -42px;
+        bottom: -48px;
+        border-radius: 50%;
+        background: rgba(13, 148, 136, 0.08);
+        transition: transform 0.25s ease;
+        pointer-events: none;
+    }
+    .dashboard-shortcut:hover {
+        border-color: #a9dcd5;
+        background: linear-gradient(145deg, #fff 0%, #f0fbf9 100%);
+        box-shadow: 0 16px 30px rgba(12, 91, 105, 0.1);
+    }
+    .dashboard-shortcut:hover::after {
+        transform: scale(1.55);
+    }
+    .dashboard-shortcut .dashboard-icon {
+        border-radius: 16px;
+        box-shadow: 0 6px 15px rgba(22, 45, 74, 0.055);
+    }
+    .dashboard-section-title {
+        color: #14243b;
+    }
+    .dashboard-table thead tr {
+        background: linear-gradient(90deg, #f2f7fb, #f7fbfb) !important;
+    }
+    .dashboard-table tbody tr:hover {
+        background: #f1faf9;
+    }
+    .dashboard-table tbody tr td:first-child {
+        position: relative;
+    }
+    .dashboard-table tbody tr:hover td:first-child::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 18%;
+        bottom: 18%;
+        width: 3px;
+        border-radius: 0 4px 4px 0;
+        background: #0b938b;
+    }
+    .dashboard-shell aside .rounded-2xl {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+    .dashboard-shell aside .rounded-2xl:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(22, 45, 74, 0.055);
+    }
+    .dashboard-shell a:focus-visible {
+        outline: 3px solid rgba(11, 147, 139, 0.42);
+        outline-offset: 3px;
+        border-radius: 12px;
+    }
+    @media (max-width: 640px) {
+        .dashboard-hero::after {
+            width: 210px;
+            height: 210px;
+            right: -100px;
+            bottom: -145px;
+        }
+        .dashboard-stat {
+            min-height: 135px;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .dashboard-stat .dashboard-icon,
+        .dashboard-shortcut::after,
+        .dashboard-shell aside .rounded-2xl {
+            transition: none !important;
+        }
+        .dashboard-shell aside .rounded-2xl:hover {
+            transform: none;
+        }
+    }
 </style>
 <div class="dashboard-shell mx-auto w-full max-w-7xl space-y-6 pb-8 font-sans">
     <!-- Bienvenida -->
