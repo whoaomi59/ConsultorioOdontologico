@@ -194,4 +194,101 @@ class PacienteController {
 
         return null;
     }
-}
+
+    public function exportar($tipo) {
+        requirePermission('pacientes_exportar'); // Ajusta el permiso según tu sistema
+        $pacientes = $this->pacienteModel->getAll();
+
+        if ($tipo === 'excel') {
+            // Exportar a Excel (CSV compatible con Excel mediante cabeceras)
+            header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+            header('Content-Disposition: attachment; filename="listado_pacientes_' . date('Y-m-d') . '.xls"');
+
+            echo "<table border='1'>";
+                echo "<thead>
+                    <tr style='background-color: #f2f2f2;'>";
+                    echo "<th>Tipo Doc</th>
+                        <th>Documento</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>";
+                    echo "
+                        </tr>
+                        </thead>
+                        <tbody>";
+
+                    foreach ($pacientes as $p) {
+                        echo "<tr>";
+                            echo "<td>" . htmlspecialchars($p['tipo_documento'] ?? 'CC') . "</td>";
+                            echo "<td>" . htmlspecialchars($p['documento']) . "</td>";
+                            echo "<td>" . htmlspecialchars($p['nombre']) . "</td>";
+                            echo "<td>" . htmlspecialchars($p['apellido']) . "</td>";
+                            echo "<td>" . htmlspecialchars($p['fecha_nacimiento']) . "</td>";
+                            echo "<td>" . htmlspecialchars($p['telefono']) . "</td>";
+                            echo "<td>" . htmlspecialchars($p['email']) . "</td>";
+                            echo "
+                                </tr>";
+                        }
+                        echo "
+                            </tbody>
+                            </table>";
+                        exit;
+                    }
+
+                    if ($tipo === 'pdf') {
+                        // Exportar a PDF utilizando la función de impresión nativa optimizada del navegador
+                        // Esto genera una vista limpia lista para Guardar como PDF sin requerir librerías pesadas como Dompdf
+                        ?>
+                        <!DOCTYPE html>
+                        <html lang="es">
+                            <head>
+                                <meta charset="UTF-8">
+                                <title>Listado de Pacientes</title>
+                                <style>
+                                    body { font-family: Arial, sans-serif; font-size: 12px; color: #333; margin: 20px; }
+                                    h1 { font-size: 18px; margin-bottom: 5px; color: #1e293b; }
+                                    p { color: #64748b; margin-bottom: 20px; }
+                                    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                                    th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
+                                    th { background-color: #f8fafc; color: #475569; font-weight: bold; font-size: 11px; text-transform: uppercase; }
+                                    tr:nth-child(even) { background-color: #f8fafc; }
+                                    @media print {
+                                        body { margin: 0; }
+                                        no-print { display: none; }
+                                    }
+                                </style>
+                            </head>
+                            <body onload="window.print();">
+                                <h1>Listado General de Pacientes</h1>
+                                <p>Fecha de generación: <?= date('d/m/Y H:i') ?></p>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Documento</th>
+                                            <th>Paciente</th>
+                                            <th>Fecha Nacimiento</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($pacientes as $p): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars(($p['tipo_documento'] ?? 'CC') . ' ' . $p['documento']) ?></td>
+                                                <td><?= htmlspecialchars($p['nombre'] . ' ' . $p['apellido']) ?></td>
+                                                <td><?= htmlspecialchars($p['fecha_nacimiento']) ?></td>
+                                                <td><?= htmlspecialchars($p['telefono'] ?: 'N/A') ?></td>
+                                                <td><?= htmlspecialchars($p['email'] ?: 'N/A') ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </body>
+                        </html>
+                        <?php
+                        exit;
+                    }
+                }
+            }
