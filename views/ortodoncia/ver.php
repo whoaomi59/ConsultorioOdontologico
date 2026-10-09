@@ -1,75 +1,92 @@
 <?php
 $nacimiento = new DateTime($paciente['fecha_nacimiento']);
-$hoy        = new DateTime();
-$edad       = $hoy->diff($nacimiento)->y;
+$hoy = new DateTime();
+$edad = $hoy->diff($nacimiento)->y;
 
 // Identificación para la Hoja N° (Número de documento del paciente)
-$documentoPaciente = $paciente['documento'] ?? $paciente['numero_documento'] ?? $paciente['identificacion'] ?? 'Sin Documento';
+$documentoPaciente = $paciente['documento'] ?? ($paciente['numero_documento'] ?? ($paciente['identificacion'] ?? 'Sin Documento'));
 
 // Dientes ordenados por cuadrantes (18 a 48)
 $dientes = [
-    '18','17','16','15','14','13','12','11', '21','22','23','24','25','26','27','28',
-    '48','47','46','45','44','43','42','41', '31','32','33','34','35','36','37','38'
+    '18',
+    '17',
+    '16',
+    '15',
+    '14',
+    '13',
+    '12',
+    '11',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '48',
+    '47',
+    '46',
+    '45',
+    '44',
+    '43',
+    '42',
+    '41',
+    '31',
+    '32',
+    '33',
+    '34',
+    '35',
+    '36',
+    '37',
+    '38',
 ];
 
 // Comprobar si se solicita modo edición
 $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($historia);
 ?>
-
-<div class="space-y-6">
+<div class="space-y-6 ortodoncia-premium ortodoncia-historia">
     <!-- Encabezado Institucional -->
-
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
         <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="relative z-10 flex items-center gap-4">
-
             <?php if (!empty($consultorio['Logo'])): ?>
                 <div class="w-14 h-14 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-center p-2 shadow-xs shrink-0">
                     <img src="<?= BASE_URL ?>/<?= htmlspecialchars($consultorio['Logo']) ?>" alt="Logo Consultorio" class="max-h-full max-w-full object-contain">
                 </div>
             <?php endif; ?>
-
             <div class="space-y-1">
                 <a href="<?= BASE_URL ?>/paciente/index" class="inline-flex items-center text-xs font-bold text-indigo-600 hover:text-indigo-800 gap-1.5 transition-colors print">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Directorio
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                    Volver al Directorio
                 </a>
-                <h1 class="text-lg md:text-xl font-extrabold text-slate-800 tracking-tight text-white">
-                    <?= htmlspecialchars($consultorio['Nombre'] ?? 'Historia de Ortodoncia Correctiva') ?>
-                </h1>
+                <h1 class="text-lg md:text-xl font-extrabold text-slate-800 tracking-tight text-white"><?= htmlspecialchars($consultorio['Nombre'] ?? 'Historia de Ortodoncia Correctiva') ?></h1>
                 <?php if (!empty($consultorio['direccion'])): ?>
                     <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5">
-                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i> <?= htmlspecialchars($consultorio['direccion']) ?>
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i>
+                        <?= htmlspecialchars($consultorio['direccion']) ?>
                     </p>
                 <?php endif; ?>
             </div>
         </div>
-
         <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
             <div class="bg-white px-4 py-2 rounded-xl border border-indigo-100 text-left md:text-right">
                 <span class="block text-[10px] font-extrabold text-indigo-400 uppercase tracking-wider">Hoja Clínica N°</span>
                 <span class="block text-sm font-black text-indigo-700"><?= htmlspecialchars($historia['hoja_numero'] ?? $paciente['documento']) ?></span>
             </div>
-
-
-
-
             <button type="button" onclick="window.print()" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-2xl text-xs shadow-lg shadow-indigo-600/30 transition-all duration-300 hover:scale-105">
-                <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / PDF
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                Imprimir / PDF
             </button>
         </div>
     </div>
-
-
     <?php if (!$historia || $esEdicion): ?>
         <!-- FORMULARIO DE HISTORIA BASE (CREACIÓN / EDICIÓN) -->
         <form action="<?= BASE_URL ?>/ortodoncia/<?= $esEdicion ? 'editarDiagnostico/' . $paciente['id'] : 'guardarDiagnostico/' . $paciente['id'] ?>" method="POST" id="form-diagnostico" class="space-y-6">
-
             <?php if ($esEdicion): ?>
                 <input type="hidden" name="historia_id" value="<?= htmlspecialchars($historia['id']) ?>">
             <?php endif; ?>
-
             <input type="hidden" name="hoja_numero" value="<?= htmlspecialchars($documentoPaciente) ?>">
-
             <?php if ($esEdicion): ?>
                 <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs font-medium flex items-center justify-between print shadow-xs">
                     <span class="flex items-center gap-2 font-semibold">
@@ -79,19 +96,16 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                     <a href="?" class="text-amber-900 underline font-bold hover:text-amber-950">Cancelar Edición</a>
                 </div>
             <?php endif; ?>
-
             <!-- 1. DATOS PERSONALES DEL PACIENTE -->
             <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
                 <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                    <i data-lucide="user" class="w-4 h-4"></i> 1. Información General
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                    1. Información General
                 </h3>
-
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
                     <div class="md:col-span-2">
                         <label class="font-bold block text-slate-500 text-[11px] uppercase tracking-wide mb-1.5">Paciente</label>
-                        <div class="px-3 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl font-bold text-slate-800 text-xs">
-                            <?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?>
-                        </div>
+                        <div class="px-3 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl font-bold text-slate-800 text-xs"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></div>
                     </div>
                     <div>
                         <label class="font-bold block text-slate-500 text-[11px] uppercase tracking-wide mb-1.5">Edad</label>
@@ -110,16 +124,17 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                         <textarea name="motivo_consulta" required rows="2" placeholder="Describe el motivo principal..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 outline-none resize-none"><?= htmlspecialchars($historia['motivo_consulta'] ?? '') ?></textarea>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-indigo-50/40 p-4 rounded-xl border border-indigo-100/60">
                     <div>
                         <label class="font-bold text-slate-700 block text-[11px] uppercase mb-2 tracking-wide">Tratamiento de ortodoncia previo</label>
                         <div class="flex gap-6">
                             <label class="flex items-center gap-2 cursor-pointer text-xs font-medium">
-                                <input type="radio" name="tratamiento_previo_ortodoncia" value="1" <?= ($historia['tratamiento_previo_ortodoncia'] ?? '') == '1' ? 'checked' : '' ?> class="text-indigo-600 focus:ring-indigo-500"> SÍ
+                                <input type="radio" name="tratamiento_previo_ortodoncia" value="1" <?= ($historia['tratamiento_previo_ortodoncia'] ?? '') == '1' ? 'checked' : '' ?> class="text-indigo-600 focus:ring-indigo-500">
+                                SÍ
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer text-xs font-medium">
-                                <input type="radio" name="tratamiento_previo_ortodoncia" value="0" <?= ($historia['tratamiento_previo_ortodoncia'] ?? '0') == '0' ? 'checked' : '' ?> class="text-indigo-600 focus:ring-indigo-500"> NO
+                                <input type="radio" name="tratamiento_previo_ortodoncia" value="0" <?= ($historia['tratamiento_previo_ortodoncia'] ?? '0') == '0' ? 'checked' : '' ?> class="text-indigo-600 focus:ring-indigo-500">
+                                NO
                             </label>
                         </div>
                     </div>
@@ -129,18 +144,19 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             <?php $tt = $historia['tipo_tratamiento'] ?? 'CORRECTIVO'; ?>
                             <?php foreach(['PREVENTIVO', 'CORRECTIVO', 'INTERCEPTIVO', 'ORTOPEDICOS', 'REMOVIBLE'] as $tipo): ?>
                                 <label class="flex items-center gap-1.5 cursor-pointer text-xs font-medium">
-                                    <input type="radio" name="tipo_tratamiento" value="<?= $tipo ?>" <?= $tt === $tipo ? 'checked' : '' ?> class="text-indigo-600"> <?= ucfirst(strtolower($tipo)) ?>
+                                    <input type="radio" name="tipo_tratamiento" value="<?= $tipo ?>" <?= $tt === $tipo ? 'checked' : '' ?> class="text-indigo-600">
+                                    <?= ucfirst(strtolower($tipo)) ?>
                                 </label>
                             <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- 1.1 ANÁLISIS FACIAL -->
             <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
                 <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                    <i data-lucide="scan-face" class="w-4 h-4"></i> 1.1 Análisis Facial
+                    <i data-lucide="scan-face" class="w-4 h-4"></i>
+                    1.1 Análisis Facial
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-4 bg-slate-50/60 p-4 rounded-xl border border-slate-100">
@@ -151,7 +167,8 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $tc = $historia['tipo_cara'] ?? ''; ?>
                                 <?php foreach(['MESOPROSOPO', 'EURIPROSOPO', 'LEPTOPROSOPO'] as $val): ?>
                                     <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="radio" name="tipo_cara" value="<?= $val ?>" <?= $tc === $val ? 'checked' : '' ?> class="text-indigo-600"> <?= ucfirst(strtolower($val)) ?>
+                                        <input type="radio" name="tipo_cara" value="<?= $val ?>" <?= $tc === $val ? 'checked' : '' ?> class="text-indigo-600">
+                                        <?= ucfirst(strtolower($val)) ?>
                                     </label>
                                 <?php endforeach; ?>
                             </div>
@@ -160,13 +177,13 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $ts = $historia['tipo_sonrisa'] ?? ''; ?>
                                 <?php foreach(['PAPILAR', 'GINGIVAL', 'CORONAL'] as $val): ?>
                                     <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="radio" name="tipo_sonrisa" value="<?= $val ?>" <?= $ts === $val ? 'checked' : '' ?> class="text-indigo-600"> <?= ucfirst(strtolower($val)) ?>
+                                        <input type="radio" name="tipo_sonrisa" value="<?= $val ?>" <?= $ts === $val ? 'checked' : '' ?> class="text-indigo-600">
+                                        <?= ucfirst(strtolower($val)) ?>
                                     </label>
                                 <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
-
                     <div class="space-y-4 bg-slate-50/60 p-4 rounded-xl border border-slate-100">
                         <h4 class="font-bold text-slate-700 text-[11px] bg-white py-1.5 px-3 rounded-lg border border-slate-200/60 uppercase tracking-wide">Examen de Perfil</h4>
                         <div class="grid grid-cols-2 gap-4 text-xs">
@@ -175,21 +192,23 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $pf = $historia['perfil_facial'] ?? ''; ?>
                                 <?php foreach(['RECTO', 'CONCAVO', 'CONVEXO'] as $val): ?>
                                     <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="radio" name="perfil_facial" value="<?= $val ?>" <?= $pf === $val ? 'checked' : '' ?> class="text-indigo-600"> <?= ucfirst(strtolower($val)) ?>
+                                        <input type="radio" name="perfil_facial" value="<?= $val ?>" <?= $pf === $val ? 'checked' : '' ?> class="text-indigo-600">
+                                        <?= ucfirst(strtolower($val)) ?>
                                     </label>
                                 <?php endforeach; ?>
                             </div>
                             <div class="space-y-2">
                                 <span class="block font-bold text-slate-500 uppercase text-[10px]">Hipertonía Labial</span>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="tonicidad_labial_sup" value="HIPERTONIA_SUP" <?= !empty($historia['tonicidad_labial_sup']) ? 'checked' : '' ?> class="text-indigo-600"> Superior
+                                    <input type="radio" name="tonicidad_labial_sup" value="HIPERTONIA_SUP" <?= !empty($historia['tonicidad_labial_sup']) ? 'checked' : '' ?> class="text-indigo-600">
+                                    Superior
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="tonicidad_labial_inf" value="HIPERTONIA_INF" <?= !empty($historia['tonicidad_labial_inf']) ? 'checked' : '' ?> class="text-indigo-600"> Inferior
+                                    <input type="radio" name="tonicidad_labial_inf" value="HIPERTONIA_INF" <?= !empty($historia['tonicidad_labial_inf']) ? 'checked' : '' ?> class="text-indigo-600">
+                                    Inferior
                                 </label>
                             </div>
                         </div>
-
                         <div class="pt-2">
                             <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1.5">Posición Labial</span>
                             <div class="grid grid-cols-3 gap-2 text-xs font-medium text-center bg-white p-2.5 rounded-xl border border-slate-200/80">
@@ -207,7 +226,6 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <div>
                                     <input type="radio" name="posicion_labial_inf" value="NORMAL" <?= $pli === 'NORMAL' ? 'checked' : '' ?>>
                                 </div>
-
                                 <div class="text-left pl-1 text-slate-600">Protrusión</div>
                                 <div>
                                     <input type="radio" name="posicion_labial_sup" value="PROTRUSION" <?= $pls === 'PROTRUSION' ? 'checked' : '' ?>>
@@ -215,7 +233,6 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <div>
                                     <input type="radio" name="posicion_labial_inf" value="PROTRUSION" <?= $pli === 'PROTRUSION' ? 'checked' : '' ?>>
                                 </div>
-
                                 <div class="text-left pl-1 text-slate-600">Retrusión</div>
                                 <div>
                                     <input type="radio" name="posicion_labial_sup" value="RETRUSION" <?= $pls === 'RETRUSION' ? 'checked' : '' ?>>
@@ -226,106 +243,121 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             </div>
                         </div>
                     </div>
-
                     <div class="md:col-span-2 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                         <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Frenillo Sobreinsertado:</span>
                         <div class="flex flex-wrap gap-6 text-xs font-medium">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="frenillo_sobreinsertado_sup" value="1" <?= !empty($historia['frenillo_sobreinsertado_sup']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Superior
+                                <input type="checkbox" name="frenillo_sobreinsertado_sup" value="1" <?= !empty($historia['frenillo_sobreinsertado_sup']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Superior
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="frenillo_sobreinsertado_inf" value="1" <?= !empty($historia['frenillo_sobreinsertado_inf']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Inferior
+                                <input type="checkbox" name="frenillo_sobreinsertado_inf" value="1" <?= !empty($historia['frenillo_sobreinsertado_inf']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Inferior
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="frenillo_sobreinsertado_lat" value="1" <?= !empty($historia['frenillo_sobreinsertado_lat']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Lateral
+                                <input type="checkbox" name="frenillo_sobreinsertado_lat" value="1" <?= !empty($historia['frenillo_sobreinsertado_lat']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Lateral
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="frenillo_sobreinsertado_lin" value="1" <?= !empty($historia['frenillo_sobreinsertado_lin']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Lingual
+                                <input type="checkbox" name="frenillo_sobreinsertado_lin" value="1" <?= !empty($historia['frenillo_sobreinsertado_lin']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Lingual
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- 2. ANÁLISIS FUNCIONAL -->
             <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
                 <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                    <i data-lucide="activity" class="w-4 h-4"></i> 2. Análisis Funcional
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                    2. Análisis Funcional
                 </h3>
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                     <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
                         <h4 class="font-bold text-slate-700 text-[11px] uppercase text-center border-b border-slate-200/60 pb-2 tracking-wide">2.1 Hábitos</h4>
                         <div class="space-y-2">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_onicofagia" value="1" <?= !empty($historia['habito_onicofagia']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Onicofagia
+                                <input type="checkbox" name="habito_onicofagia" value="1" <?= !empty($historia['habito_onicofagia']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Onicofagia
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_respiracion_oral" value="1" <?= !empty($historia['habito_respiracion_oral']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Respiración Oral
+                                <input type="checkbox" name="habito_respiracion_oral" value="1" <?= !empty($historia['habito_respiracion_oral']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Respiración Oral
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_succion_digital" value="1" <?= !empty($historia['habito_succion_digital']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Succión Digital
+                                <input type="checkbox" name="habito_succion_digital" value="1" <?= !empty($historia['habito_succion_digital']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Succión Digital
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_succion_labial" value="1" <?= !empty($historia['habito_succion_labial']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Succión Labial
+                                <input type="checkbox" name="habito_succion_labial" value="1" <?= !empty($historia['habito_succion_labial']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Succión Labial
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_presion" value="1" <?= !empty($historia['habito_presion']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Presión
+                                <input type="checkbox" name="habito_presion" value="1" <?= !empty($historia['habito_presion']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Presión
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="habito_alternacion_foniatricas" value="1" <?= !empty($historia['habito_alternacion_foniatricas']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Foniátricas
+                                <input type="checkbox" name="habito_alternacion_foniatricas" value="1" <?= !empty($historia['habito_alternacion_foniatricas']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Foniátricas
                             </label>
-
                             <div class="pt-2 mt-2 border-t border-slate-200/80 space-y-1.5">
                                 <span class="block font-bold text-slate-500 uppercase text-[10px]">Deglución Atípica</span>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="deglucion_empuje_lingual_simple" value="1" <?= !empty($historia['deglucion_empuje_lingual_simple']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Empuje Simple
+                                    <input type="checkbox" name="deglucion_empuje_lingual_simple" value="1" <?= !empty($historia['deglucion_empuje_lingual_simple']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                    Empuje Simple
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="deglucion_empuje_lingual_complejo" value="1" <?= !empty($historia['deglucion_empuje_lingual_complejo']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Empuje Complejo
+                                    <input type="checkbox" name="deglucion_empuje_lingual_complejo" value="1" <?= !empty($historia['deglucion_empuje_lingual_complejo']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                    Empuje Complejo
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="deglucion_infantil" value="1" <?= !empty($historia['deglucion_infantil']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Infantil
+                                    <input type="checkbox" name="deglucion_infantil" value="1" <?= !empty($historia['deglucion_infantil']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                    Infantil
                                 </label>
                             </div>
                             <div class="pt-2 mt-2 border-t border-slate-200/80">
                                 <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1.5">Bruxismo</span>
                                 <div class="flex gap-4">
                                     <label class="flex items-center gap-1.5 cursor-pointer">
-                                        <input type="checkbox" name="bruxismo_diurno" value="1" <?= !empty($historia['bruxismo_diurno']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Diurno
+                                        <input type="checkbox" name="bruxismo_diurno" value="1" <?= !empty($historia['bruxismo_diurno']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                        Diurno
                                     </label>
                                     <label class="flex items-center gap-1.5 cursor-pointer">
-                                        <input type="checkbox" name="bruxismo_nocturno" value="1" <?= !empty($historia['bruxismo_nocturno']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Nocturno
+                                        <input type="checkbox" name="bruxismo_nocturno" value="1" <?= !empty($historia['bruxismo_nocturno']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                        Nocturno
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
                         <h4 class="font-bold text-slate-700 text-[11px] uppercase text-center border-b border-slate-200/60 pb-2 tracking-wide">2.2 Examen de ATM</h4>
                         <div class="flex gap-4 mb-2">
                             <label class="flex items-center gap-1.5 cursor-pointer">
-                                <input type="checkbox" name="ruido_cliking" value="1" <?= !empty($historia['ruido_cliking']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Cliking
+                                <input type="checkbox" name="ruido_cliking" value="1" <?= !empty($historia['ruido_cliking']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Cliking
                             </label>
                             <label class="flex items-center gap-1.5 cursor-pointer">
-                                <input type="checkbox" name="ruido_crepitacion" value="1" <?= !empty($historia['ruido_crepitacion']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Crepitación
+                                <input type="checkbox" name="ruido_crepitacion" value="1" <?= !empty($historia['ruido_crepitacion']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Crepitación
                             </label>
                         </div>
-
                         <div class="space-y-3">
                             <div>
                                 <span class="block font-bold text-slate-500 uppercase text-[10px]">Ruidos Articulares</span>
                                 <?php $ral = $historia['ruidos_articulares_lado'] ?? ''; ?>
                                 <div class="flex gap-4 mt-1">
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="DERECHO" <?= $ral === 'DERECHO' ? 'checked' : '' ?>> Der
+                                        <input type="radio" name="ruidos_articulares_lado" value="DERECHO" <?= $ral === 'DERECHO' ? 'checked' : '' ?>>
+                                        Der
                                     </label>
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="IZQUIERDO" <?= $ral === 'IZQUIERDO' ? 'checked' : '' ?>> Izq
+                                        <input type="radio" name="ruidos_articulares_lado" value="IZQUIERDO" <?= $ral === 'IZQUIERDO' ? 'checked' : '' ?>>
+                                        Izq
                                     </label>
                                     <label>
-                                        <input type="radio" name="ruidos_articulares_lado" value="BILATERAL" <?= $ral === 'BILATERAL' ? 'checked' : '' ?>> Bilat
+                                        <input type="radio" name="ruidos_articulares_lado" value="BILATERAL" <?= $ral === 'BILATERAL' ? 'checked' : '' ?>>
+                                        Bilat
                                     </label>
                                 </div>
                             </div>
@@ -334,17 +366,19 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $rl = $historia['ruidos_localizacion'] ?? ''; ?>
                                 <div class="flex gap-4 mt-1">
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="INICIAL" <?= $rl === 'INICIAL' ? 'checked' : '' ?>> Inicial
+                                        <input type="radio" name="ruidos_localizacion" value="INICIAL" <?= $rl === 'INICIAL' ? 'checked' : '' ?>>
+                                        Inicial
                                     </label>
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="INTERMEDIO" <?= $rl === 'INTERMEDIO' ? 'checked' : '' ?>> Medio
+                                        <input type="radio" name="ruidos_localizacion" value="INTERMEDIO" <?= $rl === 'INTERMEDIO' ? 'checked' : '' ?>>
+                                        Medio
                                     </label>
                                     <label>
-                                        <input type="radio" name="ruidos_localizacion" value="FINAL" <?= $rl === 'FINAL' ? 'checked' : '' ?>> Final
+                                        <input type="radio" name="ruidos_localizacion" value="FINAL" <?= $rl === 'FINAL' ? 'checked' : '' ?>>
+                                        Final
                                     </label>
                                 </div>
                             </div>
-
                             <div class="space-y-2 pt-2 border-t border-slate-200/80">
                                 <input type="number" step="0.1" name="medida_apertura_maxima_mm" value="<?= htmlspecialchars($historia['medida_apertura_maxima_mm'] ?? '') ?>" placeholder="Apertura Máx (mm)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
                                 <input type="number" step="0.1" name="medida_lateralidad_derecha_mm" value="<?= htmlspecialchars($historia['medida_lateralidad_derecha_mm'] ?? '') ?>" placeholder="Lat. Derecha (mm)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
@@ -353,7 +387,6 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                             </div>
                         </div>
                     </div>
-
                     <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
                         <h4 class="font-bold text-slate-700 text-[11px] uppercase text-center border-b border-slate-200/60 pb-2 tracking-wide">2.3 Palpación Articular</h4>
                         <div class="space-y-3">
@@ -362,13 +395,16 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $dal = $historia['dolor_articular_lado'] ?? ''; ?>
                                 <div class="flex gap-4 mt-1">
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="DERECHO" <?= $dal === 'DERECHO' ? 'checked' : '' ?>> Der
+                                        <input type="radio" name="dolor_articular_lado" value="DERECHO" <?= $dal === 'DERECHO' ? 'checked' : '' ?>>
+                                        Der
                                     </label>
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="IZQUIERDO" <?= $dal === 'IZQUIERDO' ? 'checked' : '' ?>> Izq
+                                        <input type="radio" name="dolor_articular_lado" value="IZQUIERDO" <?= $dal === 'IZQUIERDO' ? 'checked' : '' ?>>
+                                        Izq
                                     </label>
                                     <label>
-                                        <input type="radio" name="dolor_articular_lado" value="BILATERAL" <?= $dal === 'BILATERAL' ? 'checked' : '' ?>> Bilat
+                                        <input type="radio" name="dolor_articular_lado" value="BILATERAL" <?= $dal === 'BILATERAL' ? 'checked' : '' ?>>
+                                        Bilat
                                     </label>
                                 </div>
                             </div>
@@ -377,19 +413,23 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                                 <?php $daf = $historia['dolor_articular_fase'] ?? ''; ?>
                                 <div class="space-y-1 mt-1">
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN REPOSO" <?= $daf === 'EN REPOSO' ? 'checked' : '' ?>> En Reposo
+                                        <input type="radio" name="dolor_articular_fase" value="EN REPOSO" <?= $daf === 'EN REPOSO' ? 'checked' : '' ?>>
+                                        En Reposo
                                     </label>
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN APERTURA" <?= $daf === 'EN APERTURA' ? 'checked' : '' ?>> En Apertura
+                                        <input type="radio" name="dolor_articular_fase" value="EN APERTURA" <?= $daf === 'EN APERTURA' ? 'checked' : '' ?>>
+                                        En Apertura
                                     </label>
                                     <label class="block">
-                                        <input type="radio" name="dolor_articular_fase" value="EN MOVIMIENTO DE LATERALIDAD" <?= $daf === 'EN MOVIMIENTO DE LATERALIDAD' ? 'checked' : '' ?>> Mov. Lateralidad
+                                        <input type="radio" name="dolor_articular_fase" value="EN MOVIMIENTO DE LATERALIDAD" <?= $daf === 'EN MOVIMIENTO DE LATERALIDAD' ? 'checked' : '' ?>>
+                                        Mov. Lateralidad
                                     </label>
                                 </div>
                             </div>
                             <div class="pt-2 border-t border-slate-200/80">
                                 <label class="flex items-center gap-2 font-bold text-slate-700 mb-1.5 cursor-pointer">
-                                    <input type="checkbox" name="dolor_muscular_presente" value="1" <?= !empty($historia['dolor_muscular_presente']) ? 'checked' : '' ?> class="rounded text-rose-500"> Dolor Muscular Presente
+                                    <input type="checkbox" name="dolor_muscular_presente" value="1" <?= !empty($historia['dolor_muscular_presente']) ? 'checked' : '' ?> class="rounded text-rose-500">
+                                    Dolor Muscular Presente
                                 </label>
                                 <input type="text" name="dolor_muscular_detalle" value="<?= htmlspecialchars($historia['dolor_muscular_detalle'] ?? '') ?>" placeholder="Especifique el músculo..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
                             </div>
@@ -397,666 +437,880 @@ $esEdicion = isset($_GET['modo']) && $_GET['modo'] === 'editar' && !empty($histo
                     </div>
                 </div>
             </div>
-
             <!-- 3. ANÁLISIS RADIOGRÁFICO -->
             <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
                 <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                    <i data-lucide="bone" class="w-4 h-4"></i> 3. Análisis Radiográfico (Localizaciones)
+                    <i data-lucide="bone" class="w-4 h-4"></i>
+                    3. Análisis Radiográfico (Localizaciones)
                 </h3>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <?php
-                    function renderDentograma($nameTitle, $inputPrefix, $dientesArr, $valoresGuardados = []) {
+                    function renderDentograma($nameTitle, $inputPrefix, $dientesArr, $valoresGuardados = [])
+                    {
                         if (is_string($valoresGuardados)) {
                             $valoresGuardados = array_filter(explode(',', $valoresGuardados));
                         } elseif (!is_array($valoresGuardados)) {
                             $valoresGuardados = [];
                         }
                         echo "<div class='bg-slate-50/60 p-4 rounded-xl border border-slate-200/80'>";
-                            echo "<span class='font-bold text-slate-700 text-xs uppercase block mb-3'>{$nameTitle}</span>";
-                            echo "<div class='flex flex-wrap gap-1.5'>";
-                                foreach($dientesArr as $d) {
-                                    $checked = in_array($d, $valoresGuardados) ? 'checked' : '';
-                                    echo "<label class='cursor-pointer text-center relative'>";
-                                        echo "<input type='checkbox' name='{$inputPrefix}[]' value='{$d}' {$checked} class='peer sr-only'>";
-                                        echo "<div class='w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-[11px] font-bold text-slate-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all shadow-xs'>{$d}</div>";
-                                        echo "
-                                            </label>";
-                                    }
-                                    echo "
-                                        </div>";
-                                    echo "
-                                        </div>";
-                                }
-                                ?>
-
-                                <?= renderDentograma("Periodonto Disminuido", "periodonto_dientes", $dientes, $historia['periodonto_disminuido_dientes'] ?? []) ?>
-                                <?= renderDentograma("Dientes Retenidos/Impactados", "retenidos_dientes", $dientes, $historia['dientes_retenidos_dientes'] ?? []) ?>
-                                <?= renderDentograma("Dientes Supernumerarios", "supernumerarios_dientes", $dientes, $historia['dientes_supernumerarios_dientes'] ?? []) ?>
-                                <?= renderDentograma("Longitud Radicular Disminuida", "longitud_dientes", $dientes, $historia['longitud_radicular_disminuida_dientes'] ?? []) ?>
+                        echo "<span class='font-bold text-slate-700 text-xs uppercase block mb-3'>{$nameTitle}</span>";
+                        echo "<div class='flex flex-wrap gap-1.5'>";
+                        foreach ($dientesArr as $d) {
+                            $checked = in_array($d, $valoresGuardados) ? 'checked' : '';
+                            echo "<label class='cursor-pointer text-center relative'>";
+                            echo "<input type='checkbox' name='{$inputPrefix}[]' value='{$d}' {$checked} class='peer sr-only'>";
+                            echo "<div class='w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-[11px] font-bold text-slate-600 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all shadow-xs'>{$d}</div>";
+                            echo "
+                                                                </label>";
+                        }
+                        echo "
+                                                            </div>";
+                        echo "
+                                                            </div>";
+                    }
+                    ?>
+                    <?= renderDentograma("Periodonto Disminuido", "periodonto_dientes", $dientes, $historia['periodonto_disminuido_dientes'] ?? []) ?>
+                    <?= renderDentograma("Dientes Retenidos/Impactados", "retenidos_dientes", $dientes, $historia['dientes_retenidos_dientes'] ?? []) ?>
+                    <?= renderDentograma("Dientes Supernumerarios", "supernumerarios_dientes", $dientes, $historia['dientes_supernumerarios_dientes'] ?? []) ?>
+                    <?= renderDentograma("Longitud Radicular Disminuida", "longitud_dientes", $dientes, $historia['longitud_radicular_disminuida_dientes'] ?? []) ?>
+                </div>
+            </div>
+            <!-- 4. ANÁLISIS CEFALOMÉTRICO -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
+                <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
+                    <i data-lucide="ruler" class="w-4 h-4"></i>
+                    4. Análisis Cefalométrico
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
+                        <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Esquelético</p>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Perfil Esquelético</span>
+                                <?php $pe = $historia['perfil_esqueletico'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="perfil_esqueletico" value="CLI" <?= $pe === 'CLI' ? 'checked' : '' ?>>
+                                        CLI
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="perfil_esqueletico" value="CLII" <?= $pe === 'CLII' ? 'checked' : '' ?>>
+                                        CLII
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="perfil_esqueletico" value="CLIII" <?= $pe === 'CLIII' ? 'checked' : '' ?>>
+                                        CLIII
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- 4. ANÁLISIS CEFALOMÉTRICO -->
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
-                            <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                                <i data-lucide="ruler" class="w-4 h-4"></i> 4. Análisis Cefalométrico
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
-                                    <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Esquelético</p>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Perfil Esquelético</span>
-                                            <?php $pe = $historia['perfil_esqueletico'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLI" <?= $pe === 'CLI' ? 'checked' : '' ?>> CLI
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLII" <?= $pe === 'CLII' ? 'checked' : '' ?>> CLII
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="perfil_esqueletico" value="CLIII" <?= $pe === 'CLIII' ? 'checked' : '' ?>> CLIII
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Prognatismo Total</span>
-                                            <?php $pt = $historia['prognatismo_total'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="prognatismo_total" value="MAXILAR" <?= $pt === 'MAXILAR' ? 'checked' : '' ?>> Max
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="prognatismo_total" value="MANDIBULAR" <?= $pt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retrognatismo Total</span>
-                                            <?php $rt = $historia['retrognatismo_total'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="retrognatismo_total" value="MAXILAR" <?= $rt === 'MAXILAR' ? 'checked' : '' ?>> Max
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="retrognatismo_total" value="MANDIBULAR" <?= $rt === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Crecimiento</span>
-                                            <?php $tc = $historia['tipo_crecimiento'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="tipo_crecimiento" value="VERTICAL" <?= $tc === 'VERTICAL' ? 'checked' : '' ?>> Vert
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="tipo_crecimiento" value="HORIZONTAL" <?= $tc === 'HORIZONTAL' ? 'checked' : '' ?>> Horiz
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Prognatismo Total</span>
+                                <?php $pt = $historia['prognatismo_total'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="prognatismo_total" value="MAXILAR" <?= $pt === 'MAXILAR' ? 'checked' : '' ?>>
+                                        Max
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="prognatismo_total" value="MANDIBULAR" <?= $pt === 'MANDIBULAR' ? 'checked' : '' ?>>
+                                        Mand
+                                    </label>
                                 </div>
-
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
-                                    <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Radiográfico Dentario</p>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Protrusión Alveolar</span>
-                                            <?php $pa = $historia['protrusion_alveolar'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="protrusion_alveolar" value="SUPERIOR" <?= $pa === 'SUPERIOR' ? 'checked' : '' ?>> Sup
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="protrusion_alveolar" value="INFERIOR" <?= $pa === 'INFERIOR' ? 'checked' : '' ?>> Inf
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retrusión Alveolar</span>
-                                            <?php $ra = $historia['retrusion_alveolar'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="retrusion_alveolar" value="SUPERIOR" <?= $ra === 'SUPERIOR' ? 'checked' : '' ?>> Sup
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="retrusion_alveolar" value="INFERIOR" <?= $ra === 'INFERIOR' ? 'checked' : '' ?>> Inf
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Macrognatismo</span>
-                                            <?php $mac = $historia['macrognatismo'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="macrognatismo" value="MAXILAR" <?= $mac === 'MAXILAR' ? 'checked' : '' ?>> Max
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="macrognatismo" value="MANDIBULAR" <?= $mac === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Micrognatismo</span>
-                                            <?php $mic = $historia['micrognatismo'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="micrognatismo" value="MAXILAR" <?= $mic === 'MAXILAR' ? 'checked' : '' ?>> Max
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="micrognatismo" value="MANDIBULAR" <?= $mic === 'MANDIBULAR' ? 'checked' : '' ?>> Mand
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retrognatismo Total</span>
+                                <?php $rt = $historia['retrognatismo_total'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="retrognatismo_total" value="MAXILAR" <?= $rt === 'MAXILAR' ? 'checked' : '' ?>>
+                                        Max
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="retrognatismo_total" value="MANDIBULAR" <?= $rt === 'MANDIBULAR' ? 'checked' : '' ?>>
+                                        Mand
+                                    </label>
                                 </div>
-
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
-                                    <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Tejidos Blandos</p>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Perfil Facial</span>
-                                            <?php $cpf = $historia['cefalometrico_perfil_facial'] ?? ''; ?>
-                                            <div class="flex flex-col gap-1">
-                                                <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="RECTO" <?= $cpf === 'RECTO' ? 'checked' : '' ?>> Recto
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONCAVO" <?= $cpf === 'CONCAVO' ? 'checked' : '' ?>> Cóncavo
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="cefalometrico_perfil_facial" value="CONVEXO" <?= $cpf === 'CONVEXO' ? 'checked' : '' ?>> Convexo
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Proquelia</span>
-                                            <?php $pr = $historia['proquelia'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="proquelia" value="SUPERIOR" <?= $pr === 'SUPERIOR' ? 'checked' : '' ?>> Superior
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="proquelia" value="INFERIOR" <?= $pr === 'INFERIOR' ? 'checked' : '' ?>> Inferior
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retroquelia</span>
-                                            <?php $rq = $historia['retroquelia'] ?? ''; ?>
-                                            <div class="flex gap-4">
-                                                <label>
-                                                    <input type="radio" name="retroquelia" value="SUPERIOR" <?= $rq === 'SUPERIOR' ? 'checked' : '' ?>> Superior
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="retroquelia" value="INFERIOR" <?= $rq === 'INFERIOR' ? 'checked' : '' ?>> Inferior
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Crecimiento</span>
+                                <?php $tc = $historia['tipo_crecimiento'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="tipo_crecimiento" value="VERTICAL" <?= $tc === 'VERTICAL' ? 'checked' : '' ?>>
+                                        Vert
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="tipo_crecimiento" value="HORIZONTAL" <?= $tc === 'HORIZONTAL' ? 'checked' : '' ?>>
+                                        Horiz
+                                    </label>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- 5. ANÁLISIS DE MODELOS DE ESTUDIO -->
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
-                            <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
-                                <i data-lucide="box" class="w-4 h-4"></i> 5. Análisis de Modelos de Estudio
-                            </h3>
-
-                            <div class="space-y-4 text-xs">
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                    <span class="block font-bold text-slate-700 text-xs uppercase mb-2">Dentición</span>
-                                    <div class="flex flex-wrap gap-6">
-                                        <?php $dent = $historia['analisis_denticion'] ?? ''; ?>
-                                        <?php foreach(['TEMPORAL', 'MIXTA', 'PERMANENTE'] as $val): ?>
-                                            <label class="flex items-center gap-2 cursor-pointer font-medium">
-                                                <input type="radio" name="analisis_denticion" value="<?= $val ?>" <?= $dent === $val ? 'checked' : '' ?> class="text-indigo-600"> <?= ucfirst(strtolower($val)) ?>
+                    </div>
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
+                        <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Radiográfico Dentario</p>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Protrusión Alveolar</span>
+                                <?php $pa = $historia['protrusion_alveolar'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="protrusion_alveolar" value="SUPERIOR" <?= $pa === 'SUPERIOR' ? 'checked' : '' ?>>
+                                        Sup
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="protrusion_alveolar" value="INFERIOR" <?= $pa === 'INFERIOR' ? 'checked' : '' ?>>
+                                        Inf
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retrusión Alveolar</span>
+                                <?php $ra = $historia['retrusion_alveolar'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="retrusion_alveolar" value="SUPERIOR" <?= $ra === 'SUPERIOR' ? 'checked' : '' ?>>
+                                        Sup
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="retrusion_alveolar" value="INFERIOR" <?= $ra === 'INFERIOR' ? 'checked' : '' ?>>
+                                        Inf
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Macrognatismo</span>
+                                <?php $mac = $historia['macrognatismo'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="macrognatismo" value="MAXILAR" <?= $mac === 'MAXILAR' ? 'checked' : '' ?>>
+                                        Max
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="macrognatismo" value="MANDIBULAR" <?= $mac === 'MANDIBULAR' ? 'checked' : '' ?>>
+                                        Mand
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Micrognatismo</span>
+                                <?php $mic = $historia['micrognatismo'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="micrognatismo" value="MAXILAR" <?= $mic === 'MAXILAR' ? 'checked' : '' ?>>
+                                        Max
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="micrognatismo" value="MANDIBULAR" <?= $mic === 'MANDIBULAR' ? 'checked' : '' ?>>
+                                        Mand
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
+                        <p class="font-bold text-slate-700 text-xs uppercase mb-3 border-b border-slate-200/60 pb-2 text-center tracking-wide">Tejidos Blandos</p>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Perfil Facial</span>
+                                <?php $cpf = $historia['cefalometrico_perfil_facial'] ?? ''; ?>
+                                <div class="flex flex-col gap-1">
+                                    <label>
+                                        <input type="radio" name="cefalometrico_perfil_facial" value="RECTO" <?= $cpf === 'RECTO' ? 'checked' : '' ?>>
+                                        Recto
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="cefalometrico_perfil_facial" value="CONCAVO" <?= $cpf === 'CONCAVO' ? 'checked' : '' ?>>
+                                        Cóncavo
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="cefalometrico_perfil_facial" value="CONVEXO" <?= $cpf === 'CONVEXO' ? 'checked' : '' ?>>
+                                        Convexo
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Proquelia</span>
+                                <?php $pr = $historia['proquelia'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="proquelia" value="SUPERIOR" <?= $pr === 'SUPERIOR' ? 'checked' : '' ?>>
+                                        Superior
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="proquelia" value="INFERIOR" <?= $pr === 'INFERIOR' ? 'checked' : '' ?>>
+                                        Inferior
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-bold uppercase mb-1">Retroquelia</span>
+                                <?php $rq = $historia['retroquelia'] ?? ''; ?>
+                                <div class="flex gap-4">
+                                    <label>
+                                        <input type="radio" name="retroquelia" value="SUPERIOR" <?= $rq === 'SUPERIOR' ? 'checked' : '' ?>>
+                                        Superior
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="retroquelia" value="INFERIOR" <?= $rq === 'INFERIOR' ? 'checked' : '' ?>>
+                                        Inferior
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 5. ANÁLISIS DE MODELOS DE ESTUDIO -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
+                <h3 class="text-xs font-bold text-indigo-700 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 tracking-wider">
+                    <i data-lucide="box" class="w-4 h-4"></i>
+                    5. Análisis de Modelos de Estudio
+                </h3>
+                <div class="space-y-4 text-xs">
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                        <span class="block font-bold text-slate-700 text-xs uppercase mb-2">Dentición</span>
+                        <div class="flex flex-wrap gap-6">
+                            <?php $dent = $historia['analisis_denticion'] ?? ''; ?>
+                            <?php foreach(['TEMPORAL', 'MIXTA', 'PERMANENTE'] as $val): ?>
+                                <label class="flex items-center gap-2 cursor-pointer font-medium">
+                                    <input type="radio" name="analisis_denticion" value="<?= $val ?>" <?= $dent === $val ? 'checked' : '' ?> class="text-indigo-600">
+                                    <?= ucfirst(strtolower($val)) ?>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <!-- 5.1 Clasificación Canina y Molar -->
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                        <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.1. Clasificación Canina y Molar</span>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Relación Derecha</span>
+                                <div class="flex gap-3">
+                                    <input type="text" name="analisis_relacion_derecha_canina" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                                    <input type="text" name="analisis_relacion_derecha_molar" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Relación Izquierda</span>
+                                <div class="flex gap-3">
+                                    <input type="text" name="analisis_relacion_izquierda_canina" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                                    <input type="text" name="analisis_relacion_izquierda_molar" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 5.2 Análisis Transversal -->
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                        <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.2. Análisis Transversal</span>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Parámetros Mayoral</label>
+                                <input type="text" name="analisis_transversal_mayoral" value="<?= htmlspecialchars($historia['analisis_transversal_mayoral'] ?? '') ?>" placeholder="Ej: 35 mm" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Bogue</label>
+                                <input type="text" name="analisis_transversal_bogue" value="<?= htmlspecialchars($historia['analisis_transversal_bogue'] ?? '') ?>" placeholder="Ej: Normal / Macrog." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Paciente</label>
+                                <input type="text" name="analisis_transversal_paciente" value="<?= htmlspecialchars($historia['analisis_transversal_paciente'] ?? '') ?>" placeholder="Medida real" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 5.3 & 5.4 Sobremordidas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                            <span class="block font-bold text-slate-700 text-xs uppercase mb-2">5.3. Sobremordida Horizontal (Overjet)</span>
+                            <?php $oj = $historia['sobremordida_horizontal'] ?? ''; ?>
+                            <div class="flex flex-wrap gap-4 font-medium">
+                                <?php foreach(['NORMAL', 'AUMENTADA', 'INVERTIDA', 'BORDE A BORDE'] as $val): ?>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="sobremordida_horizontal" value="<?= $val ?>" <?= $oj === $val ? 'checked' : '' ?>>
+                                        <?= ucfirst(strtolower($val)) ?>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                            <span class="block font-bold text-slate-700 text-xs uppercase mb-2">5.4. Sobremordida Vertical (Overbite)</span>
+                            <?php $ob = $historia['sobremordida_vertical'] ?? ''; ?>
+                            <div class="flex flex-wrap gap-4 font-medium">
+                                <?php foreach(['NORMAL', 'PROFUNDA', 'ABIERTA'] as $val): ?>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="sobremordida_vertical" value="<?= $val ?>" <?= $ob === $val ? 'checked' : '' ?>>
+                                        <?= ucfirst(strtolower($val)) ?>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 5.5 Línea Media & 5.6 Morfología -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
+                            <span class="block font-bold text-slate-700 text-xs uppercase">5.5. Línea Media</span>
+                            <div class="space-y-3">
+                                <!-- Superior -->
+                                <div class="space-y-1.5">
+                                    <span class="block font-bold text-slate-500 uppercase text-[10px]">Superior</span>
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <?php
+                                        $lms = $historia['linea_media_superior'] ?? '';
+                                        $lms_mm = $historia['linea_media_superior_mm'] ?? '';
+                                        $es_desviada_sup = $lms === 'DESVIADA DERECHA' || $lms === 'DESVIADA IZQUIERDA';
+                                        ?>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_superior" value="CENTRADA" <?= ($lms === 'CENTRADA' || $lms === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('superior', false)">
+                                            Centrada
+                                        </label>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_superior" value="DESVIADA DERECHA" <?= $lms === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)">
+                                            Desv. Der.
+                                        </label>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_superior" value="DESVIADA IZQUIERDA" <?= $lms === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)">
+                                            Desv. Izq.
+                                        </label>
+                                        <div id="div_mm_superior" class="flex items-center gap-1 <?= $es_desviada_sup ? '' : 'hidden' ?>">
+                                            <input type="text" name="linea_media_superior_mm" value="<?= htmlspecialchars($lms_mm) ?>" placeholder="Ej: 2" class="w-16 bg-white border border-slate-200 rounded text-xs p-1 outline-none">
+                                            <span class="text-[10px] text-slate-500 font-bold">mm</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Inferior -->
+                                <div class="space-y-1.5 pt-2 border-t border-slate-200/80">
+                                    <span class="block font-bold text-slate-500 uppercase text-[10px]">Inferior</span>
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <?php
+                                        $lmi = $historia['linea_media_inferior'] ?? '';
+                                        $lmi_mm = $historia['linea_media_inferior_mm'] ?? '';
+                                        $es_desviada_inf = $lmi === 'DESVIADA DERECHA' || $lmi === 'DESVIADA IZQUIERDA';
+                                        ?>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_inferior" value="CENTRADA" <?= ($lmi === 'CENTRADA' || $lmi === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('inferior', false)">
+                                            Centrada
+                                        </label>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_inferior" value="DESVIADA DERECHA" <?= $lmi === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)">
+                                            Desv. Der.
+                                        </label>
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio" name="linea_media_inferior" value="DESVIADA IZQUIERDA" <?= $lmi === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)">
+                                            Desv. Izq.
+                                        </label>
+                                        <div id="div_mm_inferior" class="flex items-center gap-1 <?= $es_desviada_inf ? '' : 'hidden' ?>">
+                                            <input type="text" name="linea_media_inferior_mm" value="<?= htmlspecialchars($lmi_mm) ?>" placeholder="Ej: 2" class="w-16 bg-white border border-slate-200 rounded text-xs p-1 outline-none">
+                                            <span class="text-[10px] text-slate-500 font-bold">mm</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 5.6 Morfología del Arco Dentario -->
+                        <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
+                            <span class="block font-bold text-slate-700 text-xs uppercase">5.6. Morfología del Arco Dentario</span>
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Superior</span>
+                                    <div class="flex flex-wrap gap-4">
+                                        <?php $mas = $historia['morfologia_arco_superior'] ?? ''; ?>
+                                        <?php foreach(['OVOIDE', 'TRIANGULAR', 'CUADRADA'] as $val): ?>
+                                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                                <input type="radio" name="morfologia_arco_superior" value="<?= $val ?>" <?= $mas === $val ? 'checked' : '' ?>>
+                                                <?= ucfirst(strtolower($val)) ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
-
-                                <!-- 5.1 Clasificación Canina y Molar -->
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                    <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.1. Clasificación Canina y Molar</span>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Relación Derecha</span>
-                                            <div class="flex gap-3">
-                                                <input type="text" name="analisis_relacion_derecha_canina" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                                <input type="text" name="analisis_relacion_derecha_molar" value="<?= htmlspecialchars($historia['analisis_relacion_derecha_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Relación Izquierda</span>
-                                            <div class="flex gap-3">
-                                                <input type="text" name="analisis_relacion_izquierda_canina" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_canina'] ?? '') ?>" placeholder="Canina (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                                <input type="text" name="analisis_relacion_izquierda_molar" value="<?= htmlspecialchars($historia['analisis_relacion_izquierda_molar'] ?? '') ?>" placeholder="Molar (Clase I, II...)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 5.2 Análisis Transversal -->
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                    <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.2. Análisis Transversal</span>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div>
-                                            <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Parámetros Mayoral</label>
-                                            <input type="text" name="analisis_transversal_mayoral" value="<?= htmlspecialchars($historia['analisis_transversal_mayoral'] ?? '') ?>" placeholder="Ej: 35 mm" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                        </div>
-                                        <div>
-                                            <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Bogue</label>
-                                            <input type="text" name="analisis_transversal_bogue" value="<?= htmlspecialchars($historia['analisis_transversal_bogue'] ?? '') ?>" placeholder="Ej: Normal / Macrog." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                        </div>
-                                        <div>
-                                            <label class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Paciente</label>
-                                            <input type="text" name="analisis_transversal_paciente" value="<?= htmlspecialchars($historia['analisis_transversal_paciente'] ?? '') ?>" placeholder="Medida real" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 outline-none">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 5.3 & 5.4 Sobremordidas -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                        <span class="block font-bold text-slate-700 text-xs uppercase mb-2">5.3. Sobremordida Horizontal (Overjet)</span>
-                                        <?php $oj = $historia['sobremordida_horizontal'] ?? ''; ?>
-                                        <div class="flex flex-wrap gap-4 font-medium">
-                                            <?php foreach(['NORMAL', 'AUMENTADA', 'INVERTIDA', 'BORDE A BORDE'] as $val): ?>
-                                                <label class="cursor-pointer">
-                                                    <input type="radio" name="sobremordida_horizontal" value="<?= $val ?>" <?= $oj === $val ? 'checked' : '' ?>> <?= ucfirst(strtolower($val)) ?>
-                                                </label>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                        <span class="block font-bold text-slate-700 text-xs uppercase mb-2">5.4. Sobremordida Vertical (Overbite)</span>
-                                        <?php $ob = $historia['sobremordida_vertical'] ?? ''; ?>
-                                        <div class="flex flex-wrap gap-4 font-medium">
-                                            <?php foreach(['NORMAL', 'PROFUNDA', 'ABIERTA'] as $val): ?>
-                                                <label class="cursor-pointer">
-                                                    <input type="radio" name="sobremordida_vertical" value="<?= $val ?>" <?= $ob === $val ? 'checked' : '' ?>> <?= ucfirst(strtolower($val)) ?>
-                                                </label>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 5.5 Línea Media & 5.6 Morfología -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
-                                        <span class="block font-bold text-slate-700 text-xs uppercase">5.5. Línea Media</span>
-                                        <div class="space-y-3">
-                                            <!-- Superior -->
-                                            <div class="space-y-1.5">
-                                                <span class="block font-bold text-slate-500 uppercase text-[10px]">Superior</span>
-                                                <div class="flex flex-wrap items-center gap-3">
-                                                    <?php
-                                                    $lms             = $historia['linea_media_superior'] ?? '';
-                                                    $lms_mm          = $historia['linea_media_superior_mm'] ?? '';
-                                                    $es_desviada_sup = ($lms === 'DESVIADA DERECHA' || $lms === 'DESVIADA IZQUIERDA');
-                                                    ?>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_superior" value="CENTRADA" <?= ($lms === 'CENTRADA' || $lms === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('superior', false)"> Centrada
-                                                    </label>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_superior" value="DESVIADA DERECHA" <?= $lms === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)"> Desv. Der.
-                                                    </label>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_superior" value="DESVIADA IZQUIERDA" <?= $lms === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('superior', true)"> Desv. Izq.
-                                                    </label>
-                                                    <div id="div_mm_superior" class="flex items-center gap-1 <?= $es_desviada_sup ? '' : 'hidden' ?>">
-                                                        <input type="text" name="linea_media_superior_mm" value="<?= htmlspecialchars($lms_mm) ?>" placeholder="Ej: 2" class="w-16 bg-white border border-slate-200 rounded text-xs p-1 outline-none">
-                                                        <span class="text-[10px] text-slate-500 font-bold">mm</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Inferior -->
-                                            <div class="space-y-1.5 pt-2 border-t border-slate-200/80">
-                                                <span class="block font-bold text-slate-500 uppercase text-[10px]">Inferior</span>
-                                                <div class="flex flex-wrap items-center gap-3">
-                                                    <?php
-                                                    $lmi             = $historia['linea_media_inferior'] ?? '';
-                                                    $lmi_mm          = $historia['linea_media_inferior_mm'] ?? '';
-                                                    $es_desviada_inf = ($lmi === 'DESVIADA DERECHA' || $lmi === 'DESVIADA IZQUIERDA');
-                                                    ?>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_inferior" value="CENTRADA" <?= ($lmi === 'CENTRADA' || $lmi === 'COINCIDENTE') ? 'checked' : '' ?> onchange="toggleMmInput('inferior', false)"> Centrada
-                                                    </label>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_inferior" value="DESVIADA DERECHA" <?= $lmi === 'DESVIADA DERECHA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)"> Desv. Der.
-                                                    </label>
-                                                    <label class="flex items-center gap-1 cursor-pointer">
-                                                        <input type="radio" name="linea_media_inferior" value="DESVIADA IZQUIERDA" <?= $lmi === 'DESVIADA IZQUIERDA' ? 'checked' : '' ?> onchange="toggleMmInput('inferior', true)"> Desv. Izq.
-                                                    </label>
-                                                    <div id="div_mm_inferior" class="flex items-center gap-1 <?= $es_desviada_inf ? '' : 'hidden' ?>">
-                                                        <input type="text" name="linea_media_inferior_mm" value="<?= htmlspecialchars($lmi_mm) ?>" placeholder="Ej: 2" class="w-16 bg-white border border-slate-200 rounded text-xs p-1 outline-none">
-                                                        <span class="text-[10px] text-slate-500 font-bold">mm</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- 5.6 Morfología del Arco Dentario -->
-                                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80 space-y-3">
-                                        <span class="block font-bold text-slate-700 text-xs uppercase">5.6. Morfología del Arco Dentario</span>
-                                        <div class="space-y-3">
-                                            <div>
-                                                <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Superior</span>
-                                                <div class="flex flex-wrap gap-4">
-                                                    <?php $mas = $historia['morfologia_arco_superior'] ?? ''; ?>
-                                                    <?php foreach(['OVOIDE', 'TRIANGULAR', 'CUADRADA'] as $val): ?>
-                                                        <label class="flex items-center gap-1.5 cursor-pointer">
-                                                            <input type="radio" name="morfologia_arco_superior" value="<?= $val ?>" <?= $mas === $val ? 'checked' : '' ?>> <?= ucfirst(strtolower($val)) ?>
-                                                        </label>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Inferior</span>
-                                                <div class="flex flex-wrap gap-4">
-                                                    <?php $mai = $historia['morfologia_arco_inferior'] ?? ''; ?>
-                                                    <?php foreach(['OVOIDE', 'TRIANGULAR', 'CUADRADA'] as $val): ?>
-                                                        <label class="flex items-center gap-1.5 cursor-pointer">
-                                                            <input type="radio" name="morfologia_arco_inferior" value="<?= $val ?>" <?= $mai === $val ? 'checked' : '' ?>> <?= ucfirst(strtolower($val)) ?>
-                                                        </label>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 5.7 Relaciones Interarco -->
-                                <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
-                                    <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.7. Relaciones Interarco</span>
-                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 font-medium">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="mordida_cruzada_posterior_der" value="1" <?= !empty($historia['mordida_cruzada_posterior_der']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Cruzada Post. Der
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="mordida_cruzada_posterior_izq" value="1" <?= !empty($historia['mordida_cruzada_posterior_izq']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Cruzada Post. Izq
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="mordida_cruzada_anterior" value="1" <?= !empty($historia['mordida_cruzada_anterior']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Cruzada Anterior
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="mordida_abierta_anterior" value="1" <?= !empty($historia['mordida_abierta_anterior']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Abierta Anterior
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="mordida_abierta_posterior" value="1" <?= !empty($historia['mordida_abierta_posterior']) ? 'checked' : '' ?> class="rounded text-indigo-600"> Abierta Posterior
-                                        </label>
+                                <div>
+                                    <span class="block font-bold text-slate-500 uppercase text-[10px] mb-1">Inferior</span>
+                                    <div class="flex flex-wrap gap-4">
+                                        <?php $mai = $historia['morfologia_arco_inferior'] ?? ''; ?>
+                                        <?php foreach(['OVOIDE', 'TRIANGULAR', 'CUADRADA'] as $val): ?>
+                                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                                <input type="radio" name="morfologia_arco_inferior" value="<?= $val ?>" <?= $mai === $val ? 'checked' : '' ?>>
+                                                <?= ucfirst(strtolower($val)) ?>
+                                            </label>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- SECCIÓN DE FIRMAS -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="text-center border-t border-slate-100 pt-4">
-                                <?php if (!empty($historia['doctor_firma_base64'])): ?>
-                                    <img src="<?= $historia['doctor_firma_base64'] ?>" class="h-16 mx-auto mb-2 object-contain">
-                                <?php else: ?>
-                                    <p class="text-xs text-slate-400 italic h-16 flex items-center justify-center">Sin firma registrada en el usuario del doctor</p>
-                                <?php endif; ?>
-                                <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($historia['doctor_nombre'] ?? 'Doctor Asignado') ?></p>
-                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Profesional</span>
-                            </div>
-
-                            <div class="text-center border-t border-slate-100 pt-4">
-                                <?php if (!empty($historia['firma_paciente_base64']) && !$esEdicion): ?>
-                                    <img src="<?= $historia['firma_paciente_base64'] ?>" class="h-16 mx-auto mb-2 object-contain border bg-slate-50 rounded-xl p-1">
-                                    <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></p>
-                                    <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Paciente / Acudiente</span>
-                                <?php else: ?>
-                                    <div class="bg-slate-50/60 p-4 rounded-2xl border border-slate-200/80 space-y-2 max-w-md mx-auto">
-                                        <label class="block text-xs font-bold text-slate-700 uppercase">
-                                            Firma del Paciente <span class="text-rose-500">* (Requerida)</span>
-                                        </label>
-                                        <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
-                                            <canvas id="canvas-firma-paciente" class="w-full h-28 touch-none cursor-crosshair"></canvas>
-                                            <button type="button" id="clear-firma-paciente" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition">
-                                                Limpiar
-                                            </button>
-                                        </div>
-                                        <input type="hidden" name="firma_paciente_base64" id="firma_paciente_base64">
-                                    </div>
-                                    <p class="text-xs font-bold text-slate-800 uppercase mt-2"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></p>
-                                    <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Paciente / Acudiente</span>
-                                <?php endif; ?>
-                            </div>
+                    </div>
+                    <!-- 5.7 Relaciones Interarco -->
+                    <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                        <span class="block font-bold text-slate-700 text-xs uppercase mb-3">5.7. Relaciones Interarco</span>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 font-medium">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="mordida_cruzada_posterior_der" value="1" <?= !empty($historia['mordida_cruzada_posterior_der']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Cruzada Post. Der
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="mordida_cruzada_posterior_izq" value="1" <?= !empty($historia['mordida_cruzada_posterior_izq']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Cruzada Post. Izq
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="mordida_cruzada_anterior" value="1" <?= !empty($historia['mordida_cruzada_anterior']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Cruzada Anterior
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="mordida_abierta_anterior" value="1" <?= !empty($historia['mordida_abierta_anterior']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Abierta Anterior
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="mordida_abierta_posterior" value="1" <?= !empty($historia['mordida_abierta_posterior']) ? 'checked' : '' ?> class="rounded text-indigo-600">
+                                Abierta Posterior
+                            </label>
                         </div>
-
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-extrabold text-xs uppercase tracking-widest py-4 rounded-2xl hover:bg-indigo-700 shadow-md hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="save" class="w-4 h-4"></i>
-                            <?= $esEdicion ? 'Actualizar Diagnóstico' : 'Guardar Diagnóstico' ?>
-                        </button>
-                    </form>
-
+                    </div>
+                </div>
+            </div>
+            <!-- SECCIÓN DE FIRMAS -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="text-center border-t border-slate-100 pt-4">
+                    <?php if (!empty($historia['doctor_firma_base64'])): ?>
+                        <img src="<?= $historia['doctor_firma_base64'] ?>" class="h-16 mx-auto mb-2 object-contain">
+                    <?php else: ?>
+                        <p class="text-xs text-slate-400 italic h-16 flex items-center justify-center">Sin firma registrada en el usuario del doctor</p>
+                    <?php endif; ?>
+                    <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($historia['doctor_nombre'] ?? 'Doctor Asignado') ?></p>
+                    <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Profesional</span>
+                </div>
+                <div class="text-center border-t border-slate-100 pt-4">
+                    <?php if (!empty($historia['firma_paciente_base64']) && !$esEdicion): ?>
+                        <img src="<?= $historia['firma_paciente_base64'] ?>" class="h-16 mx-auto mb-2 object-contain border bg-slate-50 rounded-xl p-1">
+                        <p class="text-xs font-bold text-slate-800 uppercase"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></p>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Paciente / Acudiente</span>
+                    <?php else: ?>
+                        <div class="bg-slate-50/60 p-4 rounded-2xl border border-slate-200/80 space-y-2 max-w-md mx-auto">
+                            <label class="block text-xs font-bold text-slate-700 uppercase">
+                                Firma del Paciente
+                                <span class="text-rose-500">* (Requerida)</span>
+                            </label>
+                            <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
+                                <canvas id="canvas-firma-paciente" class="w-full h-28 touch-none cursor-crosshair"></canvas>
+                                <button type="button" id="clear-firma-paciente" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition"> Limpiar </button>
+                            </div>
+                            <input type="hidden" name="firma_paciente_base64" id="firma_paciente_base64">
+                        </div>
+                        <p class="text-xs font-bold text-slate-800 uppercase mt-2"><?= htmlspecialchars($paciente['nombre'] . ' ' . $paciente['apellido']) ?></p>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firma del Paciente / Acudiente</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white font-extrabold text-xs uppercase tracking-widest py-4 rounded-2xl hover:bg-indigo-700 shadow-md hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                <?= $esEdicion ? 'Actualizar Diagnóstico' : 'Guardar Diagnóstico' ?>
+            </button>
+        </form>
+    <?php else: ?>
+        <!-- VISTA RESUMEN Y EVOLUCIONES CONTINUAS -->
+        <div class="bg-white p-5 rounded-2xl shadow-xs border border-emerald-100 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-100 p-2.5 rounded-2xl text-emerald-600">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xs font-bold text-slate-800 uppercase">Diagnóstico Ortodóntico Registrado</h2>
+                    <p class="text-xs text-slate-500">
+                        Fecha de Apertura:
+                        <span class="font-semibold text-slate-700"><?= date('d/m/Y', strtotime($historia['fecha_registro'] ?? $historia['fecha_apertura'])) ?></span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="?modo=editar" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    Editar Diagnóstico
+                </a>
+                <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-2.5 rounded-xl border border-indigo-100">Hoja N° <?= htmlspecialchars($historia['hoja_numero']) ?></span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 h-fit sticky top-6">
+                <h3 class="text-xs font-bold text-slate-800 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 mb-4 tracking-wider">
+                    <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
+                    Registrar Control
+                </h3>
+                <form action="<?= BASE_URL ?>/ortodoncia/guardarEvolucion/<?= $paciente['id'] ?>" method="POST" enctype="multipart/form-data" id="form-evolucion" class="space-y-4">
+                    <input type="hidden" name="historia_id" value="<?= $historia['id'] ?>">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">
+                            Procedimiento Realizado
+                            <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea name="descripcion_evolucion" required rows="3" placeholder="Describa el progreso, cambios de arco, elásticos..." class="w-full border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-indigo-500 bg-slate-50/60 outline-none resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">
+                            Valor Consulta
+                            <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-slate-500">$</span>
+                            <input type="text" id="input_valor_mostrar" placeholder="0" required class="w-full pl-7 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 bg-slate-50/60 focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <input type="hidden" name="valor_evolucion" id="valor_evolucion_real">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Radiografía / Examen (PDF)</label>
+                        <input type="file" name="radiografia_pdf" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer border border-slate-200 rounded-xl bg-slate-50/60">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase">
+                            Firma del Paciente
+                            <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
+                            <canvas id="canvas-evo" class="w-full h-24 touch-none cursor-crosshair"></canvas>
+                            <button type="button" id="clear-evo" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition">Limpiar</button>
+                        </div>
+                        <input type="hidden" name="firma_paciente_base64" id="firma_evo_base64" required>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-xs transition flex justify-center items-center gap-2 cursor-pointer shadow-xs">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        Guardar Control
+                    </button>
+                </form>
+            </div>
+            <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80">
+                <h3 class="text-xs font-bold text-slate-800 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 mb-4 tracking-wider">
+                    <i data-lucide="history" class="w-4 h-4 text-indigo-600"></i>
+                    Historial Clínico de Controles
+                </h3>
+                <?php if (!empty($evoluciones)): ?>
+                    <div class="space-y-3">
+                        <?php foreach ($evoluciones as $evo): ?>
+                            <div class="p-4 bg-slate-50/60 border border-slate-200/80 rounded-xl space-y-3">
+                                <div class="flex justify-between items-center text-xs border-b border-slate-200/80 pb-2">
+                                    <span class="font-bold text-indigo-600 flex items-center gap-1.5">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                        <?= date('d/m/Y - h:i A', strtotime($evo['fecha_consulta'])) ?>
+                                    </span>
+                                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-lg font-extrabold text-[11px]"> $ <?= number_format($evo['valor_evolucion'] ?? 0, 0, ',', '.') ?> COP </span>
+                                </div>
+                                <p class="text-xs text-slate-700 whitespace-pre-line leading-relaxed"><?= htmlspecialchars($evo['descripcion_evolucion']) ?></p>
+                                <?php if (!empty($evo['radiografia_pdf'])): ?>
+                                    <div>
+                                        <a href="<?= BASE_URL ?>/<?= htmlspecialchars($evo['radiografia_pdf']) ?>" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl transition">
+                                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                            Ver Radiografía (PDF)
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (!empty($evo['firma_paciente_base64'])): ?>
+                                    <div class="pt-1 flex items-center gap-2">
+                                        <span class="text-[10px] text-slate-400 font-semibold uppercase">Firma Paciente:</span>
+                                        <img src="<?= $evo['firma_paciente_base64'] ?>" class="h-6 border bg-white rounded p-0.5 object-contain">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 <?php else: ?>
-
-                    <!-- VISTA RESUMEN Y EVOLUCIONES CONTINUAS -->
-                    <div class="bg-white p-5 rounded-2xl shadow-xs border border-emerald-100 flex items-center justify-between flex-wrap gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-emerald-100 p-2.5 rounded-2xl text-emerald-600">
-                                <i data-lucide="check-circle" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xs font-bold text-slate-800 uppercase">Diagnóstico Ortodóntico Registrado</h2>
-                                <p class="text-xs text-slate-500">Fecha de Apertura: <span class="font-semibold text-slate-700"><?= date('d/m/Y', strtotime($historia['fecha_registro'] ?? $historia['fecha_apertura'])) ?></span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3">
-                            <a href="?modo=editar" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
-                                <i data-lucide="edit-3" class="w-4 h-4"></i> Editar Diagnóstico
-                            </a>
-                            <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-2.5 rounded-xl border border-indigo-100">Hoja N° <?= htmlspecialchars($historia['hoja_numero']) ?></span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-1 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 h-fit sticky top-6">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 mb-4 tracking-wider">
-                                <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i> Registrar Control
-                            </h3>
-                            <form action="<?= BASE_URL ?>/ortodoncia/guardarEvolucion/<?= $paciente['id'] ?>" method="POST" enctype="multipart/form-data" id="form-evolucion" class="space-y-4">
-                                <input type="hidden" name="historia_id" value="<?= $historia['id'] ?>">
-
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Procedimiento Realizado <span class="text-rose-500">*</span>
-                                    </label>
-                                    <textarea name="descripcion_evolucion" required rows="3" placeholder="Describa el progreso, cambios de arco, elásticos..." class="w-full border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-indigo-500 bg-slate-50/60 outline-none resize-none"></textarea>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Valor Consulta <span class="text-rose-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-slate-500">$</span>
-                                        <input type="text" id="input_valor_mostrar" placeholder="0" required class="w-full pl-7 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 bg-slate-50/60 focus:ring-2 focus:ring-indigo-500 outline-none">
-                                        <input type="hidden" name="valor_evolucion" id="valor_evolucion_real">
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Radiografía / Examen (PDF)</label>
-                                    <input type="file" name="radiografia_pdf" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer border border-slate-200 rounded-xl bg-slate-50/60">
-                                </div>
-
-                                <div class="space-y-1.5">
-                                    <label class="block text-[11px] font-bold text-slate-600 uppercase">Firma del Paciente <span class="text-rose-500">*</span>
-                                    </label>
-                                    <div class="relative bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner">
-                                        <canvas id="canvas-evo" class="w-full h-24 touch-none cursor-crosshair"></canvas>
-                                        <button type="button" id="clear-evo" class="absolute top-2 right-2 bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded text-[10px] font-bold uppercase transition">Limpiar</button>
-                                    </div>
-                                    <input type="hidden" name="firma_paciente_base64" id="firma_evo_base64" required>
-                                </div>
-
-                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-xs transition flex justify-center items-center gap-2 cursor-pointer shadow-xs">
-                                    <i data-lucide="plus" class="w-4 h-4"></i> Guardar Control
-                                </button>
-                            </form>
-                        </div>
-
-                        <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase flex items-center gap-2 border-b border-slate-100 pb-3 mb-4 tracking-wider">
-                                <i data-lucide="history" class="w-4 h-4 text-indigo-600"></i> Historial Clínico de Controles
-                            </h3>
-
-                            <?php if (!empty($evoluciones)): ?>
-                                <div class="space-y-3">
-                                    <?php foreach ($evoluciones as $evo): ?>
-                                        <div class="p-4 bg-slate-50/60 border border-slate-200/80 rounded-xl space-y-3">
-                                            <div class="flex justify-between items-center text-xs border-b border-slate-200/80 pb-2">
-                                                <span class="font-bold text-indigo-600 flex items-center gap-1.5">
-                                                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                                                    <?= date('d/m/Y - h:i A', strtotime($evo['fecha_consulta'])) ?>
-                                                </span>
-                                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-lg font-extrabold text-[11px]">
-                                                    $ <?= number_format($evo['valor_evolucion'] ?? 0, 0, ',', '.') ?> COP
-                                                </span>
-                                            </div>
-
-                                            <p class="text-xs text-slate-700 whitespace-pre-line leading-relaxed"><?= htmlspecialchars($evo['descripcion_evolucion']) ?></p>
-
-                                            <?php if (!empty($evo['radiografia_pdf'])): ?>
-                                                <div>
-                                                    <a href="<?= BASE_URL ?>/<?= htmlspecialchars($evo['radiografia_pdf']) ?>" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl transition">
-                                                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Ver Radiografía (PDF)
-                                                    </a>
-                                                </div>
-                                            <?php endif; ?>
-
-                                            <?php if (!empty($evo['firma_paciente_base64'])): ?>
-                                                <div class="pt-1 flex items-center gap-2">
-                                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Firma Paciente:</span>
-                                                    <img src="<?= $evo['firma_paciente_base64'] ?>" class="h-6 border bg-white rounded p-0.5 object-contain">
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php else: ?>
-                                <p class="text-center text-slate-400 text-xs py-12">No hay controles o evoluciones registradas aún.</p>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+                    <p class="text-center text-slate-400 text-xs py-12">No hay controles o evoluciones registradas aún.</p>
                 <?php endif; ?>
             </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-            <script src="https://unpkg.com/lucide@latest"></script>
-            <script>
-                window.toggleMmInput = function(arcada, mostrar) {
-                    const contenedor = document.getElementById('div_mm_' + arcada);
-                    if (contenedor) {
-                        if (mostrar) {
-                            contenedor.classList.remove('hidden');
-                        } else {
-                            contenedor.classList.add('hidden');
-                            const inputMm = contenedor.querySelector('input');
-                            if (inputMm) inputMm.value = '';
-                        }
-                    }
-                };
-
-                document.addEventListener("DOMContentLoaded", () => {
-                    lucide.createIcons();
-
-                    // Canvas para evoluciones
-                    const canvasEvo = document.getElementById('canvas-evo');
-                    if (canvasEvo) {
-                        canvasEvo.width = canvasEvo.parentElement.clientWidth;
-                        canvasEvo.height = 96;
-                        const padEvo = new SignaturePad(canvasEvo, { backgroundColor: 'rgb(255, 255, 255)' });
-                        document.getElementById('clear-evo').addEventListener('click', () => padEvo.clear());
-                        document.getElementById('form-evolucion').addEventListener('submit', (e) => {
-                            if (!padEvo.isEmpty()) {
-                                document.getElementById('firma_evo_base64').value = padEvo.toDataURL('image/png');
-                            } else {
-                                e.preventDefault();
-                                alert('El paciente debe firmar antes de guardar la historia clínica.');
-                                return false;
-                            }
-                        });
-                    }
-
-                    // Canvas para diagnóstico base
-                    const canvasDiag = document.getElementById('canvas-firma-paciente');
-                    if (canvasDiag) {
-                        canvasDiag.width = canvasDiag.parentElement.clientWidth || 400;
-                        canvasDiag.height = 112;
-
-                        const padDiag = new SignaturePad(canvasDiag, { backgroundColor: 'rgb(255, 255, 255)' });
-
-                        document.getElementById('clear-firma-paciente').addEventListener('click', () => {
-                            padDiag.clear();
-                            document.getElementById('firma_paciente_base64').value = '';
-                        });
-
-                        document.getElementById('form-diagnostico').addEventListener('submit', (e) => {
-                            if (padDiag.isEmpty()) {
-                                e.preventDefault();
-                                alert('El paciente debe firmar antes de guardar la historia clínica.');
-                                return false;
-                            }
-                            document.getElementById('firma_paciente_base64').value = padDiag.toDataURL('image/png');
-                        });
-                    }
-
-                    // Formato de moneda COP
-                    const inputMostrar = document.getElementById('input_valor_mostrar');
-                    const inputReal    = document.getElementById('valor_evolucion_real');
-
-                    if (inputMostrar) {
-                        inputMostrar.addEventListener('input', (e) => {
-                            let val = e.target.value.replace(/\D/g, '');
-                            inputReal.value = val;
-                            if (val !== '') {
-                                e.target.value = Number(val).toLocaleString('es-CO');
-                            } else {
-                                e.target.value = '';
-                            }
-                        });
-                    }
-                });
-            </script>
-
-            <style>
-                @media print {
-                    body * {
-                        visibility: hidden;
-                    }
-                    .space-y-6.bg-slate-100\/60,
-                    .space-y-6.bg-slate-100\/60 * {
-                        visibility: visible;
-                    }
-                    .space-y-6.bg-slate-100\/60 {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        margin: 0;
-                        padding: 0;
-                        background: white !important;
-                    }
-                    .print {
-                        display: none !important;
-                    }
-                    button,
-                    form#form-evolucion,
-                    a[href*="modo=editar"],
-                    .bg-white.p-5.rounded-2xl.shadow-xs.border.border-slate-200\/80.h-fit.sticky {
-                        display: none !important;
-                    }
+        </div>
+    <?php endif; ?>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js">
+</script>
+<script src="https://unpkg.com/lucide@latest">
+</script>
+<script>
+    window.toggleMmInput = function (arcada, mostrar) {
+        const contenedor = document.getElementById('div_mm_' + arcada);
+        if (contenedor) {
+            if (mostrar) {
+                contenedor.classList.remove('hidden');
+            } else {
+                contenedor.classList.add('hidden');
+                const inputMm = contenedor.querySelector('input');
+                if (inputMm) inputMm.value = '';
+            }
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+    
+        // Canvas para evoluciones
+        const canvasEvo = document.getElementById('canvas-evo');
+        if (canvasEvo) {
+            canvasEvo.width = canvasEvo.parentElement.clientWidth;
+            canvasEvo.height = 96;
+            const padEvo = new SignaturePad(canvasEvo, { backgroundColor: 'rgb(255, 255, 255)' });
+            document.getElementById('clear-evo').addEventListener('click', () => padEvo.clear());
+            document.getElementById('form-evolucion').addEventListener('submit', (e) => {
+                if (!padEvo.isEmpty()) {
+                    document.getElementById('firma_evo_base64').value = padEvo.toDataURL('image/png');
+                } else {
+                    e.preventDefault();
+                    alert('El paciente debe firmar antes de guardar la historia clínica.');
+                    return false;
                 }
-            </style>
+            });
+        }
+    
+        // Canvas para diagnóstico base
+        const canvasDiag = document.getElementById('canvas-firma-paciente');
+        if (canvasDiag) {
+            canvasDiag.width = canvasDiag.parentElement.clientWidth || 400;
+            canvasDiag.height = 112;
+    
+            const padDiag = new SignaturePad(canvasDiag, { backgroundColor: 'rgb(255, 255, 255)' });
+    
+            document.getElementById('clear-firma-paciente').addEventListener('click', () => {
+                padDiag.clear();
+                document.getElementById('firma_paciente_base64').value = '';
+            });
+    
+            document.getElementById('form-diagnostico').addEventListener('submit', (e) => {
+                if (padDiag.isEmpty()) {
+                    e.preventDefault();
+                    alert('El paciente debe firmar antes de guardar la historia clínica.');
+                    return false;
+                }
+                document.getElementById('firma_paciente_base64').value = padDiag.toDataURL('image/png');
+            });
+        }
+    
+        // Formato de moneda COP
+        const inputMostrar = document.getElementById('input_valor_mostrar');
+        const inputReal = document.getElementById('valor_evolucion_real');
+    
+        if (inputMostrar) {
+            inputMostrar.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\D/g, '');
+                inputReal.value = val;
+                if (val !== '') {
+                    e.target.value = Number(val).toLocaleString('es-CO');
+                } else {
+                    e.target.value = '';
+                }
+            });
+        }
+    });
+</script>
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .space-y-6.bg-slate-100\/60,
+        .space-y-6.bg-slate-100\/60 * {
+            visibility: visible;
+        }
+        .space-y-6.bg-slate-100\/60 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white !important;
+        }
+        .print {
+            display: none !important;
+        }
+        button,
+        form#form-evolucion,
+        a[href*='modo=editar'],
+        .bg-white.p-5.rounded-2xl.shadow-xs.border.border-slate-200\/80.h-fit.sticky {
+            display: none !important;
+        }
+    }
+    
+    /* Identidad visual premium alineada con el módulo de pacientes */
+    .ortodoncia-premium {
+        --p-ink: #17243b;
+        --p-muted: #718096;
+        --p-line: #e4ebf4;
+        --p-blue: #315ee8;
+        --p-teal: #0e9488;
+        width: 100%;
+        min-width: 0;
+        padding-bottom: clamp(18px, 2vw, 32px);
+        color: var(--p-ink);
+    }
+    .ortodoncia-premium,
+    .ortodoncia-premium * {
+        box-sizing: border-box;
+    }
+    .ortodoncia-premium a,
+    .ortodoncia-premium button,
+    .ortodoncia-premium input,
+    .ortodoncia-premium select,
+    .ortodoncia-premium textarea {
+        -webkit-tap-highlight-color: transparent;
+    }
+    .ortodoncia-premium a:focus-visible,
+    .ortodoncia-premium button:focus-visible,
+    .ortodoncia-premium input:focus-visible,
+    .ortodoncia-premium select:focus-visible,
+    .ortodoncia-premium textarea:focus-visible {
+        outline: 3px solid rgba(49, 94, 232, 0.28);
+        outline-offset: 3px;
+    }
+    .ortodoncia-premium h1,
+    .ortodoncia-premium h2,
+    .ortodoncia-premium h3,
+    .ortodoncia-premium h4 {
+        letter-spacing: -0.025em;
+    }
+    .ortodoncia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']),
+    .ortodoncia-premium select,
+    .ortodoncia-premium textarea {
+        min-height: 42px;
+        border-radius: 13px !important;
+        border-color: #d8e3ef !important;
+        background-color: #f8fafc;
+        color: #1c2c43;
+        transition:
+            border-color 0.18s,
+            box-shadow 0.18s,
+            background 0.18s;
+    }
+    .ortodoncia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']):focus,
+    .ortodoncia-premium select:focus,
+    .ortodoncia-premium textarea:focus {
+        background: #fff !important;
+        border-color: #6b89f2 !important;
+        box-shadow: 0 0 0 4px rgba(49, 94, 232, 0.1) !important;
+        outline: none;
+    }
+    .ortodoncia-premium label {
+        line-height: 1.45;
+    }
+    .ortodoncia-premium .bg-white {
+        border-color: var(--p-line) !important;
+        border-radius: 22px !important;
+        box-shadow: 0 8px 28px rgba(19, 38, 68, 0.055);
+    }
+    .ortodoncia-premium .rounded-xl {
+        border-radius: 13px !important;
+    }
+    .ortodoncia-premium .rounded-2xl {
+        border-radius: 20px !important;
+    }
+    .ortodoncia-premium .rounded-3xl {
+        border-radius: 25px !important;
+    }
+    .ortodoncia-premium .shadow-sm,
+    .ortodoncia-premium .shadow-xs,
+    .ortodoncia-premium .shadow-xl {
+        box-shadow: 0 8px 28px rgba(19, 38, 68, 0.055) !important;
+    }
+    .ortodoncia-premium > div:first-child {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        color: #fff !important;
+        border: 1px solid #203960 !important;
+        border-radius: 25px !important;
+        background: linear-gradient(118deg, #111d38 0%, #2549a5 55%, #087f86 100%) !important;
+        box-shadow: 0 18px 38px rgba(20, 40, 75, 0.17) !important;
+    }
+    .ortodoncia-premium > div:first-child h1,
+    .ortodoncia-premium > div:first-child h2,
+    .ortodoncia-premium > div:first-child h3 {
+        color: #fff !important;
+    }
+    .ortodoncia-premium > div:first-child p {
+        color: rgba(255, 255, 255, 0.76) !important;
+    }
+    .ortodoncia-premium > div:first-child .text-indigo-600 {
+        color: #c8f5f0 !important;
+    }
+    .ortodoncia-premium > div:first-child .text-indigo-400 {
+        color: #b9f3ed !important;
+    }
+    .ortodoncia-premium > div:first-child .bg-indigo-500\\/20 {
+        background: rgba(255, 255, 255, 0.14) !important;
+        border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+    .ortodoncia-premium .bg-indigo-600 {
+        background-color: #315ee8 !important;
+    }
+    .ortodoncia-premium .hover\\:bg-indigo-500:hover {
+        background-color: #244dcc !important;
+    }
+    .ortodoncia-premium .text-indigo-600,
+    .ortodoncia-premium .text-indigo-700 {
+        color: #315ee8 !important;
+    }
+    .ortodoncia-premium .border-slate-200,
+    .ortodoncia-premium .border-slate-100 {
+        border-color: #e4ebf4 !important;
+    }
+    .ortodoncia-premium .patient-card {
+        transition:
+            background 0.16s ease,
+            box-shadow 0.16s ease;
+    }
+    .ortodoncia-premium .patient-card:hover {
+        background: #f4f7ff !important;
+    }
+    .ortodoncia-premium #patients-list > .patient-card + .patient-card {
+        border-top: 1px solid #edf1f6;
+    }
+    .ortodoncia-premium #search-input {
+        min-height: 46px;
+        border-radius: 14px !important;
+    }
+    .ortodoncia-premium #pagination-buttons button {
+        min-width: 38px;
+        min-height: 38px;
+        border-radius: 12px !important;
+    }
+    .ortodoncia-premium form button[type='submit'],
+    .ortodoncia-premium form [type='submit'],
+    .ortodoncia-premium button[type='button'] {
+        transition:
+            transform 0.18s,
+            box-shadow 0.18s,
+            filter 0.18s;
+    }
+    .ortodoncia-premium form button[type='submit']:hover,
+    .ortodoncia-premium form [type='submit']:hover {
+        transform: translateY(-1px);
+        filter: saturate(1.08);
+    }
+    .ortodoncia-premium .p-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #edf1f6;
+    }
+    .ortodoncia-premium .p-section-title i {
+        display: grid;
+        place-items: center;
+        background: #eef3ff;
+        border-radius: 12px;
+        padding: 9px;
+    }
+    @media (max-width: 700px) {
+        .ortodoncia-premium > div:first-child {
+            border-radius: 20px !important;
+            padding: 20px !important;
+        }
+        .ortodoncia-premium .bg-white {
+            border-radius: 18px !important;
+        }
+        .ortodoncia-premium .p-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .ortodoncia-premium *,
+        .ortodoncia-premium *::before,
+        .ortodoncia-premium *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
