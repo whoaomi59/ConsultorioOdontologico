@@ -1,4 +1,414 @@
-<div class="space-y-6">
+<style>
+    /* Identidad premium del consultorio odontológico: azul profundo y turquesa */
+    .odontologia-premium,
+    .historia-premium,
+    .odontograma-premium {
+        --clinic-navy: #10233f;
+        --clinic-blue: #176b87;
+        --clinic-teal: #0f9b91;
+        --clinic-teal-dark: #087f78;
+        --clinic-ink: #172b45;
+        --clinic-muted: #64758b;
+        color: var(--clinic-ink);
+    }
+    .odontologia-premium > div:first-child,
+    .historia-premium > div:first-child {
+        border-radius: 1.5rem;
+    }
+    .odontologia-premium > div:first-child {
+        background-image: linear-gradient(120deg, #10233f 0%, #123c59 58%, #087f78 100%) !important;
+        border-color: rgba(148, 210, 205, 0.28) !important;
+        box-shadow: 0 20px 45px rgba(16, 35, 63, 0.16) !important;
+    }
+    .odontologia-premium .bg-indigo-500\/20,
+    .historia-premium .bg-indigo-500\/20 {
+        background: rgba(15, 155, 145, 0.18) !important;
+        border-color: rgba(113, 214, 203, 0.28) !important;
+    }
+    .odontologia-premium .text-indigo-300,
+    .historia-premium .text-indigo-300 {
+        color: #8de3da !important;
+    }
+    .odontologia-premium .bg-indigo-600,
+    .historia-premium .bg-indigo-600,
+    .odontograma-premium .bg-indigo-600 {
+        background-color: var(--clinic-teal) !important;
+    }
+    .odontologia-premium .hover\:bg-indigo-600:hover,
+    .historia-premium .hover\:bg-indigo-600:hover,
+    .odontograma-premium .hover\:bg-indigo-600:hover {
+        background-color: var(--clinic-teal-dark) !important;
+    }
+    .odontologia-premium .text-indigo-600,
+    .odontologia-premium .text-indigo-700,
+    .historia-premium .text-indigo-600,
+    .historia-premium .text-indigo-700,
+    .odontograma-premium .text-indigo-600,
+    .odontograma-premium .text-indigo-700 {
+        color: var(--clinic-teal-dark) !important;
+    }
+    .odontologia-premium .bg-indigo-50,
+    .historia-premium .bg-indigo-50,
+    .odontograma-premium .bg-indigo-50 {
+        background-color: #eaf8f6 !important;
+    }
+    .odontologia-premium .border-indigo-100,
+    .historia-premium .border-indigo-100,
+    .odontograma-premium .border-indigo-100 {
+        border-color: #bce8e2 !important;
+    }
+    .odontologia-premium input:focus,
+    .odontologia-premium select:focus,
+    .historia-premium input:focus,
+    .historia-premium select:focus,
+    .historia-premium textarea:focus,
+    .odontograma-premium select:focus {
+        border-color: var(--clinic-teal) !important;
+        box-shadow: 0 0 0 4px rgba(15, 155, 145, 0.12) !important;
+        outline: none;
+    }
+    .odontologia-premium .patient-card {
+        transition:
+            background-color 0.18s ease,
+            border-color 0.18s ease;
+    }
+    .odontologia-premium .patient-card:hover {
+        background-color: #f4fbfa !important;
+    }
+    .odontologia-premium #pagination-buttons button {
+        min-width: 38px;
+        min-height: 38px;
+    }
+    .odontologia-premium #pagination-buttons button[class*='bg-indigo-600'] {
+        background-image: linear-gradient(135deg, #13a89e, #087f78) !important;
+        border-color: transparent !important;
+    }
+    .historia-premium > div:first-child {
+        border-top: 4px solid var(--clinic-teal);
+        box-shadow: 0 12px 32px rgba(16, 35, 63, 0.07);
+    }
+    .historia-premium .bg-slate-50 {
+        background-color: #f5f9fb;
+    }
+    .historia-premium .rounded-2xl {
+        border-radius: 1.1rem;
+    }
+    .historia-premium .shadow-sm {
+        box-shadow: 0 8px 24px rgba(16, 35, 63, 0.055);
+    }
+    .historia-premium .bg-rose-50\/50 {
+        background-color: #fff7f7;
+    }
+    .historia-premium .border-slate-200,
+    .historia-premium .border-slate-200\/80 {
+        border-color: #dce7ed;
+    }
+    .historia-premium button[type='submit'] {
+        background-image: linear-gradient(135deg, #13a89e, #087f78);
+        box-shadow: 0 8px 18px rgba(8, 127, 120, 0.18);
+    }
+    .historia-premium button[type='submit']:hover {
+        filter: brightness(0.95);
+    }
+    .historia-premium .text-slate-800 {
+        color: #172b45;
+    }
+    .odontograma-premium {
+        border-color: #dce7ed !important;
+        box-shadow: 0 12px 32px rgba(16, 35, 63, 0.06) !important;
+    }
+    .odontograma-premium .palette-btn {
+        border-radius: 0.8rem;
+        min-height: 38px;
+    }
+    .odontograma-premium .ring-indigo-500 {
+        --tw-ring-color: #0f9b91 !important;
+    }
+    .odontograma-premium #odontogram-scroll-container {
+        background: linear-gradient(180deg, #f8fbfc, #f2f8f9) !important;
+        border-color: #dce7ed !important;
+    }
+    .odontograma-premium [id$='-wrapper'] > span {
+        color: #536b82 !important;
+    }
+    .odontograma-premium svg path,
+    .odontograma-premium svg circle {
+        transition:
+            fill 0.12s ease,
+            stroke 0.12s ease;
+    }
+    .odontologia-premium button:focus-visible,
+    .odontologia-premium a:focus-visible,
+    .historia-premium button:focus-visible,
+    .historia-premium a:focus-visible,
+    .historia-premium input:focus-visible,
+    .historia-premium select:focus-visible,
+    .historia-premium textarea:focus-visible,
+    .odontograma-premium button:focus-visible {
+        outline: 3px solid rgba(15, 155, 145, 0.32);
+        outline-offset: 2px;
+    }
+    @media (max-width: 640px) {
+        .odontologia-premium .patient-card {
+            padding: 1rem !important;
+        }
+        .historia-premium > div:first-child {
+            padding: 1rem !important;
+        }
+        .historia-premium .p-6 {
+            padding: 1rem !important;
+        }
+        .odontograma-premium {
+            padding: 1rem !important;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .odontologia-premium *,
+        .historia-premium *,
+        .odontograma-premium * {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+        }
+    }
+    
+    /* Ajustes de identidad visual alineados con el módulo de pacientes */
+    .odontologia-premium,
+    .historia-premium,
+    .odontograma-premium {
+        --p-ink: #17243b;
+        --p-muted: #718096;
+        --p-line: #e4ebf4;
+        --p-blue: #315ee8;
+        --p-teal: #0e9488;
+        color: var(--p-ink);
+        min-width: 0;
+    }
+    .odontologia-premium,
+    .historia-premium,
+    .odontograma-premium,
+    .odontologia-premium *,
+    .historia-premium *,
+    .odontograma-premium * {
+        box-sizing: border-box;
+    }
+    
+    .odontologia-premium a:focus-visible,
+    .odontologia-premium button:focus-visible,
+    .odontologia-premium input:focus-visible,
+    .odontologia-premium select:focus-visible,
+    .odontologia-premium textarea:focus-visible,
+    .historia-premium a:focus-visible,
+    .historia-premium button:focus-visible,
+    .historia-premium input:focus-visible,
+    .historia-premium select:focus-visible,
+    .historia-premium textarea:focus-visible,
+    .odontograma-premium a:focus-visible,
+    .odontograma-premium button:focus-visible,
+    .odontograma-premium input:focus-visible,
+    .odontograma-premium select:focus-visible,
+    .odontograma-premium textarea:focus-visible {
+        outline: 3px solid rgba(49, 94, 232, 0.28);
+        outline-offset: 3px;
+    }
+    .odontologia-premium h1,
+    .odontologia-premium h2,
+    .odontologia-premium h3,
+    .historia-premium h1,
+    .historia-premium h2,
+    .historia-premium h3,
+    .odontograma-premium h1,
+    .odontograma-premium h2,
+    .odontograma-premium h3 {
+        letter-spacing: -0.025em;
+    }
+    .odontologia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']),
+    .odontologia-premium select,
+    .odontologia-premium textarea,
+    .historia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']),
+    .historia-premium select,
+    .historia-premium textarea,
+    .odontograma-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']),
+    .odontograma-premium select,
+    .odontograma-premium textarea {
+        border-radius: 13px !important;
+        border-color: #d8e3ef !important;
+        background-color: #f8fafc;
+        color: #1c2c43;
+        transition:
+            border-color 0.18s,
+            box-shadow 0.18s,
+            background 0.18s;
+    }
+    .odontologia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']):focus,
+    .odontologia-premium select:focus,
+    .odontologia-premium textarea:focus,
+    .historia-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']):focus,
+    .historia-premium select:focus,
+    .historia-premium textarea:focus,
+    .odontograma-premium input:not([type='file']):not([type='hidden']):not([type='checkbox']):not([type='radio']):focus,
+    .odontograma-premium select:focus,
+    .odontograma-premium textarea:focus {
+        background: #fff !important;
+        border-color: #6b89f2 !important;
+        box-shadow: 0 0 0 4px rgba(49, 94, 232, 0.1) !important;
+        outline: none;
+    }
+    .odontologia-premium .bg-white,
+    .historia-premium .bg-white,
+    .odontograma-premium.bg-white,
+    .odontograma-premium .bg-white {
+        border-color: var(--p-line);
+    }
+    .odontologia-premium .rounded-2xl,
+    .historia-premium .rounded-2xl,
+    .odontograma-premium.rounded-2xl,
+    .odontograma-premium .rounded-2xl {
+        border-radius: 20px !important;
+    }
+    .odontologia-premium .rounded-3xl,
+    .historia-premium .rounded-3xl,
+    .odontograma-premium .rounded-3xl {
+        border-radius: 22px !important;
+    }
+    .odontologia-premium .shadow-sm,
+    .historia-premium .shadow-sm,
+    .odontograma-premium .shadow-sm {
+        box-shadow: 0 8px 28px rgba(19, 38, 68, 0.055) !important;
+    }
+    .odontologia-premium .bg-indigo-600,
+    .historia-premium .bg-indigo-600,
+    .odontograma-premium .bg-indigo-600 {
+        background-color: #315ee8 !important;
+    }
+    .odontologia-premium .hover\:bg-indigo-500:hover,
+    .historia-premium .hover\:bg-indigo-500:hover,
+    .odontograma-premium .hover\:bg-indigo-500:hover {
+        background-color: #244dcc !important;
+    }
+    .odontologia-premium .text-indigo-600,
+    .historia-premium .text-indigo-600,
+    .odontograma-premium .text-indigo-600 {
+        color: #315ee8 !important;
+    }
+    .odontologia-premium .border-slate-200,
+    .historia-premium .border-slate-200,
+    .odontograma-premium .border-slate-200 {
+        border-color: #e4ebf4 !important;
+    }
+    .odontologia-premium form button[type='submit'],
+    .historia-premium form button[type='submit'],
+    .odontologia-premium form [type='submit'],
+    .historia-premium form [type='submit'] {
+        border-radius: 13px !important;
+        transition:
+            transform 0.18s,
+            box-shadow 0.18s,
+            filter 0.18s;
+    }
+    .odontologia-premium form button[type='submit']:hover,
+    .historia-premium form button[type='submit']:hover,
+    .odontologia-premium form [type='submit']:hover,
+    .historia-premium form [type='submit']:hover {
+        transform: translateY(-1px);
+        filter: saturate(1.08);
+    }
+    .odontologia-premium > div:first-child {
+        border-radius: 25px !important;
+        background: linear-gradient(118deg, #111d38 0%, #2549a5 55%, #087f86 100%) !important;
+        border: 1px solid #203960 !important;
+        box-shadow: 0 18px 38px rgba(20, 40, 75, 0.17) !important;
+    }
+    .odontologia-premium > div:first-child h1,
+    .odontologia-premium > div:first-child h2 {
+        color: #fff !important;
+    }
+    .odontologia-premium > div:first-child p {
+        color: rgba(255, 255, 255, 0.76) !important;
+    }
+    .odontologia-premium > div:first-child .bg-indigo-500\/20 {
+        background: rgba(255, 255, 255, 0.14) !important;
+        border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+    .odontologia-premium > div:first-child .text-indigo-300 {
+        color: #b9f3ed !important;
+    }
+    .historia-premium > div:first-child {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        border-radius: 25px !important;
+        background: linear-gradient(118deg, #111d38 0%, #2549a5 56%, #087f86 100%) !important;
+        color: #fff !important;
+        border: 1px solid #203960 !important;
+        box-shadow: 0 18px 38px rgba(20, 40, 75, 0.17) !important;
+    }
+    .historia-premium > div:first-child h1,
+    .historia-premium > div:first-child h2,
+    .historia-premium > div:first-child h3 {
+        color: #fff !important;
+    }
+    .historia-premium > div:first-child p,
+    .historia-premium > div:first-child .text-slate-500,
+    .historia-premium > div:first-child .text-slate-600 {
+        color: rgba(255, 255, 255, 0.78) !important;
+    }
+    .historia-premium > div:first-child a:not([class*='bg-']) {
+        color: #c8f5f0 !important;
+    }
+    .historia-premium > div:first-child a[class*='bg-'] {
+        border-color: rgba(255, 255, 255, 0.24) !important;
+    }
+    .odontograma-premium {
+        border: 1px solid #e4ebf4 !important;
+        border-radius: 22px !important;
+        background: linear-gradient(145deg, #fff 0%, #f8fbff 100%) !important;
+        box-shadow: 0 8px 28px rgba(19, 38, 68, 0.055) !important;
+    }
+    .odontograma-premium h2,
+    .odontograma-premium h3 {
+        color: #17243b;
+    }
+    .odontograma-premium .text-indigo-600 {
+        color: #315ee8 !important;
+    }
+    .odontologia-premium table,
+    .historia-premium table {
+        border-color: #e4ebf4;
+    }
+    .odontologia-premium th,
+    .historia-premium th {
+        color: #728096;
+        background: #f5f8fc;
+    }
+    @media (max-width: 700px) {
+        .odontologia-premium > div:first-child,
+        .historia-premium > div:first-child {
+            border-radius: 20px !important;
+            padding: 20px !important;
+        }
+        .odontologia-premium .rounded-3xl,
+        .historia-premium .rounded-3xl,
+        .odontograma-premium.rounded-3xl {
+            border-radius: 20px !important;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .odontologia-premium *,
+        .historia-premium *,
+        .odontograma-premium *,
+        .odontologia-premium *::before,
+        .historia-premium *::before,
+        .odontograma-premium *::before,
+        .odontologia-premium *::after,
+        .historia-premium *::after,
+        .odontograma-premium *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
+<div class="odontologia-premium space-y-6">
     <!-- Header del Módulo -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
         <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
