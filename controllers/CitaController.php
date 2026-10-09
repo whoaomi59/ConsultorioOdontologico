@@ -20,20 +20,34 @@ class CitaController
 
         $usuarioId = $_SESSION['usuario_id'] ?? null;
 
-        // Verificamos si el usuario puede ver toda la agenda.
+        // citas_total permite agendar sin programar previamente un día.
+        // El administrador conserva acceso completo; los demás no pueden usar
+        // ni visualizar fechas que ya estén asignadas a otro doctor.
         $tieneCitasTotal = hasPermission('citas_total');
+        $esAdministrador = $this->citaModel->usuarioEsAdministrador($usuarioId);
+        $fechasBloqueadas = [];
 
         if ($tieneCitasTotal) {
-            // Puede ver absolutamente todas las citas.
             $citas = $this->citaModel->getAll();
-
-            // No necesita restricción de fechas.
             $fechasAtencion = [];
-        } else {
-            // Solo obtiene las fechas que tiene programadas.
-            $fechasAtencion = $this->citaModel->getFechasAtencionDoctor($usuarioId);
 
-            // Solo obtiene citas pertenecientes a esas fechas.
+            if (!$esAdministrador) {
+                $fechasOtrosDoctores = $this->citaModel->getFechasAtencionOtrosDoctores($usuarioId);
+                foreach ($fechasOtrosDoctores as $fila) {
+                    if (!empty($fila['fecha'])) {
+                        $fechasBloqueadas[] = date('Y-m-d', strtotime($fila['fecha']));
+                    }
+                }
+
+                // No mostrar en el listado citas que caigan en días de otro doctor.
+                $citas = array_values(
+                    array_filter($citas, function ($cita) use ($fechasBloqueadas) {
+                        return !in_array(date('Y-m-d', strtotime($cita['fecha'])), $fechasBloqueadas, true);
+                    }),
+                );
+            }
+        } else {
+            $fechasAtencion = $this->citaModel->getFechasAtencionDoctor($usuarioId);
             $citas = $this->citaModel->getCitasPorFechasDoctor($usuarioId);
         }
 
@@ -61,48 +75,33 @@ class CitaController
 
         /*
     |--------------------------------------------------------------------------
-    | VALIDAR FECHA PROGRAMADA
+    | VALIDAR FECHA DE LA CITA
     |--------------------------------------------------------------------------
     */
+        $usuarioId = isset($_SESSION['usuario_id']) ? (int) $_SESSION['usuario_id'] : 0;
+        $tieneCitasTotal = hasPermission('citas_total');
+        $esAdministrador = $this->citaModel->usuarioEsAdministrador($usuarioId);
+        $fecha = isset($_POST['fecha']) ? trim((string) $_POST['fecha']) : '';
 
-        if (!hasPermission('citas_total')) {
-            $usuarioId = isset($_SESSION['usuario_id']) ? (int) $_SESSION['usuario_id'] : 0;
+        $fechaValidada = DateTime::createFromFormat('!Y-m-d', $fecha);
+        if (!$fechaValidada || $fechaValidada->format('Y-m-d') !== $fecha) {
+            $_SESSION['error_acceso'] = 'La fecha seleccionada no es válida.';
+            header('Location: ' . BASE_URL . '/cita');
+            exit();
+        }
 
-            $fecha = isset($_POST['fecha']) ? trim((string) $_POST['fecha']) : '';
+        // Solo admin puede usar una fecha que ya esté asignada a otro doctor.
+        if (!$esAdministrador && $this->citaModel->fechaAsignadaAOtroDoctor($usuarioId, $fecha)) {
+            $_SESSION['error_acceso'] = 'No puedes agendar ni consultar una fecha asignada a otro doctor.';
+            header('Location: ' . BASE_URL . '/cita');
+            exit();
+        }
 
-            // Validar que exista usuario y fecha
-            if ($usuarioId <= 0 || empty($fecha)) {
-                $_SESSION['error_acceso'] = 'No fue posible identificar el doctor o la fecha seleccionada.';
-
-                header('Location: ' . BASE_URL . '/cita');
-                exit();
-            }
-
-            // Validar formato real de fecha
-            $fechaValidada = DateTime::createFromFormat('Y-m-d', $fecha);
-
-            if (!$fechaValidada || $fechaValidada->format('Y-m-d') !== $fecha) {
-                $_SESSION['error_acceso'] = 'La fecha seleccionada no es válida.';
-
-                header('Location: ' . BASE_URL . '/cita');
-                exit();
-            }
-
-            // Impedir citas en una fecha que pertenezca a otro doctor.
-            if ($this->citaModel->fechaAsignadaAOtroDoctor($usuarioId, $fecha)) {
-                $_SESSION['error_acceso'] = 'La fecha seleccionada ya está asignada a otro doctor.';
-
-                header('Location: ' . BASE_URL . '/cita');
-                exit();
-            }
-
-            // Comprobar que el doctor tenga ese día programado
-            if (!$this->citaModel->fechaEstaProgramada($usuarioId, $fecha)) {
-                $_SESSION['error_acceso'] = 'No tienes programada atención para la fecha seleccionada.';
-
-                header('Location: ' . BASE_URL . '/cita');
-                exit();
-            }
+        // Sin citas_total, el usuario solo puede usar sus días programados.
+        if (!$tieneCitasTotal && !$esAdministrador && !$this->citaModel->fechaEstaProgramada($usuarioId, $fecha)) {
+            $_SESSION['error_acceso'] = 'No tienes programada atención para la fecha seleccionada.';
+            header('Location: ' . BASE_URL . '/cita');
+            exit();
         }
 
         /*

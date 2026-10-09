@@ -121,6 +121,31 @@ class Cita
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /** Devuelve los días asignados a otros doctores. */
+    public function getFechasAtencionOtrosDoctores($usuarioId)
+    {
+        $sql = "SELECT DISTINCT fecha
+            FROM fechas_atencion_doctores
+            WHERE usuario_id <> :usuario_id
+            ORDER BY fecha ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':usuario_id' => (int) $usuarioId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** El administrador conserva acceso completo a la agenda. */
+    public function usuarioEsAdministrador($usuarioId)
+    {
+        if (empty($usuarioId)) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare('SELECT rol FROM usuarios WHERE id = :id LIMIT 1');
+        $stmt->execute([':id' => (int) $usuarioId]);
+        return strtolower(trim((string) $stmt->fetchColumn())) === 'admin';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | COMPROBAR SI UNA FECHA ESTÁ PROGRAMADA PARA EL DOCTOR
