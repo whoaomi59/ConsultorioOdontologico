@@ -147,6 +147,174 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
             scroll-behavior: auto !important;
         }
     }
+    
+    /* Acabado "signature": profundidad, luz ambiental y jerarquía visual */
+    .citas-premium {
+        position: relative;
+        isolation: isolate;
+        --clinica-line: #dce8ee;
+        --clinica-glow: rgba(15, 155, 145, 0.16);
+    }
+    .citas-premium > * {
+        position: relative;
+    }
+    .citas-premium > div:first-of-type {
+        background-image:
+            radial-gradient(circle at 88% 12%, rgba(66, 214, 197, 0.24), transparent 24%),
+            radial-gradient(circle at 70% 110%, rgba(78, 116, 255, 0.22), transparent 34%), linear-gradient(118deg, #101d35 0%, #183f61 52%, #087f78 100%) !important;
+        border: 1px solid rgba(181, 235, 228, 0.28) !important;
+        box-shadow:
+            0 22px 55px rgba(16, 35, 63, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+    .citas-premium > div:first-of-type:after {
+        content: '';
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        right: 7%;
+        top: -145px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 22px rgba(255, 255, 255, 0.025),
+            0 0 0 46px rgba(255, 255, 255, 0.02);
+        pointer-events: none;
+    }
+    .citas-premium #btn-nueva-cita {
+        background: linear-gradient(135deg, #18b6a5, #087f78) !important;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow: 0 10px 24px rgba(4, 173, 154, 0.25) !important;
+        transition:
+            transform 0.22s ease,
+            box-shadow 0.22s ease,
+            filter 0.22s ease;
+    }
+    .citas-premium #btn-nueva-cita:hover {
+        filter: saturate(1.12) brightness(1.06);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(4, 173, 154, 0.3) !important;
+    }
+    .citas-premium > div:nth-of-type(2),
+    .citas-premium #view-semana,
+    .citas-premium #view-mes,
+    .citas-premium #view-lista > div:first-child {
+        border-color: var(--clinica-line) !important;
+        box-shadow:
+            0 12px 32px rgba(16, 35, 63, 0.055),
+            0 2px 5px rgba(16, 35, 63, 0.025) !important;
+    }
+    .citas-premium > div:nth-of-type(2) {
+        backdrop-filter: blur(12px);
+    }
+    .citas-premium .tab-btn {
+        border-radius: 12px;
+        transition:
+            color 0.18s ease,
+            background 0.18s ease,
+            box-shadow 0.18s ease,
+            transform 0.18s ease;
+    }
+    .citas-premium .tab-btn.active {
+        background: linear-gradient(135deg, #ffffff, #eaf8f6) !important;
+        color: #087f78 !important;
+        box-shadow:
+            0 4px 14px rgba(16, 35, 63, 0.1),
+            inset 0 0 0 1px rgba(15, 155, 145, 0.12) !important;
+    }
+    .citas-premium #semana-headers {
+        background: linear-gradient(180deg, #f5fbfc, #edf6f7) !important;
+    }
+    .citas-premium #semana-grid {
+        background-image: linear-gradient(rgba(15, 155, 145, 0.025) 1px, transparent 1px);
+        background-size: 100% 54px;
+    }
+    .citas-premium #semana-grid > div {
+        border-color: #e7eef2 !important;
+    }
+    .citas-premium #semana-grid > div > div {
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(16, 35, 63, 0.045);
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+    .citas-premium #semana-grid > div > div:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 9px 20px rgba(16, 35, 63, 0.1);
+    }
+    .citas-premium #mes-grid > div {
+        border-radius: 16px !important;
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            border-color 0.18s ease;
+    }
+    .citas-premium #mes-grid > div:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 35, 63, 0.075);
+        border-color: #9bd8d0 !important;
+    }
+    .citas-premium #view-lista .cita-tarjeta {
+        border-radius: 22px !important;
+        background: linear-gradient(180deg, #ffffff 0%, #fcfefe 100%);
+        box-shadow: 0 9px 26px rgba(16, 35, 63, 0.06) !important;
+        transition:
+            transform 0.22s ease,
+            box-shadow 0.22s ease,
+            border-color 0.22s ease;
+    }
+    .citas-premium #view-lista .cita-tarjeta:hover {
+        transform: translateY(-4px);
+        border-color: #a9ded8 !important;
+        box-shadow: 0 20px 42px rgba(16, 35, 63, 0.12) !important;
+    }
+    .citas-premium #view-lista .cita-tarjeta > div:first-child {
+        background-image: linear-gradient(90deg, #16a99b, #3c83c7) !important;
+    }
+    .citas-premium #view-lista .cita-tarjeta input[type='search']:focus,
+    .citas-premium #modal-cita input:focus,
+    .citas-premium #modal-cita select:focus,
+    .citas-premium #modal-cita textarea:focus {
+        border-color: #16a99b !important;
+        box-shadow: 0 0 0 4px rgba(22, 169, 155, 0.12) !important;
+    }
+    .citas-premium #modal-cita {
+        background: rgba(8, 22, 41, 0.66) !important;
+        backdrop-filter: blur(9px);
+    }
+    .citas-premium #modal-contenido {
+        border-radius: 26px !important;
+        box-shadow: 0 35px 100px rgba(5, 19, 38, 0.32) !important;
+    }
+    .citas-premium #btn-guardar-cambios {
+        background: linear-gradient(135deg, #16a99b, #087f78) !important;
+        box-shadow: 0 8px 20px rgba(8, 127, 120, 0.2);
+    }
+    .citas-premium .btn-editar-cita:focus-visible,
+    .citas-premium button:focus-visible,
+    .citas-premium a:focus-visible {
+        outline-color: rgba(22, 169, 155, 0.55) !important;
+    }
+    @media (max-width: 640px) {
+        .citas-premium > div:first-of-type {
+            border-radius: 22px !important;
+        }
+        .citas-premium > div:nth-of-type(2) {
+            border-radius: 20px !important;
+        }
+        .citas-premium #view-lista .cita-tarjeta:hover {
+            transform: none;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .citas-premium *,
+        .citas-premium *::before,
+        .citas-premium *::after {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
 </style>
 <div class="citas-premium max-w-7xl mx-auto space-y-6 font-sans pb-12 px-3 sm:px-6">
     <!-- Encabezado Principal Estilizado -->
@@ -427,9 +595,9 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
         const BASE_URL = '<?= BASE_URL ?>';
     
         const citasData = <?= json_encode(
-                                                                                    $citasPorFecha,
-                                                                                    JSON_UNESCAPED_UNICODE
-                                                                                    ) ?>;
+                                                                                        $citasPorFecha,
+                                                                                        JSON_UNESCAPED_UNICODE
+                                                                                        ) ?>;
     
         const tieneCitasTotal = <?= !empty($tieneCitasTotal) ? 'true' : 'false' ?>;
     
@@ -542,7 +710,7 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
                 let headerDiv = document.createElement('div');
                 headerDiv.className = `p-3.5 border-r border-slate-100 border-b-2 ${esHoy ? 'border-b-indigo-600 bg-indigo-50/40 text-indigo-700 font-bold' : 'border-b-transparent text-slate-500'}`;
                 headerDiv.innerHTML = `<div class="uppercase tracking-wider text-[11px]">${diasNombres[i]}</div>
-                                                                                            <div class="text-xs ${esHoy ? 'text-indigo-600 font-bold bg-white inline-block px-2 py-0.5 rounded-full shadow-2xs mt-1' : 'text-slate-400 font-semibold'} mt-0.5">${d.getDate()}/${d.getMonth() + 1}</div>`;
+                                                                                                <div class="text-xs ${esHoy ? 'text-indigo-600 font-bold bg-white inline-block px-2 py-0.5 rounded-full shadow-2xs mt-1' : 'text-slate-400 font-semibold'} mt-0.5">${d.getDate()}/${d.getMonth() + 1}</div>`;
                 semanaHeaders.appendChild(headerDiv);
     
                 let colDiv = document.createElement('div');
@@ -573,16 +741,16 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
                     card.dataset.estado = c.estado;
     
                     card.innerHTML = `
-                                                                                                <div class="flex items-center justify-between text-[11px] font-bold pb-1.5 border-b border-black/5">
-                                                                                                    <span class="flex items-center gap-1">
-                                                                                                        <i data-lucide="clock" class="w-3 h-3"></i>
-                                                                                                        ${c.hora}${horaFinStr ? ' - ' + horaFinStr : ''}
-                                                                                                    </span>
-                                                                                                    <span class="w-2 h-2 rounded-full ${dotColor} shadow-xs"></span>
-                                                                                                </div>
-                                                                                                <div class="font-bold text-slate-900 mt-2 truncate text-xs ${c.estado === 'cancelada' ? 'line-through' : ''}">${c.paciente_nombre} ${c.paciente_apellido}</div>
-                                                                                                <p class="text-[10px] text-slate-500 truncate mt-1 font-medium bg-white/60 p-1.5 rounded-xl border border-black/5">${c.motivo || 'Sin motivo especificado'}</p>
-                                                                                                `;
+                                                                                                    <div class="flex items-center justify-between text-[11px] font-bold pb-1.5 border-b border-black/5">
+                                                                                                        <span class="flex items-center gap-1">
+                                                                                                            <i data-lucide="clock" class="w-3 h-3"></i>
+                                                                                                            ${c.hora}${horaFinStr ? ' - ' + horaFinStr : ''}
+                                                                                                        </span>
+                                                                                                        <span class="w-2 h-2 rounded-full ${dotColor} shadow-xs"></span>
+                                                                                                    </div>
+                                                                                                    <div class="font-bold text-slate-900 mt-2 truncate text-xs ${c.estado === 'cancelada' ? 'line-through' : ''}">${c.paciente_nombre} ${c.paciente_apellido}</div>
+                                                                                                    <p class="text-[10px] text-slate-500 truncate mt-1 font-medium bg-white/60 p-1.5 rounded-xl border border-black/5">${c.motivo || 'Sin motivo especificado'}</p>
+                                                                                                    `;
     
                     colDiv.appendChild(card);
                 });
@@ -635,9 +803,9 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
                 let badgeHtml =
                     countCitas > 0
                         ? `<div class="bg-indigo-600 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-1 rounded-xl text-center shadow-xs flex items-center justify-center gap-1">
-                                                                                                <i data-lucide="calendar" class="w-3 h-3 hidden sm:inline"></i>
-                                                                                                ${countCitas} ${countCitas === 1 ? 'Cita' : 'Citas'}
-                                                                                            </div>`
+                                                                                                    <i data-lucide="calendar" class="w-3 h-3 hidden sm:inline"></i>
+                                                                                                    ${countCitas} ${countCitas === 1 ? 'Cita' : 'Citas'}
+                                                                                                </div>`
                         : '';
                 cell.innerHTML = `<span class="font-bold text-xs ${esHoyMes ? 'text-indigo-600 bg-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center shadow-2xs' : 'text-slate-700'}">${dia}</span>${badgeHtml}`;
                 mesGrid.appendChild(cell);
@@ -915,7 +1083,7 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
                         const div = document.createElement('div');
                         div.className = 'p-3 hover:bg-indigo-50 cursor-pointer transition-colors';
                         div.innerHTML = `<div class="font-bold text-slate-800">${p.nombre}</div>
-                                                                                                    <div class="text-[10px] text-slate-500 font-medium">Doc: ${p.documento}</div>`;
+                                                                                                        <div class="text-[10px] text-slate-500 font-medium">Doc: ${p.documento}</div>`;
     
                         div.addEventListener('click', () => {
                             inputBuscador.value = `${p.nombre} (${p.documento})`;
