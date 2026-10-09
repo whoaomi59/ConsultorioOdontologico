@@ -90,6 +90,13 @@ class CitaController
             exit();
         }
 
+        // El domingo no es un día laboral: se bloquea para todos los usuarios.
+        if ((int) $fechaValidada->format('N') === 7) {
+            $_SESSION['error_acceso'] = 'No se pueden agendar citas los domingos. Selecciona un día de lunes a sábado.';
+            header('Location: ' . BASE_URL . '/cita');
+            exit();
+        }
+
         // Solo admin puede usar una fecha que ya esté asignada a otro doctor.
         if (!$esAdministrador && $this->citaModel->fechaAsignadaAOtroDoctor($usuarioId, $fecha)) {
             $_SESSION['error_acceso'] = 'No puedes agendar ni consultar una fecha asignada a otro doctor.';

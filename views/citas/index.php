@@ -93,9 +93,9 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
             </div>
         </div>
         <!-- VISTA 1: CALENDARIO SEMANAL DINÁMICO -->
-        <div id="view-semana" class="view-content bg-white rounded-3xl border border-slate-200/60 shadow-xs overflow-hidden"><div class="overflow-x-auto"><div class="min-w-[768px]"><div id="semana-headers" class="grid grid-cols-7 border-b border-slate-200/60 bg-slate-50/50 text-center text-xs font-bold text-slate-600"></div><div id="semana-grid" class="grid grid-cols-7 divide-x divide-slate-100 min-h-[500px] bg-slate-50/10 text-xs"></div></div></div></div>
+        <div id="view-semana" class="view-content bg-white rounded-3xl border border-slate-200/60 shadow-xs overflow-hidden"><div class="overflow-x-auto"><div class="min-w-[768px]"><div id="semana-headers" class="grid grid-cols-6 border-b border-slate-200/60 bg-slate-50/50 text-center text-xs font-bold text-slate-600"></div><div id="semana-grid" class="grid grid-cols-6 divide-x divide-slate-100 min-h-[500px] bg-slate-50/10 text-xs"></div></div></div></div>
         <!-- VISTA 2: CALENDARIO MENSUAL DINÁMICO -->
-        <div id="view-mes" class="view-content hidden bg-white rounded-3xl border border-slate-200/60 shadow-xs p-4 sm:p-6 overflow-x-auto"><div class="min-w-[650px]"><div class="grid grid-cols-7 gap-2 sm:gap-3 text-center text-[10px] sm:text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider"><div>Domingo</div><div>Lunes</div><div>Martes</div><div>Miércoles</div><div>Jueves</div><div>Viernes</div><div>Sábado</div></div><div id="mes-grid" class="grid grid-cols-7 gap-2 sm:gap-3 text-xs"></div></div></div>
+        <div id="view-mes" class="view-content hidden bg-white rounded-3xl border border-slate-200/60 shadow-xs p-4 sm:p-6 overflow-x-auto"><div class="min-w-[650px]"><div class="grid grid-cols-6 gap-2 sm:gap-3 text-center text-[10px] sm:text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider"><div>Lunes</div><div>Martes</div><div>Miércoles</div><div>Jueves</div><div>Viernes</div><div>Sábado</div></div><div id="mes-grid" class="grid grid-cols-6 gap-2 sm:gap-3 text-xs"></div></div></div>
         <!-- VISTA 3: TABLA LISTA -->
         <div id="view-lista" class="view-content hidden bg-white rounded-3xl border border-slate-200/60 shadow-xs overflow-hidden">
             <div class="overflow-x-auto">
@@ -272,6 +272,19 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
     
         const horasInicioPorFecha = <?= json_encode($horasInicioPorFecha) ?>;
     
+        // Bloqueo visual inmediato de domingos en el formulario.
+        const inputFechaAgenda = document.getElementById('input_fecha');
+        if (inputFechaAgenda) {
+            inputFechaAgenda.addEventListener('change', function () {
+                if (!this.value) return;
+                const fechaElegida = new Date(this.value + 'T00:00:00');
+                if (fechaElegida.getDay() === 0) {
+                    alert('El domingo no es un día laboral. Selecciona una fecha de lunes a sábado.');
+                    this.value = '';
+                }
+            });
+        }
+    
         let fechaActual = new Date();
     
         if (!tieneCitasTotal && fechasPermitidas.length > 0) {
@@ -335,13 +348,13 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
             semanaGrid.innerHTML = '';
     
             let lunes = getMonday(fechaActual);
-            let diasNombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            let diasNombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             let hoyStr = formatDateKey(new Date());
     
             let inicioLabel = '';
             let finLabel = '';
     
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 6; i++) {
                 let d = new Date(lunes);
     
                 d.setDate(lunes.getDate() + i);
@@ -357,7 +370,7 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
                 let esHoy = fechaStr === hoyStr;
     
                 if (i === 0) inicioLabel = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                if (i === 6) finLabel = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                if (i === 5) finLabel = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     
                 let headerDiv = document.createElement('div');
                 headerDiv.className = `p-3.5 border-r border-slate-100 border-b-2 ${esHoy ? 'border-b-indigo-600 bg-indigo-50/40 text-indigo-700 font-bold' : 'border-b-transparent text-slate-500'}`;
@@ -419,7 +432,7 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
     
             let primerDiaMes = new Date(year, month, 1);
             let ultimoDiaMes = new Date(year, month + 1, 0);
-            let offset = primerDiaMes.getDay();
+            let offset = (primerDiaMes.getDay() + 6) % 7; // Semana de lunes a sábado; domingo no se muestra
             let diasEnMes = ultimoDiaMes.getDate();
             let hoyStr = formatDateKey(new Date());
     
@@ -432,6 +445,12 @@ $fechasBloqueadas = $fechasBloqueadas ?? [];
             }
     
             for (let dia = 1; dia <= diasEnMes; dia++) {
+                // No mostrar domingos en el calendario mensual.
+                const fechaDelMes = new Date(year, month, dia);
+                if (fechaDelMes.getDay() === 0) {
+                    continue;
+                }
+    
                 let fechaFormato = `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
     
                 // Los usuarios sin citas_total solamente pueden
