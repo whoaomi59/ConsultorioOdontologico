@@ -1,6 +1,237 @@
-<div class="space-y-6">
+<style>
+    /* Sistema visual unificado para Gestión de Usuarios */
+    .usuarios-ui {
+        --ui-ink: #142238;
+        --ui-muted: #64748b;
+        --ui-line: #e2eaf2;
+        --ui-blue: #315ee8;
+        --ui-teal: #0f9f9a;
+        color: var(--ui-ink);
+        width: 100%;
+        min-width: 0;
+    }
+    .usuarios-ui > * {
+        min-width: 0;
+    }
+    .usuarios-ui a,
+    .usuarios-ui button,
+    .usuarios-ui input,
+    .usuarios-ui select {
+        -webkit-tap-highlight-color: transparent;
+    }
+    .usuarios-ui a:focus-visible,
+    .usuarios-ui button:focus-visible,
+    .usuarios-ui input:focus-visible,
+    .usuarios-ui select:focus-visible,
+    .usuarios-ui textarea:focus-visible {
+        outline: 3px solid rgba(49, 94, 232, 0.24);
+        outline-offset: 2px;
+    }
+    .usuarios-ui input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='hidden']),
+    .usuarios-ui select,
+    .usuarios-ui textarea {
+        min-height: 44px;
+        border-radius: 12px;
+        border-color: #d8e2ee;
+        background-color: #f8fafc;
+        color: #17253b;
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease;
+    }
+    .usuarios-ui input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='hidden']):focus,
+    .usuarios-ui select:focus,
+    .usuarios-ui textarea:focus {
+        border-color: #6487f4 !important;
+        background-color: #fff !important;
+        box-shadow: 0 0 0 4px rgba(49, 94, 232, 0.1);
+    }
+    .usuarios-ui input[type='checkbox'] {
+        width: 17px;
+        height: 17px;
+        accent-color: #315ee8;
+        flex: 0 0 auto;
+    }
+    .usuarios-ui form,
+    .usuarios-ui .usuario-form-card {
+        border-color: var(--ui-line) !important;
+        border-radius: 22px !important;
+        box-shadow: 0 8px 28px rgba(15, 35, 65, 0.055) !important;
+    }
+    .usuarios-ui .usuarios-section {
+        border-radius: 18px;
+    }
+    .usuarios-ui .ui-elevate {
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+    }
+    .usuarios-ui .ui-elevate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(15, 35, 65, 0.08);
+    }
+    .usuarios-ui button[type='submit'] {
+        min-height: 44px;
+        border-radius: 12px !important;
+        box-shadow: 0 7px 16px rgba(49, 94, 232, 0.18);
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            filter 0.18s ease;
+    }
+    .usuarios-ui button[type='submit']:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(49, 94, 232, 0.24);
+        filter: saturate(1.08);
+    }
+    .usuarios-ui .usuarios-hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        border: 1px solid #1e3760;
+        border-radius: 26px;
+        background: linear-gradient(120deg, #101c35 0%, #1b3470 58%, #087e8b 100%);
+        color: #fff;
+        box-shadow: 0 16px 35px rgba(15, 35, 65, 0.16);
+    }
+    .usuarios-ui .usuarios-hero:after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        width: 240px;
+        height: 240px;
+        right: -65px;
+        top: -110px;
+        border-radius: 50%;
+        background: rgba(125, 211, 252, 0.13);
+        box-shadow:
+            0 0 0 32px rgba(255, 255, 255, 0.025),
+            0 0 0 66px rgba(255, 255, 255, 0.02);
+    }
+    .usuarios-ui .usuarios-panel {
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid var(--ui-line);
+        border-radius: 20px;
+        box-shadow: 0 7px 24px rgba(15, 35, 65, 0.045);
+    }
+    .usuarios-ui .usuario-row {
+        transition: background 0.18s ease;
+    }
+    .usuarios-ui .usuario-row:hover {
+        background: #f4f8ff;
+    }
+    .usuarios-ui .usuarios-index table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .usuarios-ui .usuarios-index thead th {
+        background: #f5f8fc;
+    }
+    .usuarios-ui .usuarios-index tbody td {
+        vertical-align: middle;
+    }
+    .usuarios-ui .usuarios-index tbody tr:last-child td {
+        border-bottom: 0;
+    }
+    .usuarios-ui .usuarios-index #search-table {
+        background: #f7f9fc;
+    }
+    .usuarios-ui .usuarios-index #pagination-buttons button {
+        min-width: 38px;
+        min-height: 38px;
+    }
+    .usuarios-ui .usuarios-create .tab-button,
+    .usuarios-ui .usuarios-edit-page .tab-button {
+        min-height: 42px;
+        border-radius: 12px 12px 0 0;
+    }
+    .usuarios-ui .tab-panel label:has(input.chk-permiso) {
+        min-height: 48px;
+        border-radius: 13px;
+        transition:
+            border-color 0.18s ease,
+            background 0.18s ease,
+            transform 0.18s ease;
+    }
+    .usuarios-ui .tab-panel label:has(input.chk-permiso):hover {
+        border-color: #bdcdfa;
+        background: #f5f8ff;
+        transform: translateY(-1px);
+    }
+    .usuarios-ui #preview_container {
+        width: 132px;
+        height: 132px;
+        border-radius: 24px !important;
+        border: 4px solid #fff !important;
+        box-shadow:
+            0 0 0 1px #dbe5f0,
+            0 10px 24px rgba(15, 35, 65, 0.1) !important;
+    }
+    .usuarios-ui #webcam_container {
+        width: min(100%, 260px);
+        height: 220px;
+        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(15, 35, 65, 0.14);
+    }
+    .usuarios-ui #user-signature-pad {
+        touch-action: none;
+        display: block;
+    }
+    .usuarios-ui .usuarios-view .profile-banner {
+        min-height: 156px;
+        background: linear-gradient(120deg, #14264a, #315ee8 58%, #0d9488) !important;
+    }
+    .usuarios-ui .usuarios-view .profile-avatar {
+        border: 5px solid white;
+        box-shadow: 0 12px 30px rgba(15, 35, 65, 0.18);
+    }
+    @media (max-width: 640px) {
+        .usuarios-ui {
+            font-size: 14px;
+        }
+        .usuarios-ui .usuarios-hero {
+            border-radius: 20px;
+            padding: 20px !important;
+        }
+        .usuarios-ui form {
+            padding: 18px !important;
+        }
+        .usuarios-ui .usuarios-index .overflow-x-auto {
+            max-width: 100%;
+        }
+        .usuarios-ui .usuarios-index table {
+            min-width: 720px;
+        }
+        .usuarios-ui .usuarios-index .pagination-footer {
+            padding: 14px !important;
+        }
+        .usuarios-ui #tabs-header {
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+        }
+        .usuarios-ui .tab-panel {
+            padding: 12px !important;
+        }
+        .usuarios-ui #preview_container {
+            width: 116px;
+            height: 116px;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .usuarios-ui *,
+        .usuarios-ui *:before,
+        .usuarios-ui *:after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
+<div class="usuarios-ui usuarios-index space-y-6">
     <!-- Header y Acción Principal -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden">
+    <div class="usuarios-hero flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-white p-6 sm:p-8 relative">
         <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="relative z-10 flex items-center gap-4">
             <div class="p-3 bg-indigo-500/20 text-indigo-300 rounded-2xl border border-indigo-500/30">
