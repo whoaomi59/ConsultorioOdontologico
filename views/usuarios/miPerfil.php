@@ -819,3 +819,94 @@ MODAL CÁMARA
         });
     });
 </script>
+<style>
+    /* Pulido visual extra · Mi Perfil */
+    .profile-shell {
+        animation: mp-enter 0.45s ease-out both;
+    }
+    .profile-shell .profile-stat-card {
+        transition:
+            transform 0.22s ease,
+            box-shadow 0.22s ease,
+            border-color 0.22s ease;
+    }
+    .profile-shell .profile-stat-card p.text-3xl {
+        font-variant-numeric: tabular-nums;
+    }
+    .profile-shell form[action*='actualizarMiPerfil'] {
+        position: relative;
+    }
+    .profile-shell form[action*='actualizarMiPerfil']::before {
+        content: 'PERFIL PERSONAL';
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: #3156c5;
+        background: #eef3ff;
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+    }
+    .profile-shell form[action*='guardarFechaAtencion'] {
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.9),
+            0 8px 22px rgba(23, 36, 59, 0.035);
+    }
+    .profile-shell .profile-stat-card:nth-child(1) {
+        background: linear-gradient(145deg, #fff 0%, #f4f6ff 100%) !important;
+    }
+    .profile-shell .profile-stat-card:nth-child(2) {
+        background: linear-gradient(145deg, #fff 0%, #faf5ff 100%) !important;
+    }
+    .profile-shell .profile-stat-card:nth-child(3) {
+        background: linear-gradient(145deg, #fff 0%, #f7f9fc 100%) !important;
+    }
+    .profile-shell .profile-stat-card:nth-child(4) {
+        background: linear-gradient(145deg, #fff 0%, #fff9ed 100%) !important;
+    }
+    .profile-shell .profile-stat-card:nth-child(5) {
+        background: linear-gradient(145deg, #fff 0%, #effcf6 100%) !important;
+    }
+    .profile-shell .profile-stat-card:nth-child(6) {
+        background: linear-gradient(145deg, #fff 0%, #fff3f4 100%) !important;
+    }
+    .profile-shell input[type='file']::file-selector-button {
+        margin-right: 10px;
+        padding: 7px 10px;
+        border: 0;
+        border-radius: 8px;
+        color: #3156c5;
+        background: #eef3ff;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+    }
+    .profile-shell .profile-stat-card:focus-within {
+        outline: 3px solid rgba(49, 94, 232, 0.16);
+    }
+    @keyframes mp-enter {
+        from {
+            opacity: 0;
+            transform: translateY(7px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @media (max-width: 767px) {
+        .profile-shell .profile-stat-card {
+            box-shadow: 0 5px 14px rgba(15, 35, 65, 0.04) !important;
+        }
+        .profile-shell > .grid.grid-cols-1.xl\\:grid-cols-3 > div {
+            border-radius: 19px !important;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .profile-shell {
+            animation: none !important;
+        }
+    }
+</style>

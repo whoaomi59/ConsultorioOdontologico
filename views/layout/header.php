@@ -111,16 +111,16 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
         <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/style.css">
         <style>
             /* =====================================================
-                                                                                               VARIABLES
-                                                                                            ===================================================== */
+                                                                                                           VARIABLES
+                                                                                                        ===================================================== */
             
             :root {
                 --menu-width: 260px;
             }
             
             /* =====================================================
-                                                                                               BODY
-                                                                                            ===================================================== */
+                                                                                                           BODY
+                                                                                                        ===================================================== */
             
             html,
             body {
@@ -130,16 +130,16 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               SIDEBAR
-                                                                                            ===================================================== */
+                                                                                                           SIDEBAR
+                                                                                                        ===================================================== */
             
             #sidebar {
                 width: var(--menu-width);
             }
             
             /* =====================================================
-                                                                                               SCROLL DEL MENÚ
-                                                                                            ===================================================== */
+                                                                                                           SCROLL DEL MENÚ
+                                                                                                        ===================================================== */
             
             #sidebar-nav {
                 scrollbar-width: thin;
@@ -160,8 +160,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               OVERLAY
-                                                                                            ===================================================== */
+                                                                                                           OVERLAY
+                                                                                                        ===================================================== */
             
             #sidebar-overlay {
                 transition:
@@ -170,8 +170,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               TRANSICIONES
-                                                                                            ===================================================== */
+                                                                                                           TRANSICIONES
+                                                                                                        ===================================================== */
             
             .menu-item {
                 transition:
@@ -185,8 +185,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               MÓVIL
-                                                                                            ===================================================== */
+                                                                                                           MÓVIL
+                                                                                                        ===================================================== */
             
             @media (max-width: 1023px) {
                 #sidebar {
@@ -213,8 +213,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               DESKTOP
-                                                                                            ===================================================== */
+                                                                                                           DESKTOP
+                                                                                                        ===================================================== */
             
             @media (min-width: 1024px) {
                 #sidebar {
@@ -230,8 +230,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             }
             
             /* =====================================================
-                                                                                               PANTALLAS PEQUEÑAS
-                                                                                            ===================================================== */
+                                                                                                           PANTALLAS PEQUEÑAS
+                                                                                                        ===================================================== */
             
             @media (max-width: 480px) {
                 #sidebar {
@@ -252,6 +252,162 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
             
                 main {
                     padding: 1rem !important;
+                }
+            }
+        </style>
+        <style>
+            /* DentalControl · acabado premium para navegación global */
+            :root {
+                --dc-ink: #17243b;
+                --dc-blue: #315ee8;
+                --dc-teal: #0e9488;
+                --dc-line: #e4ebf4;
+            }
+            body {
+                background: radial-gradient(ellipse at 90% 0%, rgba(14, 148, 136, 0.045), transparent 28%), #f4f7fb !important;
+            }
+            #sidebar {
+                background: linear-gradient(180deg, #101b33 0%, #111e38 58%, #0d2637 100%) !important;
+                border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+                box-shadow: 14px 0 38px rgba(15, 27, 51, 0.1) !important;
+            }
+            #sidebar > div:first-child {
+                min-height: 82px;
+                border-bottom-color: rgba(255, 255, 255, 0.09) !important;
+                background: linear-gradient(110deg, rgba(255, 255, 255, 0.035), transparent);
+            }
+            #sidebar > div:first-child img,
+            #sidebar > div:first-child div:has(> i[data-lucide='tooth']) {
+                border-radius: 15px !important;
+            }
+            #sidebar nav > p {
+                color: #7185a5 !important;
+                font-size: 9px !important;
+                letter-spacing: 0.19em !important;
+            }
+            #sidebar .menu-item {
+                position: relative;
+                min-height: 42px;
+                border: 1px solid transparent;
+                border-radius: 12px !important;
+                transition:
+                    background 0.18s ease,
+                    color 0.18s ease,
+                    border-color 0.18s ease,
+                    transform 0.18s ease,
+                    box-shadow 0.18s ease;
+            }
+            #sidebar .menu-item:hover {
+                transform: translateX(3px);
+                color: #fff !important;
+                border-color: rgba(255, 255, 255, 0.075);
+                background: rgba(255, 255, 255, 0.065) !important;
+            }
+            #sidebar .menu-item[class*='bg-indigo-600'] {
+                color: #fff !important;
+                border-color: rgba(130, 166, 255, 0.25) !important;
+                background: linear-gradient(105deg, #315ee8, #2849b8 65%, #087f86) !important;
+                box-shadow:
+                    0 8px 18px rgba(28, 76, 184, 0.24),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            #sidebar .menu-item[class*='bg-indigo-600']::before {
+                content: '';
+                position: absolute;
+                left: -13px;
+                top: 10px;
+                bottom: 10px;
+                width: 3px;
+                border-radius: 0 4px 4px 0;
+                background: #77e6d6;
+            }
+            #historias-dropdown {
+                border-left-color: rgba(137, 164, 206, 0.25) !important;
+            }
+            #sidebar > div:last-child {
+                border-top-color: rgba(255, 255, 255, 0.09) !important;
+                background: rgba(0, 0, 0, 0.1);
+            }
+            #sidebar > div:last-child a:hover {
+                background: rgba(244, 63, 94, 0.11) !important;
+            }
+            body > div.flex-1 > header,
+            body .min-h-screen.flex.flex-col > header {
+                background: rgba(255, 255, 255, 0.91) !important;
+                border-bottom-color: rgba(220, 230, 242, 0.9) !important;
+                box-shadow: 0 5px 22px rgba(23, 36, 59, 0.035);
+                backdrop-filter: blur(16px);
+            }
+            #topbar-title p {
+                color: #0e9488 !important;
+                font-weight: 800 !important;
+            }
+            #topbar-title h2 {
+                letter-spacing: -0.025em;
+            }
+            #topbar-status {
+                border-radius: 999px !important;
+                padding: 8px 12px !important;
+            }
+            #topbar-status span:first-child {
+                box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.11);
+            }
+            header a[href*='usuarios/miPerfil'] {
+                border: 1px solid transparent;
+                border-radius: 13px !important;
+                transition:
+                    background 0.18s ease,
+                    border-color 0.18s ease;
+            }
+            header a[href*='usuarios/miPerfil']:hover {
+                border-color: #e3eaf4;
+                background: #f5f8fc !important;
+            }
+            header a[href$='/logout'] {
+                border-radius: 12px !important;
+            }
+            main {
+                scroll-margin-top: 80px;
+            }
+            main > div[class*='border-red-200'] {
+                border-radius: 15px !important;
+                box-shadow: 0 8px 24px rgba(190, 18, 60, 0.055);
+            }
+            #mobile-menu-button {
+                border: 1px solid #e3eaf4;
+                border-radius: 12px !important;
+                background: #fff !important;
+                box-shadow: 0 3px 9px rgba(23, 36, 59, 0.04);
+            }
+            #mobile-menu-button:hover {
+                background: #edf3ff !important;
+            }
+            #sidebar-overlay {
+                background: rgba(8, 18, 37, 0.64) !important;
+                backdrop-filter: blur(5px);
+            }
+            #sidebar a:focus-visible,
+            #sidebar button:focus-visible,
+            header a:focus-visible,
+            header button:focus-visible {
+                outline: 3px solid rgba(105, 145, 255, 0.75);
+                outline-offset: 3px;
+            }
+            @media (max-width: 1023px) {
+                #sidebar {
+                    box-shadow: 22px 0 55px rgba(5, 14, 31, 0.28) !important;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                #sidebar *,
+                #sidebar *::before,
+                #sidebar *::after,
+                header *,
+                header *::before,
+                header *::after {
+                    transition-duration: 0.01ms !important;
+                    animation-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
                 }
             }
         </style>
@@ -853,8 +1009,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                 <!-- AQUÍ CONTINÚA EL CONTENIDO DE CADA VISTA -->
                 <script>
                     /* ============================================================
-                                                                                                                                               ICONOS
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   ICONOS
+                                                                                                                                                                ============================================================ */
                     
                     function cargarIconos() {
                         if (typeof lucide !== 'undefined') {
@@ -863,8 +1019,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     }
                     
                     /* ============================================================
-                                                                                                                                               SIDEBAR
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   SIDEBAR
+                                                                                                                                                                ============================================================ */
                     
                     function toggleSidebar() {
                         const sidebar = document.getElementById('sidebar');
@@ -893,8 +1049,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     }
                     
                     /* ============================================================
-                                                                                                                                               DROPDOWN HISTORIAS
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   DROPDOWN HISTORIAS
+                                                                                                                                                                ============================================================ */
                     
                     function toggleDropdown(menuId, arrowId) {
                         const menu = document.getElementById(menuId);
@@ -913,8 +1069,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     }
                     
                     /* ============================================================
-                                                                                                                                               CERRAR SIDEBAR
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   CERRAR SIDEBAR
+                                                                                                                                                                ============================================================ */
                     
                     function cerrarSidebarMovil() {
                         if (window.innerWidth >= 1024) {
@@ -937,8 +1093,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     }
                     
                     /* ============================================================
-                                                                                                                                               CERRAR AL CAMBIAR DE PÁGINA
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   CERRAR AL CAMBIAR DE PÁGINA
+                                                                                                                                                                ============================================================ */
                     
                     document.addEventListener('DOMContentLoaded', function () {
                         cargarIconos();
@@ -953,8 +1109,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     });
                     
                     /* ============================================================
-                                                                                                                                               ESC
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   ESC
+                                                                                                                                                                ============================================================ */
                     
                     document.addEventListener('keydown', function (event) {
                         if (event.key === 'Escape') {
@@ -963,8 +1119,8 @@ $historiasActivas = str_contains($currentUrl, 'historia') || str_contains($curre
                     });
                     
                     /* ============================================================
-                                                                                                                                               AL CAMBIAR TAMAÑO
-                                                                                                                                            ============================================================ */
+                                                                                                                                                                   AL CAMBIAR TAMAÑO
+                                                                                                                                                                ============================================================ */
                     
                     window.addEventListener('resize', function () {
                         if (window.innerWidth >= 1024) {
