@@ -1,9 +1,11 @@
 <?php
 
-class Cita {
+class Cita
+{
     private $db;
 
-    public function __construct($db = null) {
+    public function __construct($db = null)
+    {
         if ($db === null) {
             global $db;
         }
@@ -11,14 +13,14 @@ class Cita {
         $this->db = $db;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | OBTENER TODAS LAS CITAS
     |--------------------------------------------------------------------------
     */
 
-    public function getAll() {
+    public function getAll()
+    {
         $sql = "SELECT
             c.*,
             p.nombre AS paciente_nombre,
@@ -35,14 +37,14 @@ class Cita {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | OBTENER UNA CITA POR ID
     |--------------------------------------------------------------------------
     */
 
-    public function getById($id) {
+    public function getById($id)
+    {
         $sql = "SELECT
             c.*,
             p.nombre AS paciente_nombre,
@@ -57,12 +59,11 @@ class Cita {
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
-            ':id' => $id
+            ':id' => $id,
         ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +71,8 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function getFechasAtencionDoctor($usuarioId) {
+    public function getFechasAtencionDoctor($usuarioId)
+    {
         $sql = "SELECT
             id,
             usuario_id,
@@ -83,12 +85,11 @@ class Cita {
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
-            ':usuario_id' => $usuarioId
+            ':usuario_id' => $usuarioId,
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +97,8 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function getCitasPorFechasDoctor($usuarioId) {
+    public function getCitasPorFechasDoctor($usuarioId)
+    {
         $sql = "SELECT DISTINCT
             c.*,
             p.nombre AS paciente_nombre,
@@ -113,12 +115,11 @@ class Cita {
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
-            ':usuario_id' => $usuarioId
+            ':usuario_id' => $usuarioId,
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -126,22 +127,39 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function fechaEstaProgramada($usuarioId, $fecha) {
-        $sql = "SELECT COUNT(*)
-            FROM fechas_atencion_doctores
-            WHERE usuario_id = :usuario_id
-            AND fecha = :fecha";
+    public function fechaEstaProgramada($usuarioId, $fecha)
+    {
+        if (empty($usuarioId) || empty($fecha)) {
+            return false;
+        }
 
-        $stmt = $this->db->prepare($sql);
+        $usuarioId = (int) $usuarioId;
+        $fecha = trim((string) $fecha);
 
-        $stmt->execute([
-            ':usuario_id' => $usuarioId,
-            ':fecha' => $fecha
-        ]);
+        // Validar el formato recibido del formulario.
+        $fechaSeleccionada = DateTime::createFromFormat('!Y-m-d', $fecha);
 
-        return (int) $stmt->fetchColumn() > 0;
+        if (!$fechaSeleccionada || $fechaSeleccionada->format('Y-m-d') !== $fecha) {
+            return false;
+        }
+
+        // Obtener las mismas fechas que utiliza la agenda.
+        $fechasProgramadas = $this->getFechasAtencionDoctor($usuarioId);
+
+        foreach ($fechasProgramadas as $fila) {
+            if (empty($fila['fecha'])) {
+                continue;
+            }
+
+            $fechaProgramada = date('Y-m-d', strtotime($fila['fecha']));
+
+            if ($fechaProgramada === $fecha) {
+                return true;
+            }
+        }
+
+        return false;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -149,7 +167,8 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function create($data) {
+    public function create($data)
+    {
         $sql = "INSERT INTO citas (
             paciente_id,
             fecha,
@@ -170,14 +189,13 @@ class Cita {
 
         return $stmt->execute([
             ':paciente_id' => $data['paciente_id'],
-            ':fecha'       => $data['fecha'],
-            ':hora'        => $data['hora'],
-            ':hora_final'  => $data['hora_final'],
-            ':motivo'      => $data['motivo'],
-            ':estado'      => $data['estado']
+            ':fecha' => $data['fecha'],
+            ':hora' => $data['hora'],
+            ':hora_final' => $data['hora_final'],
+            ':motivo' => $data['motivo'],
+            ':estado' => $data['estado'],
         ]);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -185,7 +203,8 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function update($data) {
+    public function update($data)
+    {
         $sql = "UPDATE citas
             SET
             paciente_id = :paciente_id,
@@ -199,16 +218,15 @@ class Cita {
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
-            ':id'          => $data['id'],
+            ':id' => $data['id'],
             ':paciente_id' => $data['paciente_id'],
-            ':fecha'       => $data['fecha'],
-            ':hora'        => $data['hora'],
-            ':hora_final'  => $data['hora_final'],
-            ':motivo'      => $data['motivo'],
-            ':estado'      => $data['estado']
+            ':fecha' => $data['fecha'],
+            ':hora' => $data['hora'],
+            ':hora_final' => $data['hora_final'],
+            ':motivo' => $data['motivo'],
+            ':estado' => $data['estado'],
         ]);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -216,7 +234,8 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function updateEstado($id, $estado) {
+    public function updateEstado($id, $estado)
+    {
         $sql = "UPDATE citas
             SET estado = :estado
             WHERE id = :id";
@@ -224,11 +243,10 @@ class Cita {
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
-            ':id'     => $id,
-            ':estado' => $estado
+            ':id' => $id,
+            ':estado' => $estado,
         ]);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -236,14 +254,15 @@ class Cita {
     |--------------------------------------------------------------------------
     */
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $sql = "DELETE FROM citas
             WHERE id = :id";
 
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
-            ':id' => $id
+            ':id' => $id,
         ]);
     }
 }
