@@ -417,6 +417,14 @@ $citasHoy = is_array($citasHoy ?? null) ? $citasHoy : [];
                     <span class="text-xs font-bold text-slate-700 group-hover:text-rose-700 sm:text-sm">Odontología</span>
                 </a>
             <?php endif; ?>
+            <?php if (function_exists('hasPermission') && (hasPermission('historias') || hasPermission('historia_ortodoncia'))): ?>
+                <a href="<?= BASE_URL ?>/historias/odontologia" class="dashboard-shortcut group flex flex-col items-center justify-center gap-3 p-4 text-center focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2">
+                    <span class="dashboard-icon bg-rose-50 text-rose-700 ring-1 ring-rose-100 transition group-hover:bg-rose-600 group-hover:text-white">
+                        <i data-lucide="clipboard-plus" class="h-5 w-5"></i>
+                    </span>
+                    <span class="text-xs font-bold text-slate-700 group-hover:text-rose-700 sm:text-sm">Odontología</span>
+                </a>
+            <?php endif; ?>
             <?php if (function_exists('hasPermission') && hasPermission('usuarios')): ?>
                 <a href="<?= BASE_URL ?>/usuarios/index" class="dashboard-shortcut group flex flex-col items-center justify-center gap-3 p-4 text-center focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2">
                     <span class="dashboard-icon bg-amber-50 text-amber-700 ring-1 ring-amber-100 transition group-hover:bg-amber-500 group-hover:text-white">
